@@ -241,6 +241,10 @@ span.ochicken {
     }
 }
 
+.actor {
+    transition: transform 250ms;
+}
+
 .actor-img {
     width: 20rem;
     height: 20rem;
@@ -256,8 +260,24 @@ span.ochicken {
     /*-webkit-animation-timing-function: cubic-bezier(0.8, 0.13, 0.83, 0.47);*/
 }
 
-.actor-img.magnified {
-    transform: scale(125%, 125%);
+.hflip {
+    transform: scaleX(-1);
+}
+
+.magnified {
+    transform: scale(120%, 120%);
+}
+
+.hflip.magnified {
+    transform: scaleX(-1) scale(120%, 120%);
+}
+
+.float-left {
+    float: left !important;
+}
+
+.float-right {
+    float: right !important;
 }
 
 #diag-container {

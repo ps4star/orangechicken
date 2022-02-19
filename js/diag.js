@@ -1,60 +1,3 @@
-const ALL_DIAGS = {
-    "shortage": {
-        bg: "cf.png",
-        music: [ ["cf", 0, 1.65, 166.42] ],
-        stage: [ ["left_back", "Amberlynn"], ["left_front", "Becky"], ["hflip", "right_front", "C.F. Waitress"] ],
-        diag: `
-pose 0 bored
-talk - (Amberlynn & Becky are waiting at a table in Cheesecake Factory)
-talk - ... ... ...
-pose 0 excited
-talk 0 "Finally the waiter is heeere, I'm getting so hongry..."
-talk 2 "Hi, welcome to Cheesecake Factory, what will you guys be having today?"
-talk 0 "Yeah I'll get 4 orders of the Orange Chicken..."
-talk 2 "I'm sorry, we ran out of that yesterday. Something about a national shortage."
-talk 0 "But you always have it here! We drove like 2 hourssss!"
-talk 1 "Babe calm down, we can just go by Panda Express on the way back."
-talk 0 "But I don't like Panda Express Beckyyy it's all like not authentic-ey."
-talk - (Amberlynn is visibly furious)
-talk 2 "From what I heard I don't think anywhere has it right now."
-talk 2 "Your best bet would just be to make some at home."
-talk 0 "But I don't know any cookeeen recipes for Orange Chicken!"
-talk 2 *shrugs*
-talk 1 "Look babe we can just look up some recipes online."
-talk 0 "Ughhhhhhhh I'm literally dyeeeeen right nooooww."
-talk 0 "Even if we do find a recipe it won't taste as good as theiirss."
-talk 2 "Um, well, is there anything else I can get you guys?"
-
-multi
-Stay and let Becky eat
-shortage_stay
-Leave immediately
-shortage_leave
-`,
-    },
-
-    "shortage_stay": {
-        inherits: "shortage",
-        diag: `
-talk 0 "Ughh okayyy fine."
-talk - (waitress takes Amber & Becky's orders; they're silent for several minutes)
-talk 1 "Look, I found this Orange Chicken recipe on Facebook."
-talk - (Necky shows phone to Amber)
-talk - (video of a girl making orange chicken in her kitchen plays)
-talk - (Amber doesn't pay attention and stays quiet, still pissed, and with a frown on her face)
-talk 1 "See, it looks just like the Orange Chicken they have here."
-talk 0 "But it's not the saaaaaame!"
-`,
-    },
-
-    "shortage_leave": {
-        inherits: "shortage",
-        diag: `
-talk 0 "I'm leaaveeeeeeeen."
-`
-    },
-}
-
 const CHAPTER_NAMES = [
     null,
     "Shortage",
@@ -103,19 +46,19 @@ async function putStage(actorsList) {
             if (i === actorItem.length - 1) {
                 currentStage.push([actorItem[i], position])
 
-                let finalStyle = ""
+                let finalClasses = []
                 if (hflip) {
-                    finalStyle += `transform: scaleX(-1);`
+                    finalClasses.push("hflip")
                 }
 
                 if (position === 'left_back' || position === 'left_front') {
-                    finalStyle += `float: left;`
+                    finalClasses.push("float-left")
                 } else if (position === 'right_front' || position === 'right_back') {
-                    finalStyle += `float: right;`
+                    finalClasses.push("float-right")
                 }
 
                 const $actorImg = $(`<img class="actor-img animated" src="${ACTORS[actorItem[i]]}" alt="">`)
-                const $actorEl = $(`<div class="actor" style="${finalStyle}">`)
+                const $actorEl = $(`<div class="actor ${finalClasses.join(" ")}">`)
                     .append($actorImg)
 
                 await new Promise((resolve, reject) => {
@@ -166,7 +109,7 @@ function getCustomPoseURL(character, pose) {
     return `${withoutExt}_${pose}.${ext}`
 }
 
-function updateActorPose(stageIndex, newPose, reanimate) {
+async function updateActorPose(stageIndex, newPose, reanimate) {
     if (currentStage[stageIndex].length < 3) {
         currentStage[stageIndex].push(newPose)
     } else if (currentStage[stageIndex][2] === newPose) {
@@ -175,10 +118,23 @@ function updateActorPose(stageIndex, newPose, reanimate) {
     }
 
     // Now we know it's a new pose that should reanimate
+    console.log(currentStage[stageIndex], newPose)
     const $actorImg = $($('.actor-img')[stageIndex])
-    $actorImg.src = getCustomPoseURL(currentStage[stageIndex][0], newPose)
+    $actorImg[0].src = getCustomPoseURL(currentStage[stageIndex][0], newPose)
 
-    if (reanimate) $actorImg.removeClass('animated').addClass('animated')
+    await new Promise((resolve, reject) => {
+        if ($actorImg[0].complete) resolve()
+        else $actorImg[0].onload = resolve
+    })
+
+    if (reanimate) {
+        $actorImg.hide()
+        $actorImg.removeClass('animated')
+
+        $actorImg.show()
+        $actorImg.addClass('animated')
+    }
+    return Promise.resolve()
 }
 
 let textScrollInt
@@ -211,7 +167,6 @@ async function putTextBox(speakerIndex, text) {
 
         function handleAdvanceClick(e) {
             if (e.key) {
-                console.log(e.key)
                 if (!(e.key === 'Enter' || e.key === ' ')) {
                     return
                 }
@@ -272,20 +227,19 @@ let audioInt
 function playSong(url, initStart, start, end) {
     let audio = new Audio(`assets/music/${url}.mp3`)
     audio.volume = 0.65
-    audio.play().then(() => {
-        audio.currentTime = initStart
-        if (audioInt) clearInterval(audioInt)
-        audioInt = setInterval(() => {
-            if (audio.currentTime >= end) {
-                audio.currentTime = start
-            }
-        }, 20)
-        window.onkeydown = (e) => {
-            if (e.key === 'g') {
-                audio.currentTime = end - 5.0
-            }
+    audio.play()
+    audio.currentTime = initStart
+    if (audioInt) clearInterval(audioInt)
+    audioInt = setInterval(() => {
+        if (audio.currentTime >= end) {
+            audio.currentTime = start
         }
-    })
+    }, 40)
+    window.onkeydown = (e) => {
+        if (e.key === 'g') {
+            audio.currentTime = end - 5.0
+        }
+    }
 }
 
 async function prepareDialog(name) {
@@ -318,7 +272,7 @@ async function doDialog(name) {
             const pose = args[2]
 
             // Only reanimate if we have talked
-            updateActorPose(person, pose, hasTalked)
+            await updateActorPose(person, pose, hasTalked)
         } else if (args[0] === 'talk') {
             hasTalked = true
 
@@ -326,9 +280,12 @@ async function doDialog(name) {
             const text = args.slice(2).join(" ")
 
             // Magnify speaker
-            const $actorImg = $('.actor-img')
-            $actorImg.removeClass('magnified')
-            if (!Number.isNaN(speakerIndex)) $actorImg[speakerIndex].classList.add('magnified')
+            const $actors = $('.actor')
+            $actors.removeClass('magnified')
+            if (speakerIndex === 2) {
+                console.log($actors[2])
+            }
+            if (!Number.isNaN(speakerIndex)) $actors[speakerIndex].classList.add('magnified')
 
             await putTextBox(speakerIndex, text)
         } else if (args[0] === 'multi') {
