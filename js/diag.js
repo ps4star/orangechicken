@@ -1,6 +1,7 @@
 const ALL_DIAGS = {
     "shortage": {
         bg: "cf.png",
+        music: [ ["cf", 0, 1.65, 166.42] ],
         stage: [ ["left_back", "Amberlynn"], ["left_front", "Becky"], ["hflip", "right_front", "C.F. Waitress"] ],
         diag: `
 pose 0 bored
@@ -44,7 +45,13 @@ talk - (Amber doesn't pay attention and stays quiet, still pissed, and with a fr
 talk 1 "See, it looks just like the Orange Chicken they have here."
 talk 0 "But it's not the saaaaaame!"
 `,
+    },
 
+    "shortage_leave": {
+        inherits: "shortage",
+        diag: `
+talk 0 "I'm leaaveeeeeeeen."
+`
     },
 }
 
@@ -75,8 +82,8 @@ if (!localStorage[LS_KEY]) {
 }
 
 const ACTORS = {
-    "Amberlynn": "assets/actors/cfwaitress.png",
-    "Becky": "assets/actors/cfwaitress.png",
+    "Amberlynn": "assets/actors/amberlynn.png",
+    "Becky": "assets/actors/becky.png",
     "C.F. Waitress": "assets/actors/cfwaitress.png",
 }
 
@@ -101,13 +108,9 @@ async function putStage(actorsList) {
                     finalStyle += `transform: scaleX(-1);`
                 }
 
-                if (position === 'left_back') {
+                if (position === 'left_back' || position === 'left_front') {
                     finalStyle += `float: left;`
-                } else if (position === 'left_front') {
-                    finalStyle += `float: left;`
-                } else if (position === 'right_front') {
-                    finalStyle += `float: right;`
-                } else if (position === 'right_back') {
+                } else if (position === 'right_front' || position === 'right_back') {
                     finalStyle += `float: right;`
                 }
 
@@ -136,6 +139,21 @@ async function putStage(actorsList) {
     return Promise.resolve()
 }
 
+async function putBackgroundImage(imgUrl) {
+    const diagScene = document.getElementById('dialog-scene')
+    if (diagScene.style.backgroundImage === `url("${imgUrl}")`) {
+        return Promise.resolve()
+    }
+
+    return new Promise((resolve, reject) => {
+        const bgImage = new Image()
+        bgImage.src = imgUrl
+        bgImage.onload = resolve
+        diagScene.style.backgroundImage = `url("${bgImage.src}")`
+    })
+}
+
+
 function getCustomPoseURL(character, pose) {
     // Get base URL; return base URL if normal pose; otherwise chop up URL and insert extension for pose
     const basename = ACTORS[character]
@@ -151,9 +169,7 @@ function getCustomPoseURL(character, pose) {
 function updateActorPose(stageIndex, newPose, reanimate) {
     if (currentStage[stageIndex].length < 3) {
         currentStage[stageIndex].push(newPose)
-    }
-
-    if (currentStage[stageIndex][2] === newPose) {
+    } else if (currentStage[stageIndex][2] === newPose) {
         // Do nothing
         return
     }
@@ -218,28 +234,69 @@ async function putTextBox(speakerIndex, text) {
 }
 
 async function showMulti(options) {
-    const $mbox = $('#multi-box')
-    $mbox.toggleClass('begin', true)
-    let $coption
-    for (let i = 0; i < options.length; i++) {
-        if (i % 2 === 0) {
+    return new Promise((resolve, reject) => {
+        const $mbox = $('#multi-box')
+        $mbox.removeClass('reverse-anim')
+        $mbox.toggleClass('begin', true)
+        for (let i = 0; i < options.length; i += 2) {
             // Text
-            $coption = $(`<pre>${options[i]}</pre>`)
-        } else {
-            $coption[0].scene = options[i]
+            const $coption = $(`<pre>${options[i]}</pre>`)
+                .on('mousedown', function(e) {
+                    $mbox.removeClass('begin')
+                    setTimeout(() => {
+                        $mbox.addClass('reverse-anim')
+                        $mbox[0].onanimationend = () => {
+                            $mbox.empty()
+                            $mbox.removeClass('reverse-anim')
+                            resolve()
+                        }
+                    }, 0)
+                    save.diag = this.scene
+                })
+
+            $coption[0].scene = options[i + 1]
             $mbox.append($coption)
         }
-    }
-
-    await new Promise((resolve, reject) => {
-
     })
-    return Promise.resolve()
+}
+
+function derefInheritance(dt) {
+    if (dt.inherits) {
+        const inherited = ALL_DIAGS[dt.inherits]
+        dt.stage = inherited.stage
+        dt.bg = inherited.bg
+    }
+}
+
+let audioInt
+function playSong(url, initStart, start, end) {
+    let audio = new Audio(`assets/music/${url}.mp3`)
+    audio.volume = 0.65
+    audio.play().then(() => {
+        audio.currentTime = initStart
+        if (audioInt) clearInterval(audioInt)
+        audioInt = setInterval(() => {
+            if (audio.currentTime >= end) {
+                audio.currentTime = start
+            }
+        }, 20)
+        window.onkeydown = (e) => {
+            if (e.key === 'g') {
+                audio.currentTime = end - 5.0
+            }
+        }
+    })
 }
 
 async function prepareDialog(name) {
+    const dt = ALL_DIAGS[name]
+    derefInheritance(dt)
+
+    playSong(...dt.music[0])
+
     clearActors()
-    await putStage(ALL_DIAGS[name].stage)
+    await putStage(dt.stage)
+    await putBackgroundImage(`assets/scenes/${dt.bg}`)
     return Promise.resolve()
 }
 
@@ -250,9 +307,9 @@ async function doDialog(name) {
     })
 
     let hasTalked = false
-    const dt = ALL_DIAGS[name]
+    let dt = ALL_DIAGS[name]
 
-    const lines = dt.diag.split("\n")
+    let lines = dt.diag.split("\n")
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i]
         const args = line.split(" ")
@@ -279,9 +336,16 @@ async function doDialog(name) {
             const options = []
             i++
             for (; i < lines.length; i++) {
+                if (!lines[i]) continue
                 options.push(lines[i])
             }
             await showMulti(options)
+
+            // Reset loop state
+            i = -1
+            hasTalked = false
+            dt = ALL_DIAGS[save.diag]
+            lines = dt.diag.split("\n")
         }
     }
 }

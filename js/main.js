@@ -1,3 +1,4 @@
+const debug = true
 makeScene('mainMenu')
 
 addCurrent(
@@ -18,6 +19,18 @@ addCurrent(
         .append($(`<button class="mm-button mm-options-button">Options</button>`))
         .append($(`<button class="mm-button mm-lynns-button">Lynns</button>`))
 )
+hook('load', function() {
+    if (debug) {
+        let listener
+        listener = (e) => {
+            if (e.key === 'g') {
+                loadScene('dialog')
+                window.removeEventListener('keydown', listener)
+            }
+        }
+        window.addEventListener('keydown', listener)
+    }
+})
 
 makeScene('chapter')
 
@@ -45,7 +58,7 @@ hook('unload', function () {
 makeScene('dialog')
 
 addCurrent(
-    $(`<div class="dialog-scene">`)
+    $(`<div id="dialog-scene">`)
         .append($(`<div id="actors">`))
         .append($(`<div id="diag-container">`)
             .append($(`<div id="diag-name">`))

@@ -207,7 +207,7 @@ span.ochicken {
     font-size: 2.5rem;
 }
 
-.dialog-scene {
+#dialog-scene {
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-end;
@@ -216,10 +216,12 @@ span.ochicken {
     height: 100%;
 
     background: none;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 #actors {
-    margin: 0 auto;
+    margin: -0.5rem auto;
     width: 100%;
 
     display: block;
@@ -240,10 +242,11 @@ span.ochicken {
 }
 
 .actor-img {
-    max-width: 20rem;
-    max-height: 20rem;
+    width: 20rem;
+    height: 20rem;
 
     padding: 0 0.7rem;
+    margin-bottom: 0;
 
     transition: transform 400ms;
 }
@@ -336,7 +339,7 @@ span.ochicken {
 #multi-box {
     position: absolute;
     left: 0;
-    top: 50%;
+    top: 45%;
 
     transform: translateX(-10rem);
 
@@ -366,9 +369,17 @@ span.ochicken {
     animation-fill-mode: forwards;
 }
 
+#multi-box.reverse-anim {
+    animation: multi-pop-in-left 400ms;
+    animation-direction: reverse;
+    animation-fill-mode: forwards;
+}
+
 #multi-box pre {
     min-width: 20rem;
     text-align: center;
+    padding: 0.25rem 0;
+    cursor: pointer;
 }
 
 #multi-box pre:hover {
