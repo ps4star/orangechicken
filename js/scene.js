@@ -32,6 +32,8 @@ function tryHook(hookLib, evtName) {
 }
 
 function loadScene(name, $root) {
+    writeSave()
+
     let $finalRoot = $root ?? $sroot
 
     tryHook(globalHooks, 'unload')
@@ -55,5 +57,5 @@ function fadeoutToScene(name, $root) {
     setTimeout(() => {
         loadScene(name, $root)
         $('#s-cover').removeClass('visible')
-    }, 650)
+    }, 400)
 }

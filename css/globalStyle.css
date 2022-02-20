@@ -1,5 +1,5 @@
 @font-face {
-    src: url("./GCursive.ttf");
+    src: url("./Helve Cursive.ttf");
     font-family: "GCursive";
     font-weight: normal;
 }
@@ -9,6 +9,8 @@
     --light-panel-bg: #CCCCCC;
 
     --outline-color: white;
+
+    --slide-anim-time: 235ms;
 }
 
 * {
@@ -45,7 +47,7 @@ body {
     overflow: hidden;
 }
 
-p, pre {
+p, pre, button {
     -webkit-user-select: none;
     cursor: default;
 
@@ -63,6 +65,16 @@ img {
     -webkit-image-rendering: optimizeSpeed;
     -moz-image-rendering: optimizeSpeed;
     image-rendering: optimizeSpeed;
+
+    pointer-events: none;
+}
+
+div {
+    pointer-events: none;
+}
+
+button, input {
+    pointer-events: initial;
 }
 
 #errbox {
@@ -101,7 +113,7 @@ img {
     background: black;
 
     pointer-events: none;
-    transition: opacity 650ms;
+    transition: opacity 400ms;
 }
 
 #s-cover.visible {
@@ -124,7 +136,29 @@ span.ochicken {
     color: darkorange;
 }
 
+#title-container {
+    display: flex;
+    flex-flow: column nowrap;
+
+    width: 100%;
+    height: 100%;
+}
+
+#title-container::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: url("../assets/titlescreen.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: brightness(60%);
+}
+
 .mm-title, .mm-title span {
+    padding-top: 1rem;
+    z-index: 2;
+
     font-size: 4rem;
     text-align: center;
 
@@ -132,6 +166,8 @@ span.ochicken {
 }
 
 .mm-buttons-container {
+    z-index: 2;
+
     margin: auto;
 
     display: flex;
@@ -189,8 +225,8 @@ span.ochicken {
 }
 
 #lynns-main {
-    width: 90%;
-    height: 75%;
+    width: 60%;
+    height: 80%;
 
     display: flex;
     flex-flow: row wrap;
@@ -202,20 +238,113 @@ span.ochicken {
 
     display: flex;
     flex-flow: row wrap;
+    justify-items: center;
+
+    background-image: url("../assets/journalynn.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    animation-delay: 50ms;
+}
+
+@keyframes page-slide {
+    from {
+        transform: translateX(140%);
+    }
+
+    to {
+        transform: translateX(0rem);
+    }
+}
+
+@keyframes page-slide-left {
+    from {
+        transform: translateX(0rem);
+    }
+
+    to {
+        transform: translateX(-140%);
+    }
+}
+
+.lynns-page {
+    animation-timing-function: linear;
+}
+
+.lynns-page.anim {
+    animation: page-slide;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    animation-duration: var(--slide-anim-time);
+}
+
+.lynns-page.anim-left {
+    animation: page-slide-left;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    animation-duration: var(--slide-anim-time);
+}
+
+.lynns-page.anim-reverse {
+    animation: page-slide;
+    animation-direction: reverse;
+    animation-fill-mode: forwards;
+    animation-duration: var(--slide-anim-time);
+}
+
+.lynns-page.anim-left-reverse {
+    animation: page-slide-left;
+    animation-direction: reverse;
+    animation-fill-mode: forwards;
+    animation-duration: var(--slide-anim-time);
+}
+
+.lynns-subpage {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    justify-content: center;
+    align-content: center;
+    width: 50%;
+    height: 100%;
 }
 
 .lynn {
-    width: 7rem;
+    width: 25%;
     height: 8rem;
 
     margin: 0.5rem;
 
-    background: #FFFF88;
+    background: white;
+    box-shadow: 0 0 2px 1px black;
 
     display: flex;
     flex-flow: column nowrap;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
+}
+
+.lynn-dot {
+    position: relative;
+    margin: 0 auto;
+}
+
+.lynn-dot::after {
+    content: '';
+
+    position: absolute;
+    top: -6px;
+    left: 50%;
+
+    width: 0.3rem;
+    height: 0.3rem;
+
+    background: #EEE;
+    border: 0.1rem solid black;
+    border-radius: 50%;
+
+    transform: translateX(-50%);
 }
 
 .lynn-img {
@@ -223,27 +352,86 @@ span.ochicken {
     height: 4rem;
 }
 
+.locked {
+    filter: brightness(0%) hue-rotate(180deg);
+}
+
 .lynn-text {
     color: black;
+    font-size: 1rem;
 }
 
 #lynns-controls {
     display: flex;
     flex-flow: row nowrap;
+    align-items: center;
+
+    margin-top: 2rem;
 }
 
 #lynn-page-text {
-
+    padding: 0 0.5rem;
 }
 
-.lynn-page-control {
+.back-button {
+    position: absolute;
+
+    top: 1rem;
+    left: 1rem;
+
+    transition: color 160ms;
+}
+
+.back-button:hover {
+    color: red;
+}
+
+.control-button {
     color: white;
-    width: 3.25rem;
-    height: 3.25rem;
+    width: 2.25rem;
+    height: 2.25rem;
     border-radius: 50%;
 
+    cursor: pointer;
+
     background: var(--dark-panel-bg);
-    font-size: 2.5rem;
+    font-size: 2rem;
+}
+
+#options-container {
+    position: relative;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+
+    height: 60%;
+}
+
+.options-range-container {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+
+    width: 18rem;
+    margin: 0 auto;
+    margin-bottom: 1rem;
+}
+
+.options-button {
+    cursor: pointer;
+}
+
+.c-red {
+    color: red;
+}
+
+#wipe-save-button {
+    position: absolute;
+
+    left: 50%;
+    bottom: 1rem;
+
+    transform: translateX(-50%);
 }
 
 /* chapter screen */
@@ -263,7 +451,9 @@ span.ochicken {
     margin-bottom: 1rem;
 }
 
-#ch-text::after {
+.border-below { position: relative; }
+
+#ch-text::after, .border-below::after {
     content: '';
 
     position: absolute;
@@ -274,10 +464,10 @@ span.ochicken {
     background: white;
 
     transition: all 1.5s;
-    transition-delay: 0.5s;
+    transition-delay: 0.25s;
 }
 
-#ch-text.grow-border::after {
+#ch-text.grow-border::after, .border-below::after {
     left: 0;
     width: 100%;
 }
@@ -285,9 +475,13 @@ span.ochicken {
 #ch-name {
     font-family: "GCursive", cursive, sans-serif, all;
     font-size: 2.5rem;
+
+    text-transform: capitalize;
 }
 
 #dialog-scene {
+    position: relative;
+
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-end;
@@ -394,6 +588,10 @@ span.ochicken {
     background: inherit;
 }
 
+.panel {
+    box-shadow: 0 3px 3px 1px black;
+}
+
 #diag {
     position: relative;
     display: flex;
@@ -475,6 +673,8 @@ span.ochicken {
     padding-bottom: 2rem;
 
     background: var(--dark-panel-bg);
+
+    pointer-events: initial;
 }
 
 @keyframes multi-pop-in-left {
@@ -501,20 +701,110 @@ span.ochicken {
 }
 
 #multi-box pre {
+    position: relative;
+
     min-width: 20rem;
     text-align: center;
     padding: 0.25rem 0;
     cursor: pointer;
 }
 
-#multi-box pre:hover {
+#multi-box pre:hover, #multi-box pre.selected {
     background: darkorange;
 }
 
-#multi-box pre:hover::before {
-    content: '> ';
+#multi-box pre:hover::before, #multi-box pre:hover::after, #multi-box pre.selected::before, #multi-box pre.selected::after {
+    content: '';
+
+    position: absolute;
+
+    width: 3rem;
+    height: 1.5rem;
+
+    background-image: url("../assets/menupointer.png");
+    background-size: cover;
 }
 
-#multi-box pre:hover::after {
-    content: ' <';
+@keyframes sausage-finger-move-left {
+    from {
+        transform: translateX(0.6rem);
+    }
+
+    to {
+        transform: translateX(0px);
+    }
+}
+
+@keyframes sausage-finger-move-right {
+    from {
+        transform: translateX(-0.6rem) scaleX(-1);
+    }
+
+    to {
+        transform: translateX(0px) scaleX(-1);
+    }
+}
+
+#multi-box pre:hover::before, #multi-box pre.selected::before {
+    top: 10%;
+    left: 0;
+
+    animation: sausage-finger-move-left 400ms;
+    animation-direction: alternate;
+    animation-fill-mode: both;
+    animation-iteration-count: infinite;
+}
+
+#multi-box pre:hover::after, #multi-box pre.selected::after {
+    top: 10%;
+    right: 0;
+
+    animation: sausage-finger-move-right 400ms;
+    animation-direction: alternate;
+    animation-fill-mode: both;
+    animation-iteration-count: infinite;
+}
+
+@keyframes lynn-popdown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-10rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0rem);
+    }
+}
+
+#lynn-pop {
+    position: absolute;
+
+    top: 0;
+    left: 50%;
+    width: 65%;
+    height: 4rem;
+
+    padding: 1rem;
+    margin: 1rem auto;
+
+    transform: translateX(-50%) translateY(-100rem);
+
+    background: var(--dark-panel-bg);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#lynn-pop.anim {
+    animation: lynn-popdown 400ms;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+}
+
+#lynn-pop.anim-reverse {
+    animation: lynn-popdown 400ms;
+    animation-direction: reverse;
+    animation-fill-mode: forwards;
 }

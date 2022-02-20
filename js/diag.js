@@ -1,20 +1,26 @@
-const CHAPTER_NAMES = [
-    null,
-    "Shortage",
-]
+function fillArr(item, num) {
+    let arr = []
+    for (let i = 0; i < num; i++) {
+        arr.push(item)
+    }
+    return arr
+}
+
+// Very small intentional lag to prevent too many inputs fucking everything up
+const inputDelayTime = 5
 
 const NUM_LYNNS = 151
+const NUM_ACHIEVEMENTS = 2
+const NUM_CHAPTERS = 89
 const DEFAULT_SAVE = {
     chapter: 1,
+    chapters: fillArr(false, NUM_CHAPTERS),
     diag: "shortage",
-    lynns: (() => {
-        let arr = []
-        for (let i = 0; i < NUM_LYNNS; i++) {
-            arr.push(false)
-        }
-        return arr
-    })(),
+    lynns: fillArr(false, NUM_LYNNS),
+    achievements: fillArr(false, NUM_ACHIEVEMENTS),
     textSpeed: 30,
+
+    volume: 50,
 }
 
 let save = DEFAULT_SAVE
@@ -127,14 +133,16 @@ async function updateActorPose(stageIndex, newPose, reanimate) {
         currentStage[stageIndex].push(newPose)
     } else if (currentStage[stageIndex][2] === newPose) {
         // Do nothing
-        return
+        return Promise.resolve()
     }
 
     // Now we know it's a new pose that should reanimate
-    console.log(currentStage[stageIndex], newPose)
     const $actorImg = $($('.actor-img')[stageIndex])
     if (!$actorImg[0]) return Promise.resolve()
     $actorImg[0].src = getCustomPoseURL(currentStage[stageIndex][0], newPose)
+
+    // Update stage
+    currentStage[stageIndex][2] = newPose
 
     await new Promise((resolve, reject) => {
         if ($actorImg[0].complete) resolve()
@@ -148,6 +156,7 @@ async function updateActorPose(stageIndex, newPose, reanimate) {
         $actorImg.show()
         $actorImg.addClass('animated')
     }
+
     return Promise.resolve()
 }
 
@@ -204,6 +213,7 @@ async function putTextBox(speakerIndex, text) {
     })
 }
 
+let newScene
 async function showMulti(options) {
     return new Promise((resolve, reject) => {
         const $mbox = $('#multi-box')
@@ -220,9 +230,10 @@ async function showMulti(options) {
                     $mbox[0].onanimationend = () => {
                         $mbox.empty()
                         $mbox.removeClass('reverse-anim')
+                        $mbox[0].onanimationend = null
                         resolve()
                     }
-                    save.diag = this.scene
+                    newScene = $coption[0].scene
                 })
 
             $coption[0].scene = options[i + 1]
@@ -239,10 +250,11 @@ function derefInheritance(dt) {
     }
 }
 
+const MUS_MULTIPLIER = 0.65
 let audioInt, caudio = []
 function playSong(url, loops, initStart, start, end) {
     let newAudio = new Audio(url)
-    newAudio.volume = loops ? 0.65 : initStart
+    newAudio.volume = (loops ? MUS_MULTIPLIER : initStart) * (save.volume / 100)
     newAudio.play()
     caudio.push(newAudio)
 
@@ -270,6 +282,7 @@ function stopMusic() {
 async function prepareDialog(name) {
     const dt = ALL_DIAGS[name]
     derefInheritance(dt)
+    stopMusic()
 
     if (dt.music)
         playSong(...dt.music[0])
@@ -280,18 +293,56 @@ async function prepareDialog(name) {
     return Promise.resolve()
 }
 
+let hasTalked,
+    dt,
+    lines,
+    iterator
+
+function clearDiagState() {
+    hasTalked = null
+    dt = null
+    lines = null
+    iterator = -1
+
+    currentStage = []
+}
+
+function showLynn(name) {
+    // Shows lynn pop-down
+    const $lynnpop = $('#lynn-pop')
+    $lynnpop.show()
+    $lynnpop.addClass('anim')
+    $('.lynn-pop-text').html(`You unlocked a new Lynn: <span class="ochicken">${name}</span>`)
+
+    setTimeout(() => {
+        $lynnpop.hide()
+        $lynnpop.removeClass('anim')
+        $lynnpop.show()
+        $lynnpop.addClass('anim-reverse')
+
+        $lynnpop[0].onanimationend = () => {
+            $lynnpop[0].onanimationend = null
+            $lynnpop.hide()
+            $lynnpop.removeClass('anim-reverse')
+            $('.lynn-pop-text').html('')
+        }
+    }, 2500)
+}
+
 async function doDialog(name) {
     // Delay 100ms
     await new Promise((resolve, reject) => {
         setTimeout(resolve, 100)
     })
 
-    let hasTalked = false
-    let dt = ALL_DIAGS[name]
+    hasTalked = false
+    dt = ALL_DIAGS[name]
 
-    let lines = dt.diag.split("\n")
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i]
+    lines = dt.diag.split("\n")
+    for (iterator = 0; iterator < lines.length; iterator++) {
+        if (!lines) return Promise.resolve()
+
+        const line = lines[iterator]
         const args = line.split(" ")
         if (args[0] === 'pose') {
             const person = parseInt(args[1])
@@ -315,20 +366,22 @@ async function doDialog(name) {
             }
 
             await putTextBox(speakerIndex, text)
+            await new Promise((resolve, reject) => {
+                setTimeout(resolve, inputDelayTime)
+            })
         } else if (args[0] === 'multi') {
             // Multichoice box
             const options = []
-            i++
-            for (; i < lines.length; i++) {
-                if (!lines[i]) continue
-                options.push(lines[i])
+            iterator++
+            for (; iterator < lines.length; iterator++) {
+                if (!lines[iterator]) continue
+                options.push(lines[iterator])
             }
             await showMulti(options)
 
             // Reset loop state
-            i = -1
-            hasTalked = false
-            dt = ALL_DIAGS[save.diag]
+            iterator = -1
+            dt = ALL_DIAGS[newScene]
             lines = dt.diag.split("\n")
         } else if (args[0] === 'leave') {
             const idx = parseInt(args[1])
@@ -344,6 +397,7 @@ async function doDialog(name) {
                 } else {
                     $img[0].onanimationend = () => {
                         $img.hide().removeClass('anim-reverse')
+                        $img[0].onanimationend = null
                     }
                 }
             }
@@ -354,11 +408,38 @@ async function doDialog(name) {
             $img.toggleClass('animated', true).show()
         } else if (args[0] === 'sfx') {
             playSong(args[1], false, 1.0)
+        } else if (args[0] === 'lynn') {
+            // register lynn
+            let index = -1
+            let j = 0
+            for (const lynn of LYNNS) {
+                if (lynn[0].toLowerCase().includes(args[1].toLowerCase())) {
+                    index = j
+                }
+                j++
+            }
+
+            if (save.lynns[index])
+                continue
+
+            if (index < 0) {
+                // invalid lynn
+                console.error("Invalid internal Lynn name provided: " + args[1])
+            } else {
+                save.lynns[index] = true
+
+                // Lynn pop-down
+                showLynn(LYNNS[index][0])
+            }
         }
     }
 }
 
+function getChapterScene() {
+    return CHAPTERS[save.chapter][0]
+}
+
 async function doCurrentDiagSequence() {
-    await prepareDialog(save.diag)
-    await doDialog(save.diag)
+    await prepareDialog(getChapterScene())
+    await doDialog(getChapterScene())
 }

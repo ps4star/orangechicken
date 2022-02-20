@@ -1,7 +1,7 @@
 const ALL_DIAGS = {
     "shortage": {
         bg: "cf.png",
-        music: [ ["assets/music/cf.mp3", true, 0, 1.65, 166.42] ],
+        music: [ ["assets/music/cf.mp3", true, 0, 1.65, 166.32] ],
         stage: [ ["left_back", "Amberlynn"], ["left_front", "Becky"], ["hflip", "right_front", "C.F. Waitress"] ],
         diag: `
 enter 0
@@ -40,7 +40,7 @@ shortage_leave
         inherits: "shortage",
         diag: `
 talk 0 "Ughh okayyy fine."
-talk - (waitress takes Amber & Becky's orders; they're silent for several minutes)
+talk - (waitress takes Amber & Becky's orders)
 leave 2
 talk 1 "Look, I found this Orange Chicken recipe on Facebook."
 talk - (Necky shows phone to Amber)
@@ -61,3 +61,14 @@ talk 0 "I'm leaaveeeeeeeen."
 `
     },
 }
+
+const CHAPTERS = [
+    "", // null
+    [ "shortage", "assets/missing_chapter.png" ], // 1
+    [ "crisis", "assets/missing_chapter.png" ], // 2
+]
+
+const ACHIEVEMENTS = [
+    "", // null
+    [ "" ], // 1
+]
