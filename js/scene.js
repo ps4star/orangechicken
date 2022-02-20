@@ -31,16 +31,18 @@ function tryHook(hookLib, evtName) {
     hookLib[cScene][evtName]()
 }
 
-function loadScene(name) {
+function loadScene(name, $root) {
+    let $finalRoot = $root ?? $sroot
+
     tryHook(globalHooks, 'unload')
     tryHook(localHooks, 'unload')
 
-    $sroot.empty()
+    $finalRoot.empty()
 
     // Populate new children
     cScene = name
     scenes[name].forEach($child => {
-        $sroot.append($child)
+        $finalRoot.append($child)
     })
 
     // Run hooks
@@ -48,11 +50,10 @@ function loadScene(name) {
     tryHook(localHooks, 'load')
 }
 
-function fadeoutToScene(name) {
+function fadeoutToScene(name, $root) {
     $('#s-cover').addClass('visible')
-    console.log(document.getElementById('s-cover'))
     setTimeout(() => {
-        loadScene(name)
+        loadScene(name, $root)
         $('#s-cover').removeClass('visible')
     }, 650)
 }

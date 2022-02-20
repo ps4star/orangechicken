@@ -1,21 +1,24 @@
 const ALL_DIAGS = {
     "shortage": {
         bg: "cf.png",
-        music: [ ["cf", 0, 1.65, 166.42] ],
+        music: [ ["assets/music/cf.mp3", true, 0, 1.65, 166.42] ],
         stage: [ ["left_back", "Amberlynn"], ["left_front", "Becky"], ["hflip", "right_front", "C.F. Waitress"] ],
         diag: `
+enter 0
+enter 1
 pose 0 bored
 talk - (Amberlynn & Becky are waiting at a table in Cheesecake Factory)
 talk - ... ... ...
+enter 2
 pose 0 excited
 talk 0 "Finally the waiter is heeere, I'm getting so hongry..."
 talk 2 "Hi, welcome to Cheesecake Factory, what will you guys be having today?"
 talk 0 "Yeah I'll get 4 orders of the Orange Chicken..."
 talk 2 "I'm sorry, we ran out of that yesterday. Something about a national shortage."
+pose 0 pissed
 talk 0 "But you always have it here! We drove like 2 hourssss!"
 talk 1 "Babe calm down, we can just go by Panda Express on the way back."
 talk 0 "But I don't like Panda Express Beckyyy it's all like not authentic-ey."
-talk - (Amberlynn is visibly furious)
 talk 2 "From what I heard I don't think anywhere has it right now."
 talk 2 "Your best bet would just be to make some at home."
 talk 0 "But I don't know any cookeeen recipes for Orange Chicken!"
@@ -38,6 +41,7 @@ shortage_leave
         diag: `
 talk 0 "Ughh okayyy fine."
 talk - (waitress takes Amber & Becky's orders; they're silent for several minutes)
+leave 2
 talk 1 "Look, I found this Orange Chicken recipe on Facebook."
 talk - (Necky shows phone to Amber)
 talk - (video of a girl making orange chicken in her kitchen plays)
@@ -51,6 +55,8 @@ talk 0 "But it's not the saaaaaame!"
         inherits: "shortage",
         diag: `
 lynn leaveen
+pose 0 leaveen
+sfx assets/sfx/leaveen.aac
 talk 0 "I'm leaaveeeeeeeen."
 `
     },

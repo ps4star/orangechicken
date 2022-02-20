@@ -60,6 +60,9 @@ button {
 
 img {
     -webkit-user-select: none;
+    -webkit-image-rendering: optimizeSpeed;
+    -moz-image-rendering: optimizeSpeed;
+    image-rendering: optimizeSpeed;
 }
 
 #errbox {
@@ -166,6 +169,83 @@ span.ochicken {
     width: 100%;
 }
 
+/* lynns */
+#lynns-container {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+
+    width: 100%;
+    height: 90%;
+
+    margin: auto;
+}
+
+#lynns-amount-header {
+    text-align: center;
+    font-size: 1.7rem;
+
+    margin-bottom: 1rem;
+}
+
+#lynns-main {
+    width: 90%;
+    height: 75%;
+
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.lynns-page {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.lynn {
+    width: 7rem;
+    height: 8rem;
+
+    margin: 0.5rem;
+
+    background: #FFFF88;
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.lynn-img {
+    width: 90%;
+    height: 4rem;
+}
+
+.lynn-text {
+    color: black;
+}
+
+#lynns-controls {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+#lynn-page-text {
+
+}
+
+.lynn-page-control {
+    color: white;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 50%;
+
+    background: var(--dark-panel-bg);
+    font-size: 2.5rem;
+}
+
 /* chapter screen */
 #chapter-container {
     display: flex;
@@ -222,7 +302,7 @@ span.ochicken {
 
 #actors {
     margin: -0.5rem auto;
-    width: 100%;
+    width: 98%;
 
     display: block;
 }
@@ -260,16 +340,20 @@ span.ochicken {
     /*-webkit-animation-timing-function: cubic-bezier(0.8, 0.13, 0.83, 0.47);*/
 }
 
+.actor-img.anim-reverse {
+    animation-direction: reverse;
+}
+
 .hflip {
     transform: scaleX(-1);
 }
 
 .magnified {
-    transform: scale(120%, 120%);
+    transform: scale(115%, 115%);
 }
 
 .hflip.magnified {
-    transform: scaleX(-1) scale(120%, 120%);
+    transform: scaleX(-1) scale(115%, 115%);
 }
 
 .float-left {
@@ -311,6 +395,7 @@ span.ochicken {
 }
 
 #diag {
+    position: relative;
     display: flex;
 }
 
@@ -356,6 +441,27 @@ span.ochicken {
     animation-direction: alternate;
 }
 
+#diag-options {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+#diag-options > * {
+    padding: 0.5rem;
+    font-size: 1rem;
+
+    opacity: 0.65;
+    cursor: pointer;
+}
+
+#diag-options > *:hover {
+    opacity: 1;
+}
+
 #multi-box {
     position: absolute;
     left: 0;
@@ -385,7 +491,6 @@ span.ochicken {
 
 #multi-box.begin {
     animation: multi-pop-in-left 400ms;
-    animation-direction: normal;
     animation-fill-mode: forwards;
 }
 

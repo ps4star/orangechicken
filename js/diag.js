@@ -7,20 +7,31 @@ const NUM_LYNNS = 151
 const DEFAULT_SAVE = {
     chapter: 1,
     diag: "shortage",
-    lynns: ([]).fill(false, 0, NUM_LYNNS),
+    lynns: (() => {
+        let arr = []
+        for (let i = 0; i < NUM_LYNNS; i++) {
+            arr.push(false)
+        }
+        return arr
+    })(),
     textSpeed: 30,
 }
 
 let save = DEFAULT_SAVE
 
 const LS_KEY = "alrsavedata"
+
+function writeSave() {
+    localStorage[LS_KEY] = JSON.stringify(save)
+}
+
 if (!localStorage[LS_KEY]) {
-    localStorage[LS_KEY] = DEFAULT_SAVE
+    writeSave()
 } else {
     try {
         save = JSON.parse(localStorage[LS_KEY])
     } catch(e) {
-        localStorage[LS_KEY] = DEFAULT_SAVE
+        writeSave()
     }
 }
 
@@ -30,7 +41,7 @@ const ACTORS = {
     "C.F. Waitress": "assets/actors/cfwaitress.png",
 }
 
-function clearActors() {
+function clearStage() {
     $('#actors').empty()
 }
 
@@ -65,6 +76,8 @@ async function putStage(actorsList) {
                     if ($actorImg[0].complete) resolve()
                     else $actorImg[0].onload = resolve
                 })
+
+                $actorImg.hide()
 
                 $('#actors').append($actorEl)
             } else {
@@ -120,6 +133,7 @@ async function updateActorPose(stageIndex, newPose, reanimate) {
     // Now we know it's a new pose that should reanimate
     console.log(currentStage[stageIndex], newPose)
     const $actorImg = $($('.actor-img')[stageIndex])
+    if (!$actorImg[0]) return Promise.resolve()
     $actorImg[0].src = getCustomPoseURL(currentStage[stageIndex][0], newPose)
 
     await new Promise((resolve, reject) => {
@@ -140,6 +154,8 @@ async function updateActorPose(stageIndex, newPose, reanimate) {
 let textScrollInt
 async function putTextBox(speakerIndex, text) {
     const diag = document.getElementById('diag-text')
+    if (!diag) return Promise.resolve()
+
     diag.innerText = ""
     $(diag).toggleClass('full', false)
     let speakerName
@@ -197,15 +213,15 @@ async function showMulti(options) {
             // Text
             const $coption = $(`<pre>${options[i]}</pre>`)
                 .on('mousedown', function(e) {
+                    $mbox.hide()
                     $mbox.removeClass('begin')
-                    setTimeout(() => {
-                        $mbox.addClass('reverse-anim')
-                        $mbox[0].onanimationend = () => {
-                            $mbox.empty()
-                            $mbox.removeClass('reverse-anim')
-                            resolve()
-                        }
-                    }, 0)
+                    $mbox.show()
+                    $mbox.addClass('reverse-anim')
+                    $mbox[0].onanimationend = () => {
+                        $mbox.empty()
+                        $mbox.removeClass('reverse-anim')
+                        resolve()
+                    }
                     save.diag = this.scene
                 })
 
@@ -223,32 +239,42 @@ function derefInheritance(dt) {
     }
 }
 
-let audioInt
-function playSong(url, initStart, start, end) {
-    let audio = new Audio(`assets/music/${url}.mp3`)
-    audio.volume = 0.65
-    audio.play()
-    audio.currentTime = initStart
-    if (audioInt) clearInterval(audioInt)
-    audioInt = setInterval(() => {
-        if (audio.currentTime >= end) {
-            audio.currentTime = start
-        }
-    }, 40)
-    window.onkeydown = (e) => {
-        if (e.key === 'g') {
-            audio.currentTime = end - 5.0
+let audioInt, caudio = []
+function playSong(url, loops, initStart, start, end) {
+    let newAudio = new Audio(url)
+    newAudio.volume = loops ? 0.65 : initStart
+    newAudio.play()
+    caudio.push(newAudio)
+
+    if (loops) {
+        newAudio.currentTime = initStart
+        if (audioInt) clearInterval(audioInt)
+        audioInt = setInterval(() => {
+            if (newAudio.currentTime >= end) {
+                newAudio.currentTime = start
+            }
+        }, 40)
+        window.onkeydown = (e) => {
+            if (e.key === 'g') {
+                newAudio.currentTime = end - 5.0
+            }
         }
     }
+}
+
+function stopMusic() {
+    if (audioInt) clearInterval(audioInt)
+    caudio.forEach(audio => audio.pause())
 }
 
 async function prepareDialog(name) {
     const dt = ALL_DIAGS[name]
     derefInheritance(dt)
 
-    playSong(...dt.music[0])
+    if (dt.music)
+        playSong(...dt.music[0])
 
-    clearActors()
+    clearStage()
     await putStage(dt.stage)
     await putBackgroundImage(`assets/scenes/${dt.bg}`)
     return Promise.resolve()
@@ -282,10 +308,11 @@ async function doDialog(name) {
             // Magnify speaker
             const $actors = $('.actor')
             $actors.removeClass('magnified')
-            if (speakerIndex === 2) {
-                console.log($actors[2])
+
+            if (!Number.isNaN(speakerIndex)) {
+                if (!$actors[speakerIndex]) return Promise.resolve()
+                $actors[speakerIndex].classList.add('magnified')
             }
-            if (!Number.isNaN(speakerIndex)) $actors[speakerIndex].classList.add('magnified')
 
             await putTextBox(speakerIndex, text)
         } else if (args[0] === 'multi') {
@@ -303,6 +330,30 @@ async function doDialog(name) {
             hasTalked = false
             dt = ALL_DIAGS[save.diag]
             lines = dt.diag.split("\n")
+        } else if (args[0] === 'leave') {
+            const idx = parseInt(args[1])
+            const $img = $($('.actor-img')[idx])
+            $img.hide()
+            $img.removeClass('animated')
+
+            if (hasTalked) {
+                $img.show()
+                $img.addClass('animated').addClass('anim-reverse')
+                if (args.length > 2) {
+                    $img.hide().removeClass('anim-reverse')
+                } else {
+                    $img[0].onanimationend = () => {
+                        $img.hide().removeClass('anim-reverse')
+                    }
+                }
+            }
+        } else if (args[0] === 'enter') {
+            const idx = parseInt(args[1])
+            const $img = $($('.actor-img')[idx])
+
+            $img.toggleClass('animated', true).show()
+        } else if (args[0] === 'sfx') {
+            playSong(args[1], false, 1.0)
         }
     }
 }
