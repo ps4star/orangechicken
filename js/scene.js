@@ -52,10 +52,15 @@ function loadScene(name, $root) {
     tryHook(localHooks, 'load')
 }
 
-function fadeoutToScene(name, $root) {
+const FADE_TIME = 400
+function fadeoutNoSceneChange(callback) {
     $('#s-cover').addClass('visible')
     setTimeout(() => {
-        loadScene(name, $root)
+        if (callback) callback()
         $('#s-cover').removeClass('visible')
-    }, 400)
+    }, FADE_TIME)
+}
+
+function fadeoutToScene(name, $root) {
+    fadeoutNoSceneChange(() => loadScene(name, $root))
 }

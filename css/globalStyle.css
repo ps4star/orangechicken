@@ -52,6 +52,9 @@ p, pre, button {
     cursor: default;
 
     font-size: 1.25rem;
+
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 button {
@@ -132,6 +135,45 @@ button, input {
     flex-flow: column nowrap;
 }
 
+.splash-container {
+    pointer-events: all;
+
+    display: flex;
+    flex-flow: column nowrap;
+
+    width: 90%;
+    height: 100%;
+
+    margin: auto;
+
+    text-align: center;
+    outline: none;
+    border: none;
+    -webkit-user-select: none;
+}
+
+.disclaimer-large {
+    font-size: 4rem;
+    padding-bottom: 6rem;
+}
+
+.cursive {
+    font-family: "GCursive", cursive, sans-serif, all;
+}
+
+.disclaimer-medium {
+    font-size: 2.5rem;
+    padding-bottom: 6rem;
+}
+
+.press-key {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.2rem;
+}
+
 span.ochicken {
     color: darkorange;
 }
@@ -153,6 +195,38 @@ span.ochicken {
     background-repeat: no-repeat;
     background-size: cover;
     filter: brightness(60%);
+}
+
+@keyframes bg-move {
+    from {
+        background-position: 0px 0px;
+    }
+
+    to {
+        background-position: 32px 32px;
+    }
+}
+
+.ochicken-bg::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: url("../assets/orangechicken.png");
+    background-repeat: repeat;
+    background-color: #111;
+
+    opacity: 0.35;
+
+    animation: bg-move 850ms;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
+    animation-direction: normal;
+    animation-timing-function: linear;
+}
+
+div.ochicken-bg * {
+    z-index: 2;
 }
 
 .mm-title, .mm-title span {
@@ -325,6 +399,11 @@ span.ochicken {
     align-items: center;
 }
 
+.lynn.clickable, .lynn.clickable * {
+    pointer-events: all;
+    cursor: pointer;
+}
+
 .lynn-dot {
     position: relative;
     margin: 0 auto;
@@ -359,6 +438,8 @@ span.ochicken {
 .lynn-text {
     color: black;
     font-size: 1rem;
+
+    text-transform: capitalize;
 }
 
 #lynns-controls {
@@ -404,7 +485,7 @@ span.ochicken {
     flex-flow: column nowrap;
     justify-content: center;
 
-    height: 60%;
+    height: 100%;
 }
 
 .options-range-container {
@@ -419,6 +500,8 @@ span.ochicken {
 
 .options-button {
     cursor: pointer;
+
+    font-size: 2rem;
 }
 
 .c-red {
@@ -589,6 +672,7 @@ span.ochicken {
 }
 
 .panel {
+    background: var(--dark-panel-bg);
     box-shadow: 0 3px 3px 1px black;
 }
 
@@ -633,10 +717,11 @@ span.ochicken {
 
     border-top: 5px solid white;
 
-    animation: bob-up-down 600ms;
+    animation: bob-up-down 400ms;
     animation-iteration-count: infinite;
     animation-fill-mode: both;
     animation-direction: alternate;
+    animation-timing-function: linear;
 }
 
 #diag-options {
@@ -705,7 +790,7 @@ span.ochicken {
 
     min-width: 20rem;
     text-align: center;
-    padding: 0.25rem 0;
+    padding: 0.25rem 4rem;
     cursor: pointer;
 }
 
@@ -719,7 +804,7 @@ span.ochicken {
     position: absolute;
 
     width: 3rem;
-    height: 1.5rem;
+    height: 1.6rem;
 
     background-image: url("../assets/menupointer.png");
     background-size: cover;
@@ -795,6 +880,8 @@ span.ochicken {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    z-index: 5;
 }
 
 #lynn-pop.anim {
@@ -807,4 +894,104 @@ span.ochicken {
     animation: lynn-popdown 400ms;
     animation-direction: reverse;
     animation-fill-mode: forwards;
+}
+
+#saveens {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    width: 15rem;
+    height: 2.5rem;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+
+    z-index: 2;
+}
+
+#saveens pre {
+    padding: 0 0.7rem;
+}
+
+#saveens span {
+    color: green;
+    font-size: 2rem;
+}
+
+@keyframes pop-in-canvas {
+    from {
+        transform: scale(0%);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(100%);
+        opacity: 1;
+    }
+}
+
+.canvas-container {
+    display: none;
+
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 1rem;
+    background: gray;
+
+    pointer-events: none;
+}
+
+.canvas-container.visible {
+    display: block;
+
+    animation: pop-in-canvas 300ms;
+    animation-fill-mode: forwards;
+    animation-direction: normal;
+}
+
+.mg-canvas {
+    width: 100%;
+    height: calc(100% - 6rem);
+
+    image-rendering: pixelated;
+    pointer-events: all;
+}
+
+.gg-image {
+    width: 100%;
+    height: 6rem;
+    background-color: inherit;
+    background-image: url("../assets/gamegorl.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+@keyframes fade-down {
+    from {
+        transform: translateY(0rem);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(3rem);
+        opacity: 0;
+    }
+}
+
+.money-change {
+    position: absolute;
+
+    animation: fade-down 600ms;
+    animation-fill-mode: forwards;
+    animation-direction: normal;
+
+    z-index: 3;
+
+    font-size: 1.8rem;
 }

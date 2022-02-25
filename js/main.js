@@ -1,4 +1,24 @@
 const debug = true
+
+function splashHandler(s) {
+    fadeoutToScene(s)
+    $(window).off('mousedown')
+    $(window).off('keydown')
+}
+
+makeScene('splash1')
+addCurrent(
+    $(`<div class="splash-container" tabindex="-1">`)
+        .append($(`<pre class="disclaimer-large">DISCLAIMER TYPE DEAL</pre>`))
+        .append($(`<p class="disclaimer-medium cursive">This game is for sailing and entertainment purposes only. Any names, or persons featured here, that may seem similar to anyone in real life, are purely coincidental, or otherwise parodic.</p>`))
+        .append($(`<pre class="disclaimer-medium">This game is free to play at <a target="_blank" style="cursor: pointer;" href="https://ps4star.com/orangechicken">this link</a>.<br>If you paid for this, you have been scammed.</pre>`))
+        .append($(`<p class="press-key">Click or press any key to continue</p>`))
+)
+hook('load', function() {
+    $('a').on('mousedown', (e) => { e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); return false })
+    $(window).on('mousedown keydown', () => splashHandler('mainMenu'))
+})
+
 makeScene('mainMenu')
 
 // 0 = Chapters
@@ -32,6 +52,7 @@ hook('load', function() {
         e.stopImmediatePropagation()
         e.preventDefault()
 
+        workingSave = save
         fadeoutToScene('chapter')
         return false
     })
@@ -69,28 +90,24 @@ hook('load', function() {
         toLynns(e)
     })
 
-    if (debug) {
-        let listener
-        listener = (e) => {
-            if (e.key === 'g') {
-                loadScene('dialog')
-                window.removeEventListener('keydown', listener)
-            }
-        }
-        window.addEventListener('keydown', listener)
-    }
+    // if (debug) {
+    //     let listener
+    //     listener = (e) => {
+    //         if (e.key === 'g') {
+    //             loadScene('dialog')
+    //             window.removeEventListener('keydown', listener)
+    //         }
+    //     }
+    //     window.addEventListener('keydown', listener)
+    // }
 })
 
 makeScene('options')
 addCurrent(
-    $(`<div id="options-container">`)
+    $(`<div id="options-container" class="ochicken-bg">`)
         .append($(`<div class="options-range-container">`)
             .append($(`<pre class="options-range-text">Volume <span class="mus-volume"></span></pre>`))
             .append($(`<input type="range" class="options-range" id="volume" min="0" max="100">`))
-        )
-        .append($(`<div class="options-range-container">`)
-            .append($(`<pre class="options-range-text">Speed (low = fast) <span class="text-speed"></span></pre>`))
-            .append($(`<input type="range" class="options-range" id="speed" min="5" max="80">`))
         )
         .append($(`<button class="options-button c-red" id="wipe-save-button">Wipe Save Data</button>`))
         .append($(`<button class="back-button control-button">X</button>`))
@@ -112,21 +129,12 @@ hook('load', function() {
         writeSave()
     })
 
-    $('.text-speed').text(save.textSpeed)
-    $('#speed')[0].value = save.textSpeed.toString()
-    $('#speed').on('input', function(e) {
-        save.textSpeed = parseInt(this.value)
-        $('.text-speed').text(save.textSpeed)
-
-        writeSave()
-    })
-
     $('#wipe-save-button').on('mousedown', () => { localStorage[LS_KEY] = ""; window.location.reload() })
 })
 
 makeScene('lynns')
 addCurrent(
-    $(`<div id="lynns-container">`)
+    $(`<div id="lynns-container" class="ochicken-bg">`)
         .append($(`<pre id="lynns-amount-header"></pre>`))
         .append($(`<div id="lynns-main">`))
         .append($(`<div id="lynns-controls">`)
@@ -138,6 +146,13 @@ addCurrent(
 )
 
 const PAGE_CUT = 9
+
+// Returns a fake save file used for static chapters (from lynns screen)
+function fabricateStaticChapterSave(_save, chapterNumber) {
+    let finalSave = {..._save}
+    finalSave.chapter = chapterNumber
+    return finalSave
+}
 
 hook('load', function() {
     // Back button
@@ -220,7 +235,19 @@ hook('load', function() {
         const $legitLynn = $(`<div class="lynn">`)
             .append($(`<pre class="lynn-dot"></pre>`))
             .append($(`<img class="lynn-img ${itemList[i] ? "" : "locked"}" alt="" src="${url}">`))
-            .append($(`<pre class="lynn-text">${name}</pre>`))
+            .append($(`<p class="lynn-text">${name}</p>`))
+
+        // On chapter scene, make elements clickable if unlocked
+        if (whichLynnScene === 0 && itemList[i]) {
+            $legitLynn[0].chapterIndex = i + 1
+
+            // For chapters, do click events
+            $legitLynn.addClass('clickable')
+            $legitLynn.on('mousedown', () => {
+                workingSave = fabricateStaticChapterSave(save, $legitLynn[0].chapterIndex)
+                fadeoutToScene('dialog')
+            })
+        }
 
         $subpage.append($legitLynn)
     }
@@ -304,7 +331,7 @@ hook('load', function() {
 makeScene('chapter')
 
 addCurrent(
-    $(`<div id="chapter-container">`)
+    $(`<div id="chapter-container" class="ochicken-bg">`)
         .append($(`<pre id="ch-text">`))
         .append($(`<pre id="ch-name">`))
 )
@@ -312,7 +339,7 @@ addCurrent(
 hook('load', async function() {
     setTimeout(() => $('#ch-text').addClass('grow-border'), 100)
     $('#ch-text').text(`Chapter ${save.chapter.toString()}`)
-    $('#ch-name').text(CHAPTERS[save.chapter][0])
+    $('#ch-name').text(CHAPTERS[save.chapter - 1][0])
 
     await new Promise((resolve, reject) => {
         setTimeout(resolve, 3250)
@@ -340,18 +367,20 @@ addCurrent(
                 )
             )
         )
-        .append($(`<div id="multi-box">`))
+        .append($(`<div id="multi-box" class="panel">`))
         .append($(`<div id="lynn-pop" class="panel">`)
             .append($(`<pre class="lynn-pop-text"></pre>`))
         )
+        .append($(`<div id="saveens" class="panel">`)
+            .append($(`<pre id="saveens-text"><span class="saveens-dollar">$</span><span class="saveens-amount"></span></pre>`))
+        )
+        .append($(`<div class="canvas-container">`)
+            .append($(`<canvas class="mg-canvas" width="160" height="90" tabindex="-1">`))
+            .append($(`<div class="gg-image">`))
+        )
 )
 hook('unload', function() {
-    $('#diag-name').text('')
-    $('#diag-text').text('')
-
-    const $mbox = $('#multi-box')
-    $mbox.empty()
-    $mbox.removeClass('reverse-anim').removeClass('begin')
+    clearDiagDOM()
 })
 
 function diagLeaveen(e) {
@@ -369,8 +398,9 @@ function diagLeaveen(e) {
 }
 hook('load', function() {
     $('#diag-quit').on('mousedown', diagLeaveen)
+    clearDiagDOM()
 
     doCurrentDiagSequence()
 })
 
-loadScene('mainMenu')
+loadScene('splash1')
