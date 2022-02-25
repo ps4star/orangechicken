@@ -20,6 +20,25 @@
     <div id="s-cover"></div>
     <div id="root"></div>
 
+    <script defer type="text/javascript">
+
+// Setup basic compatibility stuff
+// OffscreenCanvas
+if (!window.OffscreenCanvas) {
+    window.makeOffscreenCanvas = function(w, h) {
+        let can = document.createElement('canvas')
+        can.width = w
+        can.height = h
+
+        return can
+    }
+} else {
+    window.makeOffscreenCanvas = function(w, h) {
+        return new OffscreenCanvas(w, h)
+    }
+}
+
+    </script>
     <script defer type="text/javascript" src="js/scene.js"></script>
     <script defer type="text/javascript" src="js/diagStore.js"></script>
     <script defer type="text/javascript" src="js/lynnsStore.js"></script>

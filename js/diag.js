@@ -9,12 +9,9 @@ function fillArr(item, num) {
 // Very small intentional lag to prevent too many inputs fucking everything up
 const inputDelayTime = 50
 
-const NUM_LYNNS = 151
-const NUM_ACHIEVEMENTS = 2
-const NUM_CHAPTERS = 89
 const DEFAULT_SAVE = {
     chapter: 1,
-    chapters: fillArr(false, NUM_CHAPTERS),
+    chapters: [true, ...fillArr(false, NUM_CHAPTERS - 1)],
     diag: "shortage",
     lynns: fillArr(false, NUM_LYNNS),
     achievements: fillArr(false, NUM_ACHIEVEMENTS),
@@ -53,9 +50,6 @@ const ACTORS = {
 function clearStage() {
     $('#actors').empty()
 }
-
-// The save we're actually going to use
-let workingSave = save
 
 // [name, position, (pose) ?? "normal"]
 let currentStage = []
@@ -300,7 +294,7 @@ const MUS_MULTIPLIER = 0.6
 let audioInt, caudio = []
 function playSong(url, loops, initStart, start, end) {
     let newAudio = new Audio(url)
-    newAudio.volume = (loops ? MUS_MULTIPLIER : initStart) * (workingSave.volume / 100)
+    newAudio.volume = (loops ? MUS_MULTIPLIER : initStart) * (save.volume / 100)
     newAudio.play()
     caudio.push(newAudio)
 
@@ -323,15 +317,16 @@ function playSong(url, loops, initStart, start, end) {
 function stopMusic() {
     if (audioInt) clearInterval(audioInt)
     caudio.forEach(audio => audio.pause())
+    caudio = []
 }
 
 function updateSaveens() {
-    if (!workingSave.hasSaveensJar) {
+    if (!save.hasSaveensJar) {
         $('#saveens').hide()
     } else {
         $('#saveens').show()
 
-        $('.saveens-amount').text(workingSave.money.toLocaleString())
+        $('.saveens-amount').text(save.money.toLocaleString())
     }
 }
 
@@ -383,30 +378,38 @@ function clearDiagDOM() {
     $mbox.removeClass('reverse-anim').removeClass('begin')
 }
 
+const lynnQ = []
 function hideLynn($lynnpop) {
     $lynnpop[0].onanimationend = null
     $lynnpop.hide()
     $lynnpop.removeClass('anim-reverse').removeClass('anim')
     $('.lynn-pop-text').html('')
+
+    lynnQ.pop()
 }
 
-function showLynn(name, text) {
+function showLynn(text) {
     // Shows lynn pop-down
-    const $lynnpop = $('#lynn-pop')
-    $lynnpop.show()
-    $lynnpop.addClass('anim')
-    $('.lynn-pop-text').html(`${text}: <span class="ochicken">${name}</span>`)
-
-    setTimeout(() => {
-        if (!$lynnpop.hasClass('anim')) return
-
-        $lynnpop.hide()
-        $lynnpop.removeClass('anim')
+    if (lynnQ.length < 1) {
+        lynnQ.push(1)
+        const $lynnpop = $('#lynn-pop')
         $lynnpop.show()
-        $lynnpop.addClass('anim-reverse')
+        $lynnpop.addClass('anim')
+        $('.lynn-pop-text').html(`${text}`)
 
-        $lynnpop[0].onanimationend = () => hideLynn($lynnpop)
-    }, 2000)
+        setTimeout(() => {
+            if (!$lynnpop.hasClass('anim')) return
+
+            $lynnpop.hide()
+            $lynnpop.removeClass('anim')
+            $lynnpop.show()
+            $lynnpop.addClass('anim-reverse')
+
+            $lynnpop[0].onanimationend = () => hideLynn($lynnpop)
+        }, 2000)
+    } else {
+        setTimeout(() => showLynn(text), 3000)
+    }
 }
 
 function startNewScene() {
@@ -425,9 +428,9 @@ function randFloat(s, e) {
 }
 
 function doMoneyChange(amount) {
-    workingSave.money += amount
-    if (workingSave.money < 0) {
-        workingSave.money = 0
+    save.money += amount
+    if (save.money < 0) {
+        save.money = 0
     }
 
     const $el = $(`<pre class="money-change">`)
@@ -484,17 +487,20 @@ function unlockCollectable(dictName, dict, name) {
         j++
     }
 
-    if (workingSave[dictName][index])
+    if (save[dictName][index])
         return
 
     if (index < 0) {
         // invalid lynn
         console.error("Invalid internal Lynn name provided: " + name)
     } else {
-        workingSave[dictName][index] = true
+        save[dictName][index] = true
 
         // Lynn pop-down
-        showLynn(dict[index][0], `New ${dictName.charAt(0).toUpperCase() + dictName.slice(1)}`)
+        if (dictName.endsWith('s')) {
+            dictName = dictName.slice(0, -1)
+        }
+        showLynn(`New ${dictName.charAt(0).toUpperCase() + dictName.slice(1)}: <span class="ochicken">${dict[index][0]}</span>`)
     }
 }
 
@@ -511,9 +517,7 @@ async function doDialog(name) {
     lines = dt.diag.split("\n")
     for (iterator = 0; iterator < (lines?.length ?? 99999); iterator++) {
         if (!lines) return Promise.resolve()
-        if (workingSave === save) {
-            writeSave()
-        }
+        writeSave()
 
         const line = lines[iterator]
         if (line.startsWith('#')) continue
@@ -591,14 +595,14 @@ async function doDialog(name) {
             //     j++
             // }
             //
-            // if (workingSave.lynns[index])
+            // if (save.lynns[index])
             //     continue
             //
             // if (index < 0) {
             //     // invalid lynn
             //     console.error("Invalid internal Lynn name provided: " + args[1])
             // } else {
-            //     workingSave.lynns[index] = true
+            //     save.lynns[index] = true
             //
             //     // Lynn pop-down
             //     showLynn(LYNNS[index][0], `New Lynn`)
@@ -617,7 +621,7 @@ async function doDialog(name) {
         } else if (args[0] === 'gotofadenewchapter') {
             hideLynn($('#lynn-pop'))
 
-            workingSave.chapter = parseInt(args[1])
+            save.chapter = parseInt(args[1])
 
             fadeoutNoSceneChange(() => {
                 loadScene('mainMenu')
@@ -629,33 +633,35 @@ async function doDialog(name) {
             try {
                 finalVal = parseInt(args[1])
             } catch (e) {
-                finalVal = workingSave.chapter
+                finalVal = save.chapter
             }
 
-            workingSave.chapter = finalVal
-            workingSave.chapters[finalVal - 1] = true
+            save.chapter = finalVal
+            save.chapters[finalVal - 1] = true
         } else if (args[0] === 'call') {
             // Calls sync func by string name
             window[args[1]]()
         } else if (args[0] === 'callawait') {
             // Calls async func by string name and awaits it
             await window[args[1]]()
+        } else if (args[0] === 'setbg') {
+            await putBackgroundImage(args[1])
         } else if (args[0] === 'unlocksaveens') {
             // Unlock the saveens jar
-            workingSave.hasSaveensJar = true
+            save.hasSaveensJar = true
         } else if (args[0] === 'shakestart') {
             const speakerIndex = parseInt(args[1])
             startShake(speakerIndex)
         } else if (args[0] === 'shakeend') {
             endShake()
         } else if (args[0] === 'copymoneytoreal') {
-            save.money = workingSave.money
+
         }
     }
 }
 
 function getChapterScene() {
-    return CHAPTERS[workingSave.chapter - 1][0]
+    return CHAPTERS[save.chapter - 1][0]
 }
 
 async function doCurrentDiagSequence() {

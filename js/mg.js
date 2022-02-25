@@ -1,4 +1,5 @@
 function showMgCanvas() {
+    save?.cheevStats
     $('.canvas-container').addClass('visible')
 }
 
@@ -9,15 +10,21 @@ function hideMgCanvas() {
 const GB_GREEN = "#8bac0f"
 const GB_BLACK = "#0f380f"
 
-function initCanvas() {
-    let canvas, ctx, sw, sh
+function mgInitCanvas() {
+    let canvas, realCanvas, ctx, sw, sh, realCtx
 
-    canvas = $('.mg-canvas')[0]
+    realCanvas = $('.mg-canvas')[0]
+    canvas = makeOffscreenCanvas(realCanvas.width, realCanvas.height)
+    realCtx = realCanvas.getContext('2d', { alpha: false, powerPreference: "high-performance" })
     ctx = canvas.getContext('2d', { alpha: false, powerPreference: "high-performance" })
     sw = canvas.width
     sh = canvas.height
 
-    return { canvas, ctx, sw, sh }
+    return { canvas, ctx, sw, sh, realCanvas, realCtx }
+}
+
+function mgDrawToReal(candt) {
+    candt.realCtx.drawImage(candt.canvas, 0, 0)
 }
 
 function mgRealToCanvas(canvas, evt) {
@@ -29,7 +36,7 @@ function mgRealToCanvas(canvas, evt) {
     }
 }
 
-function drawBG(can) {
+function mgDrawBG(can) {
     const { ctx, sw, sh } = can
 
     ctx.fillStyle = GB_GREEN
@@ -132,7 +139,7 @@ let mgMookbongNinjaPath = [0]
 const mgMookbongSpawnData = []
 
 mgMookbongSpawnData.push(50)
-for (let i = 0; i < 150; i++) {
+for (let i = 0; i < 120; i++) {
     mgMookbongSpawnData.push(randFloat(5, 60 - (i / 8)))
     mgMookbongSpawnData.push([ pickRandom(mgMookbongImgs), pickRandom(mgMookbongPositions) ])
 }
@@ -198,6 +205,10 @@ function mgIsRectOverlap(x1, y1, w1, h1, x2, y2, w2, h2) {
 }
 
 function mgMookbongDrawNinjaPath(candt) {
+    if (mgMookbongNinjaPath[0] >= mgMookbongNinjaPath.length) {
+        mgMookbongNinjaPath = []
+    }
+
     candt.ctx.fillStyle = GB_BLACK
 
     candt.ctx.beginPath()
@@ -234,7 +245,7 @@ function mgMookbongDrawNinjaPath(candt) {
                 // lerp
                 nx = nx + (to[0] - nx) * completion
                 ny = ny + (to[1] - ny) * completion
-                completion += 0.02
+                completion += 0.04
 
                 if (completion >= 1) break
             }
@@ -254,7 +265,7 @@ function mgMookbongDrawNinjaPath(candt) {
                 mgMookbongObjects[idx] = null
                 doMoneyChange(obj[0].yields)
 
-                if (Math.random() < 0.25) {
+                if (Math.random() < 0.3) {
                     if (obj[0] === mgMookbongLayg) {
                         playSong("assets/sfx/fanofthelaygs.ogg", false, 0.8)
                     } else if (obj[0] === mgMookbongWing) {
@@ -269,24 +280,28 @@ function mgMookbongDrawNinjaPath(candt) {
     candt.ctx.closePath()
 }
 
+let mgInitialScore
 async function mgMookbong() {
     await new Promise((resolve, reject) => {
         // Make text instant and disable user input (for minigame text)
         textInputMode = false
         showMgCanvas()
 
-        let candt = initCanvas()
-        drawBG(candt)
+        // Set initial score
+        mgInitialScore = save.money
+
+        let candt = mgInitCanvas()
+        mgDrawBG(candt)
         mgDrawScreenBorder(candt)
 
         // Handlers
-        candt.canvas.onmousedown = function(e) {
+        candt.realCanvas.onmousedown = function(e) {
             e.stopPropagation()
         }
 
-        candt.canvas.parentElement.onmousedown = (e) => e.stopPropagation()
+        candt.realCanvas.parentElement.onmousedown = (e) => e.stopPropagation()
 
-        candt.canvas.onmousemove = function(e) {
+        candt.realCanvas.onmousemove = function(e) {
             e.stopPropagation()
             const position = mgRealToCanvas(this, e)
             const last = mgMookbongNinjaPath[mgMookbongNinjaPath.length - 1]
@@ -301,13 +316,19 @@ async function mgMookbong() {
 
         mgSetTickFunction(() => {
             // Draws all
-            drawBG(candt)
+            mgDrawBG(candt)
             mgDrawScreenBorder(candt)
 
             const positionBound = 60
+            const minVel = 1.5
+            const maxVel = 2.5
 
             const mookDt = mgMookbongSpawnData[mookIndex]
             if (typeof mookDt === 'undefined') {
+                if (save.money - mgInitialScore >= 250) {
+                    unlockCollectable('achievements', ACHIEVEMENTS, 'Rich Ninja')
+                }
+
                 hideMgCanvas()
                 resolve()
             } else if (typeof mookDt === 'number') {
@@ -321,27 +342,27 @@ async function mgMookbong() {
                 if (mookDt[1] === 0) {
                     // From top
                     pos = [randFloat(positionBound, candt.sw - positionBound), -5]
-                    vel = [randFloat(-0.1, 0.1), randFloat(1, 3)]
+                    vel = [randFloat(-0.1, 0.1), randFloat(minVel, maxVel)]
                     grav = [0, randFloat(-1, -2)]
                 } else if (mookDt[1] === 1) {
                     // From right
                     pos = [candt.sw + 5, randFloat(positionBound, candt.sh - positionBound)]
-                    vel = [randFloat(-3, -1), randFloat(-0.1, 0.1)]
+                    vel = [randFloat(-maxVel, -minVel), randFloat(-0.1, 0.1)]
                     grav = [randFloat(1, 2), 0]
                 } else if (mookDt[1] === 2) {
                     // From bottom
                     pos = [randFloat(positionBound, candt.sw - positionBound), candt.sh + 5]
-                    vel = [randFloat(-0.1, 0.1), randFloat(-3, -1)]
+                    vel = [randFloat(-0.1, 0.1), randFloat(-maxVel, -minVel)]
                     grav = [0, randFloat(1, 2)]
                 } else if (mookDt[1] === 3) {
                     // From left
                     pos = [-5, randFloat(positionBound, candt.sh - positionBound)]
-                    vel = [randFloat(1, 3), randFloat(-0.1, 0.1)]
+                    vel = [randFloat(minVel, maxVel), randFloat(-0.1, 0.1)]
                     grav = [randFloat(-1, -2), 0]
                 }
 
-                vel[0] *= 0.6
-                vel[1] *= 0.6
+                vel[0] *= 0.55
+                vel[1] *= 0.55
 
                 mgMookbongAddObject(mookDt[0], pos, vel, grav, randInt(0, 359), randInt(-2, 2))
                 mookIndex++
@@ -358,6 +379,8 @@ async function mgMookbong() {
             localFc++
 
             console.log(mgMookbongNinjaPath)
+
+            mgDrawToReal(candt)
         })
         mgTick()
 

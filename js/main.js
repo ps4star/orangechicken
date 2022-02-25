@@ -32,30 +32,23 @@ addCurrent(
             .append($(`<button class="mm-button mm-play-button">Play</button>`)
 
             )
-            .append($(`<button class="mm-button mm-options-button">Options</button>`)
-
-            )
-            .append($(`<button class="mm-button mm-chapters-button">Chapters</button>`)
-
-            )
             .append($(`<button class="mm-button mm-lynns-button">Lynns</button>`)
 
             )
             .append($(`<button class="mm-button mm-achievements-button">Achievements</button>`)
 
             )
+            .append($(`<button class="mm-button mm-options-button">Options</button>`)
+
+            )
         )
 )
-hook('load', function() {
-    $('.mm-play-button').on('mousedown', function(e) {
-        e.stopPropagation()
-        e.stopImmediatePropagation()
-        e.preventDefault()
-
-        workingSave = save
-        fadeoutToScene('chapter')
-        return false
-    })
+hook('load', function(oldScene) {
+    // Play mm music
+    if (!(oldScene === 'lynns' || oldScene === 'options')) {
+        stopMusic()
+        playSong(...RIZO_ISLAND_MUSIC_DT)
+    }
 
     $('.mm-options-button').on('mousedown', function(e) {
         e.stopPropagation()
@@ -75,7 +68,7 @@ hook('load', function() {
         return false
     }
 
-    $('.mm-chapters-button').on('mousedown', function(e) {
+    $('.mm-play-button').on('mousedown', function(e) {
         whichLynnScene = 0
         toLynns(e)
     })
@@ -244,7 +237,7 @@ hook('load', function() {
             // For chapters, do click events
             $legitLynn.addClass('clickable')
             $legitLynn.on('mousedown', () => {
-                workingSave = fabricateStaticChapterSave(save, $legitLynn[0].chapterIndex)
+                save.chapter = $legitLynn[0].chapterIndex
                 fadeoutToScene('dialog')
             })
         }

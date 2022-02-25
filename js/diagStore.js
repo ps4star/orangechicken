@@ -1,8 +1,10 @@
+const RIZO_ISLAND_MUSIC_DT = ["assets/music/cf.ogg", true, 0, 1.65, 166.32]
+
 const ALL_DIAGS = {
     "shortage": {
         bg: "cf.png",
         // [ ["assets/music/original_cf.ogg", true, 0, 1.65, 166.32] ] for cf.mp3 (rizo island)
-        music: [ ["assets/music/cf.ogg", true, 0, 0, 79.8] ],
+        music: [ RIZO_ISLAND_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["left_front", "Becky"], ["hflip", "right_front", "C.F. Waitress"] ],
         diag: `
 chapter 1
@@ -148,13 +150,14 @@ gotofadenewchapter 4
 
     "torrid": {
         bg: "torrid.jpg",
-        music: [ ["assets/music/alrtheme.ogg", true, 0, 0, 93] ],
+        music: [ ["assets/music/cf.ogg", true, 0, 0, 93] ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_back", "Becky"] ],
         diag: `
 chapter 3
 enter 0
 enter 1
 talk 0 "We're heeeere"
+talk 0 "Ohmuhgod there are so many cute dresses
 `,
     },
 
@@ -165,6 +168,7 @@ talk 0 "We're heeeere"
         diag: `
 chapter 4
 enter 0
+lynn mookbong
 pose 0 mook-bong
 talk 0 "Hey guise! So welcome to a new videooo..."
 talk 0 "So today I'm doing a mook-bong of this whole rotiserrie chicken."
@@ -175,6 +179,7 @@ callawait mgMookbong
 copymoneytoreal
 talk 0 "Mmmm that was so good you guiiisee."
 talk 0 "Definitely saving this for later, like, ohmuhgosh."
+gotofadeoutnewchapter 5
 `,
     },
 }

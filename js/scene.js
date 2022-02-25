@@ -26,30 +26,32 @@ function hookGlobal(evtName, cb) {
     globalHooks[cScene][evtName] = cb
 }
 
-function tryHook(hookLib, evtName) {
+function tryHook(hookLib, evtName, sceneChange) {
     if (!hookLib[cScene] || !hookLib[cScene][evtName]) return false
-    hookLib[cScene][evtName]()
+    hookLib[cScene][evtName](sceneChange)
 }
 
 function loadScene(name, $root) {
     writeSave()
 
+    let oldScene = cScene
+    let newScene = name
     let $finalRoot = $root ?? $sroot
 
-    tryHook(globalHooks, 'unload')
-    tryHook(localHooks, 'unload')
+    tryHook(globalHooks, 'unload', newScene)
+    tryHook(localHooks, 'unload', newScene)
 
     $finalRoot.empty()
 
     // Populate new children
-    cScene = name
+    cScene = newScene
     scenes[name].forEach($child => {
         $finalRoot.append($child)
     })
 
     // Run hooks
-    tryHook(globalHooks, 'load')
-    tryHook(localHooks, 'load')
+    tryHook(globalHooks, 'load', oldScene)
+    tryHook(localHooks, 'load', oldScene)
 }
 
 const FADE_TIME = 400

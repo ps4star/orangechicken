@@ -603,8 +603,8 @@ div.ochicken-bg * {
 }
 
 .actor-img {
-    width: 20rem;
-    height: 20rem;
+    width: 19rem;
+    height: 19rem;
 
     padding: 0 0.7rem;
     margin-bottom: 0;
@@ -915,6 +915,7 @@ div.ochicken-bg * {
 
 #saveens span {
     color: green;
+
     font-size: 2rem;
 }
 
