@@ -32,13 +32,13 @@ addCurrent(
             .append($(`<button class="mm-button mm-play-button">Play</button>`)
 
             )
+            .append($(`<button class="mm-button mm-options-button">Options</button>`)
+
+            )
             .append($(`<button class="mm-button mm-lynns-button">Lynns</button>`)
 
             )
             .append($(`<button class="mm-button mm-achievements-button">Achievements</button>`)
-
-            )
-            .append($(`<button class="mm-button mm-options-button">Options</button>`)
 
             )
         )
@@ -206,8 +206,9 @@ hook('load', function() {
             } else {
                 // Right page
                 $page.append($subpage)
-                if (!isLast)
+                if (!isLast) {
                     $subpage = $(`<div class="lynns-subpage right">`)
+                }
 
                 if (isLast) {
                     $page.hide()
@@ -321,28 +322,30 @@ hook('load', function() {
     slide(cpage, cpage)
 })
 
-makeScene('chapter')
+// Chapter scene is deprecated
+// (may be brought back though some mitigating mechanics ought to be used to make it less annoying/not appear every time)
+// makeScene('chapter')
 
-addCurrent(
-    $(`<div id="chapter-container" class="ochicken-bg">`)
-        .append($(`<pre id="ch-text">`))
-        .append($(`<pre id="ch-name">`))
-)
+// addCurrent(
+//     $(`<div id="chapter-container" class="ochicken-bg">`)
+//         .append($(`<pre id="ch-text">`))
+//         .append($(`<pre id="ch-name">`))
+// )
 
-hook('load', async function() {
-    setTimeout(() => $('#ch-text').addClass('grow-border'), 100)
-    $('#ch-text').text(`Chapter ${save.chapter.toString()}`)
-    $('#ch-name').text(CHAPTERS[save.chapter - 1][0])
+// hook('load', async function() {
+//     setTimeout(() => $('#ch-text').addClass('grow-border'), 100)
+//     $('#ch-text').text(`Chapter ${save.chapter.toString()}`)
+//     $('#ch-name').text(CHAPTERS[save.chapter - 1][0])
 
-    await new Promise((resolve, reject) => {
-        setTimeout(resolve, 3250)
-    })
+//     await new Promise((resolve, reject) => {
+//         setTimeout(resolve, 3250)
+//     })
 
-    fadeoutToScene('dialog')
-})
-hook('unload', function () {
-    $('#ch-text').removeClass('grow-border')
-})
+//     fadeoutToScene('dialog')
+// })
+// hook('unload', function () {
+//     $('#ch-text').removeClass('grow-border')
+// })
 
 makeScene('dialog')
 

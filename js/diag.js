@@ -7,14 +7,28 @@ function fillArr(item, num) {
 }
 
 // Very small intentional lag to prevent too many inputs fucking everything up
-const inputDelayTime = 50
+const inputDelayTime = 35
 
+// This doesn't really matter as long as it's sufficiently large
+const NUM_USEFLAGS = 250
 const DEFAULT_SAVE = {
     chapter: 1,
+    // Chapter 1 always unlocked at start
     chapters: [true, ...fillArr(false, NUM_CHAPTERS - 1)],
     diag: "shortage",
     lynns: fillArr(false, NUM_LYNNS),
     achievements: fillArr(false, NUM_ACHIEVEMENTS),
+
+    inventory: [],
+
+    beckyAffection: 20,
+    wifeyAffection: 20,
+
+    savedVars: {},
+
+    affectionUseFlags: fillArr(false, NUM_USEFLAGS),
+    moneyUseFlags: fillArr(false, NUM_USEFLAGS),
+    invUseFlags: fillArr(false, NUM_USEFLAGS),
 
     textSpeed: 30,
     volume: 50,
@@ -39,12 +53,6 @@ if (!localStorage[LS_KEY]) {
     } catch(e) {
         writeSave()
     }
-}
-
-const ACTORS = {
-    "Amberlynn": "assets/actors/amberlynn.png",
-    "Becky": "assets/actors/becky.png",
-    "C.F. Waitress": "assets/actors/cfwaitress.png",
 }
 
 function clearStage() {
@@ -148,11 +156,6 @@ async function updateActorPose(stageIndex, newPose, reanimate) {
     // Update stage
     currentStage[stageIndex][2] = newPose
 
-    await new Promise((resolve, reject) => {
-        if ($actorImg[0].complete) resolve()
-        else $actorImg[0].onload = resolve
-    })
-
     if (reanimate) {
         $actorImg.removeClass('animated')
 
@@ -161,6 +164,11 @@ async function updateActorPose(stageIndex, newPose, reanimate) {
     } else {
         $actorImg.show()
     }
+
+    await new Promise((resolve, reject) => {
+        if ($actorImg[0].complete) resolve()
+        else $actorImg[0].onload = resolve
+    })
 
     return Promise.resolve()
 }
@@ -229,21 +237,35 @@ async function putTextBox(speakerIndex, text) {
     })
 }
 
-let newScene
+let newScene, lastChoice
 async function showMulti(options) {
     return new Promise((resolve, reject) => {
-        let selected = 0
+        let selected = 0, lastSelected = 0, isMouseOn = false
         const $mbox = $('#multi-box')
         $mbox.removeClass('reverse-anim')
         $mbox.toggleClass('begin', true)
+
+        let animationDone = false
+        $mbox.css('pointer-events', 'none')
+        $mbox[0].onanimationend = () => {
+            $mbox.css('pointer-events', 'all')
+            updateSel()
+            animationDone = true
+            $mbox[0].onanimationend = null
+        }
+
         for (let i = 0; i < options.length; i += 2) {
             // Text
             const $coption = $(`<pre tabindex="-1">${options[i]}</pre>`)
                 .on('mouseenter', function(e) {
+                    if (!animationDone) return
                     $mbox.children().removeClass('selected')
+                    lastSelected = $coption[0].index / 2
                     selected = null
+                    isMouseOn = true
                 })
                 .on('mousedown', function(e) {
+                    if (!animationDone) return
                     $mbox.hide()
                     $mbox.removeClass('begin')
                     $mbox.show()
@@ -252,24 +274,40 @@ async function showMulti(options) {
                         $mbox.empty()
                         $mbox.removeClass('reverse-anim')
                         $mbox[0].onanimationend = null
+                        lastChoice = $coption[0].index / 2
                         resolve()
                     }
                     newScene = $coption[0].scene
                 })
+                .on('mouseleave', function(e) {
+                    if (!animationDone) return
+                    selected = lastSelected
+                    isMouseOn = false
+                    updateSel()
+                })
 
             $coption[0].scene = options[i + 1]
+            $coption[0].index = i
             $mbox.append($coption)
         }
-        $mbox.children()[selected].classList.add('selected')
+
+        function updateSel() {
+            $mbox.children().removeClass('selected')
+            $mbox.children()[selected].classList.add('selected')
+        }
+
+        updateSel()
 
         function handleKeyDown(e) {
+            if (!animationDone) return
+            if (isMouseOn) return
+
             if (e.key) {
                 if (e.key.includes('Arrow')) {
                     if (e.key === 'ArrowUp' && selected > 0) selected--
                     else if (e.key === 'ArrowDown' && selected < $mbox[0].children.length - 1) selected++
 
-                    $mbox.children().removeClass('selected')
-                    $mbox.children()[selected].classList.add('selected')
+                    updateSel()
                 } else if (e.key === 'Enter') {
                     // Confirm
                     $($mbox.children()[selected]).trigger('mousedown')
@@ -318,6 +356,10 @@ function stopMusic() {
     if (audioInt) clearInterval(audioInt)
     caudio.forEach(audio => audio.pause())
     caudio = []
+}
+
+function unlockSaveens() {
+    save.hasSaveensJar = true
 }
 
 function updateSaveens() {
@@ -388,6 +430,8 @@ function hideLynn($lynnpop) {
     lynnQ.pop()
 }
 
+// Originally only showed Lynn get texts, now general notif function
+// Also has queue functionality
 function showLynn(text) {
     // Shows lynn pop-down
     if (lynnQ.length < 1) {
@@ -416,7 +460,6 @@ function startNewScene() {
     iterator = -1
     dt = ALL_DIAGS[newScene]
     lines = dt.diag.split("\n")
-    console.log(lines[1])
 }
 
 function randInt(s, e) {
@@ -427,17 +470,31 @@ function randFloat(s, e) {
     return Math.random() * (e - s + 1) + s
 }
 
+function handleFlaggedEvent(index, useFlagPrefix, cb) {
+    const combinedName = `${useFlagPrefix}UseFlags`
+
+    // -1 = bypass all checks
+    if (index === -1) {
+        cb()
+        return
+    }
+
+    if (save[combinedName][index]) {
+        return
+    }
+
+    save[combinedName][index] = true
+    cb()
+}
+
 function doMoneyChange(amount) {
     save.money += amount
-    if (save.money < 0) {
-        save.money = 0
-    }
 
     const $el = $(`<pre class="money-change">`)
     if (amount <= 0) {
         $el.html(`<span style="color: darkred;">${amount.toLocaleString()}</span>`)
     } else {
-        $el.html(`<span class="ochicken">+${amount.toLocaleString()}</span>`)
+        $el.html(`<span style="color: darkgreen;">+${amount.toLocaleString()}</span>`)
     }
 
     updateSaveens()
@@ -504,7 +561,56 @@ function unlockCollectable(dictName, dict, name) {
     }
 }
 
+let inlineVarDict = {}
+function derefInlineVariable(name) {
+    if (Object.keys(save).indexOf(name) > -1) return save[name]
+    if (name in inlineVarDict) return inlineVarDict[name]
+    if (name === 'lastChoice') return lastChoice
+    if (name in save.savedVars) return save.savedVars[name]
+
+    // If not defined as a var, assumed to be int
+    try {
+        const asInt = parseInt(name)
+        return Number.isNaN(asInt) ? 0 : asInt
+    } catch(e) {
+        return 0
+    }
+}
+
+function doAffectionChange(character, amount) {
+    // If the index has already been used, return
+    save[`${character.toLowerCase()}Affection`] += amount
+    const isNeg = amount <= 0
+    showLynn(`${character} Affection: <span style="color: ${isNeg ? "red" : "lime"};">${isNeg ? "" : "+"}${amount.toString()}</span>`)
+}
+
+function doInventoryPush(itemName) {
+    save.inventory.push(itemName)
+}
+
+async function handleTalk(args) {
+    hasTalked = true
+
+    let speakerIndex = parseInt(args[1])
+    const text = args.slice(2).join(" ")
+
+    // Magnify speaker
+    const $actors = $('.actor')
+    $actors.removeClass('magnified')
+
+    if (!Number.isNaN(speakerIndex)) {
+        if (!$actors[speakerIndex]) return Promise.resolve()
+        $actors[speakerIndex].classList.add('magnified')
+    }
+
+    await putTextBox(speakerIndex, text)
+    await new Promise((resolve, reject) => {
+        setTimeout(resolve, inputDelayTime)
+    })
+}
+
 let isTransition = false
+let requireCondition = true
 async function doDialog(name) {
     // Delay 100ms
     await new Promise((resolve, reject) => {
@@ -522,6 +628,7 @@ async function doDialog(name) {
         const line = lines[iterator]
         if (line.startsWith('#')) continue
         const args = line.split(" ")
+
         if (args[0] === 'pose') {
             const person = parseInt(args[1])
             const pose = args[2]
@@ -529,24 +636,7 @@ async function doDialog(name) {
             // Only reanimate if we have talked
             await updateActorPose(person, pose, hasTalked)
         } else if (args[0] === 'talk') {
-            hasTalked = true
-
-            let speakerIndex = parseInt(args[1])
-            const text = args.slice(2).join(" ")
-
-            // Magnify speaker
-            const $actors = $('.actor')
-            $actors.removeClass('magnified')
-
-            if (!Number.isNaN(speakerIndex)) {
-                if (!$actors[speakerIndex]) return Promise.resolve()
-                $actors[speakerIndex].classList.add('magnified')
-            }
-
-            await putTextBox(speakerIndex, text)
-            await new Promise((resolve, reject) => {
-                setTimeout(resolve, inputDelayTime)
-            })
+            await handleTalk(args)
         } else if (args[0] === 'multi') {
             // Multichoice box
             const options = []
@@ -558,6 +648,63 @@ async function doDialog(name) {
             await showMulti(options)
 
             // Reset loop state
+            startNewScene()
+        } else if (args[0] === 'if') {
+            const com = args[1]
+            const variable = args[2]
+            let condition
+
+            if (com === 'gt') {
+                condition = derefInlineVariable(variable) > derefInlineVariable(args[3])
+            } else if (com === 'lt') {
+                condition = derefInlineVariable(variable) < derefInlineVariable(args[3])
+            } else if (com === 'eq') {
+                condition = derefInlineVariable(variable) === derefInlineVariable(args[3])
+            } else if (com === 'gteq') {
+                condition = derefInlineVariable(variable) >= derefInlineVariable(args[3])
+            } else if (com === 'lteq') {
+                condition = derefInlineVariable(variable) <= derefInlineVariable(args[3])
+            } else if (com === 'bounded') {
+                const parsedVar = derefInlineVariable(variable)
+                condition = parsedVar >= derefInlineVariable(args[3]) && parsedVar <= derefInlineVariable(args[4])
+            } else if (com === 'inventoryhas') {
+                condition = save.inventory.includes(args.slice(2).join(" "))
+            } else if (com === 'inventoryhasnot') {
+                condition = !(save.inventory.includes(args.slice(2).join(" ")))
+            }
+
+            if (!condition) {
+                while (lines[iterator] !== 'endif' && iterator < lines.length) iterator++
+                iterator--
+                // newScene = lines[iterator + 1]
+                // startNewScene()
+            }
+        } else if (args[0] === 'randint') {
+            // randint <var> <s> <e>
+            inlineVarDict[args[1]] = randInt(parseInt(args[2]), parseInt(args[3]))
+        } else if (args[0] === 'affectionchange') {
+            // Do affection change
+            handleFlaggedEvent(derefInlineVariable(args[1]), `affection`, () => {
+                doAffectionChange(args[2], derefInlineVariable(args[3]))
+            })
+        } else if (args[0] === 'setvar') {
+            inlineVarDict[args[1]] = derefInlineVariable(args[2])
+        } else if (args[0] === 'setglobal') {
+            save.savedVars[args[1]] = derefInlineVariable(args[2])
+        } else if (args[0] === 'copyvarnegative') {
+            inlineVarDict[args[1]] = (-1) * derefInlineVariable(args[2])
+        } else if (args[0] === 'moneychange') {
+            handleFlaggedEvent(derefInlineVariable(args[1]), `money`, () => {
+                doMoneyChange(derefInlineVariable(args[2]))
+            })
+        } else if (args[0] === 'pushinv') {
+            // Push item (string) into inventory
+            // function handleFlaggedEvent(index, useFlagPrefix, cb)
+            handleFlaggedEvent(derefInlineVariable(args[1]), `inv`, () => {
+                doInventoryPush(args[1], args.slice(2).join(" "))
+            })
+        } else if (args[0] === 'goto') {
+            newScene = args[1]
             startNewScene()
         } else if (args[0] === 'leave') {
             const idx = parseInt(args[1])
@@ -624,6 +771,8 @@ async function doDialog(name) {
             save.chapter = parseInt(args[1])
 
             fadeoutNoSceneChange(() => {
+                clearStage()
+                currentStage = []
                 loadScene('mainMenu')
                 loadScene('dialog')
             })
@@ -646,17 +795,18 @@ async function doDialog(name) {
             await window[args[1]]()
         } else if (args[0] === 'setbg') {
             await putBackgroundImage(args[1])
-        } else if (args[0] === 'unlocksaveens') {
-            // Unlock the saveens jar
-            save.hasSaveensJar = true
         } else if (args[0] === 'shakestart') {
             const speakerIndex = parseInt(args[1])
             startShake(speakerIndex)
         } else if (args[0] === 'shakeend') {
             endShake()
-        } else if (args[0] === 'copymoneytoreal') {
-
+        } else if (args[0] === 'error') {
+            handleTalk(["talk", "-", `INTERNAL ERROR; VAR STATES: ${inlineVarDict} VARS WHICH HAVE RESPECTIVE VALUES ${args.slice(1).map(el => eval(el))}`])
         }
+        // Deprecated; no distinction between save and workingSave anymore due to Chapters section removal (bc redundancy)
+        // } else if (args[0] === 'copymoneytoreal') {
+
+        // }
     }
 }
 

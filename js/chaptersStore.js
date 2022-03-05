@@ -3,7 +3,8 @@ const CHAPTERS = [
     [ "craygslist", "assets/actors/amberlynn_gasp.png", {} ], // 2
     [ "torrid", "assets/torrid.png", {} ], // 3
     [ "rotisserie", "assets/actors/amberlynn_mook-bong.png", {} ], // 4
-    [ "", "", {} ], // 5
+    [ "wommart", "assets/actors/wommart.png", {} ], // 5
+    [ "", "", {} ], // 6
 ]
 
 const NUM_CHAPTERS = CHAPTERS.length

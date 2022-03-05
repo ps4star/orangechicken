@@ -263,6 +263,8 @@ function mgMookbongDrawNinjaPath(candt) {
                 // candt.ctx.isPointInStroke(left + width * (2/3), top + height/3)) {
             ) {
                 mgMookbongObjects[idx] = null
+
+                // The -1 bypasses index check
                 doMoneyChange(obj[0].yields)
 
                 if (Math.random() < 0.3) {
