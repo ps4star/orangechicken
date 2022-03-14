@@ -586,13 +586,11 @@ div.ochicken-bg * {
 
 @keyframes pop-in-left {
     from {
-        filter: brightness(0%);
         transform: translateX(-5rem);
         opacity: 0.3;
     }
 
     to {
-        filter: none;
         transform: translateX(0rem);
         opacity: 1;
     }
@@ -603,8 +601,8 @@ div.ochicken-bg * {
 }
 
 .actor-img {
-    width: 19rem;
-    height: 19rem;
+    width: 17.5rem;
+    height: 17.5rem;
 
     padding: 0 0.7rem;
     margin-bottom: 0;
@@ -896,7 +894,7 @@ div.ochicken-bg * {
     animation-fill-mode: forwards;
 }
 
-#saveens {
+.dom-counter, #saveens {
     position: absolute;
     top: 0.5rem;
     left: 0.5rem;
@@ -909,14 +907,14 @@ div.ochicken-bg * {
     z-index: 5;
 }
 
-#saveens pre {
+.dom-counter pre, #saveens pre {
     padding: 0 0.7rem;
-}
-
-#saveens span {
-    color: green;
 
     font-size: 2rem;
+}
+
+.dom-counter span, #saveens span {
+    color: green;
 }
 
 @keyframes pop-in-canvas {
@@ -941,9 +939,6 @@ div.ochicken-bg * {
     width: 100%;
     height: 100%;
 
-    padding: 1rem;
-    background: gray;
-
     pointer-events: none;
 }
 
@@ -955,22 +950,37 @@ div.ochicken-bg * {
     animation-direction: normal;
 }
 
-.mg-canvas {
-    width: 100%;
-    height: calc(100% - 6rem);
+#mookbong-canvas-container {
+    padding: 1rem;
+    background: gray;
+}
 
+.mg-canvas {
     image-rendering: pixelated;
     pointer-events: all;
 }
 
-.gg-image {
+#mookbong-canvas {
+    width: 100%;
+    height: calc(100% - 6rem);
+}
+
+#books-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.mg-image {
     width: 100%;
     height: 6rem;
     background-color: inherit;
-    background-image: url("../assets/gamegorl.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+}
+
+.gg {
+    background-image: url("../assets/gamegorl.png");
 }
 
 @keyframes fade-down {
@@ -995,4 +1005,13 @@ div.ochicken-bg * {
     z-index: 3;
 
     font-size: 1.8rem;
+}
+
+.iq-score {
+    top: 3.5rem;
+}
+
+.iq-score pre {
+    color: lightblue;
+    font-size: 1.5rem;
 }

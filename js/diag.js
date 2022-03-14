@@ -30,6 +30,8 @@ const DEFAULT_SAVE = {
     moneyUseFlags: fillArr(false, NUM_USEFLAGS),
     invUseFlags: fillArr(false, NUM_USEFLAGS),
 
+    visitCounts: fillArr(0, NUM_CHAPTERS),
+
     textSpeed: 30,
     volume: 50,
 
@@ -237,7 +239,7 @@ async function putTextBox(speakerIndex, text) {
     })
 }
 
-let newScene, lastChoice
+let newScene, lastChoice, lastChapter
 async function showMulti(options) {
     return new Promise((resolve, reject) => {
         let selected = 0, lastSelected = 0, isMouseOn = false
@@ -330,6 +332,8 @@ function derefInheritance(dt) {
 
 const MUS_MULTIPLIER = 0.6
 let audioInt, caudio = []
+
+// If loops is falsy then initStart is actually the volume
 function playSong(url, loops, initStart, start, end) {
     let newAudio = new Audio(url)
     newAudio.volume = (loops ? MUS_MULTIPLIER : initStart) * (save.volume / 100)
@@ -566,6 +570,7 @@ function derefInlineVariable(name) {
     if (Object.keys(save).indexOf(name) > -1) return save[name]
     if (name in inlineVarDict) return inlineVarDict[name]
     if (name === 'lastChoice') return lastChoice
+    if (name === 'lastChapter') return lastChapter
     if (name in save.savedVars) return save.savedVars[name]
 
     // If not defined as a var, assumed to be int
@@ -671,6 +676,10 @@ async function doDialog(name) {
                 condition = save.inventory.includes(args.slice(2).join(" "))
             } else if (com === 'inventoryhasnot') {
                 condition = !(save.inventory.includes(args.slice(2).join(" ")))
+            } else if (com === 'firstvisit') {
+                condition = save.visitCounts[save.chapter] < 1
+            } else if (com === 'notfirstvisit') {
+                condition = save.visitCounts[save.chapter] > 0
             }
 
             if (!condition) {
@@ -724,6 +733,8 @@ async function doDialog(name) {
                     }
                 }
             }
+        } else if (args[0] === 'incvisit') {
+            save.visitCounts[save.chapter]++
         } else if (args[0] === 'enter') {
             const idx = parseInt(args[1])
             const $img = $($('.actor-img')[idx])
@@ -768,6 +779,7 @@ async function doDialog(name) {
         } else if (args[0] === 'gotofadenewchapter') {
             hideLynn($('#lynn-pop'))
 
+            lastChapter = save.chapter
             save.chapter = parseInt(args[1])
 
             fadeoutNoSceneChange(() => {
@@ -794,7 +806,7 @@ async function doDialog(name) {
             // Calls async func by string name and awaits it
             await window[args[1]]()
         } else if (args[0] === 'setbg') {
-            await putBackgroundImage(args[1])
+            await putBackgroundImage(args.slice(1).join(" "))
         } else if (args[0] === 'shakestart') {
             const speakerIndex = parseInt(args[1])
             startShake(speakerIndex)

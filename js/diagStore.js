@@ -1,4 +1,5 @@
 const RIZO_ISLAND_MUSIC_DT = ["assets/music/cf.ogg", true, 0, 1.65, 166.32]
+const CALD_MUSIC_DT = ["assets/music/cald.mp3", true, 0, 1.5, 93.3]
 const ALRTHEME_MUSIC_DT = ["assets/music/alrtheme.ogg", true, 0, 0, 93]
 
 const ACTORS = {
@@ -9,6 +10,7 @@ const ACTORS = {
 }
 
 const ALL_DIAGS = {
+    // Chapter 1
     "shortage": {
         bg: "cf.png",
         // [ ["assets/music/original_cf.ogg", true, 0, 1.65, 166.32] ] for cf.mp3 (rizo island)
@@ -77,6 +79,7 @@ talk 2 "Alright ma'am here's your order."
 talk 1 "Thanks..."
 leave 2
 talk 0 "Becky, I've had enough of this. Take your food, we're goeen home right now."
+incvisit
 gotofadenewchapter 2
 `,
     },
@@ -88,11 +91,14 @@ setglobal hasSeenLeaveenLynn 1
 lynn leaveen
 pose 0 leaveen
 sfx assets/sfx/leaveen.aac
+affectionchange %AFFCHANGE_INDEX% Becky -5
 talk 0 "I'm leaaveeeeeeeen."
+incvisit
 gotofadenewchapter 2
 `,
     },
 
+    // Chapter 2
     "craygslist": {
         bg: "pillowmountain.png",
         music: [ ALRTHEME_MUSIC_DT ],
@@ -170,7 +176,7 @@ talk 0 "You didn't ask if I needed any money booboooo..."
 sfx assets/sfx/break.ogg
 leave 1
 talk - (Amberlynn breaks the piggy bank)
-randint pigMoney 15 95
+randint pigMoney 15 99
 moneychange %MONEYCHANGE_INDEX% pigMoney
 talk 0 "Oooh that's a lot of money."
 goto craygslist_postbooboo
@@ -202,6 +208,7 @@ pose 0 laser
 shakestart 0
 talk 0 "BECKY GET IN THE CAR NOW WE'RE GOING TO TORRID"
 shakeend 0
+incvisit
 gotofadenewchapter 3
 `,
     },
@@ -210,10 +217,12 @@ gotofadenewchapter 3
         inherits: "craygslist",
         diag: `
 talk 0 "Ugh fine I'll just do a mook-bong then."
+incvisit
 gotofadenewchapter 4
 `,
     },
 
+    // Chapter 3
     "torrid": {
         bg: "torrid.jpg",
         music: [ RIZO_ISLAND_MUSIC_DT ],
@@ -228,39 +237,56 @@ talk 0 "And ohmuhgod you guys there are so many cute dresses."
 pose 0 normal
 talk 0 "Come on Beckeee help me pick out a dress."
 
+if notfirstvisit
+lynn confused
+pose 0 confused
+talk 0 "Oh wait, haven't we already bought dresses here before?"
+talk 1 "Yeah I think so."
+talk 0 "Yah let's head over to the bookstore."
+goto torrid_gotochapter5
+endif
+
 multi
-White Dress ($20)
+Floral Dress ($20)
 torrid_postdress
-Floral Dress ($50)
+Mwav Dress ($50)
 torrid_postdress
-Red Dress ($90)
+Kameeno ($90)
 torrid_postdress
+`,
+    },
+
+    "torrid_gotochapter5": {
+        inherits: "torrid",
+        diag: `
+gotofadenewchapter 5
 `,
     },
 
     "torrid_postdress": {
         inherits: "torrid",
         diag: `
+incvisit
 ; this is necessary to create the var in inlineVarDict
 ; there is no "empty" declaration command, only decl+assign
 setvar moneyDressCost 0
 setvar affectionChange 0
 
 if eq lastChoice 0
-pushinv %INVCHANGE_INDEX% White Dress
+pushinv %INVCHANGE_INDEX% Floral Dress
 setvar moneyDressCost 20
 setvar affectionChange -5
 endif
 
 if eq lastChoice 1
-pushinv %INVCHANGE_INDEX% Floral Dress
+pushinv %INVCHANGE_INDEX% Mwav Dress
 setvar moneyDressCost 50
 setvar affectionChange -10
 endif
 
 ; affectionChange scales with dress price lol
 if eq lastChoice 2
-pushinv %INVCHANGE_INDEX% Red Dress
+pushinv %INVCHANGE_INDEX% Kameeno
 setvar moneyDressCost 90
 setvar affectionChange -15
 endif
@@ -328,6 +354,7 @@ goto torrid_keepgoingdecision
         inherits: "torrid",
         diag: `
 talk 0 "Hmm you know, this mall is actually kind of like, full of space-ey."
+talk 0 "It makes me like, want to do some more shoppeen."
 talk 0 "Beckeee what do you think, should we keep shoppeen or go holme?"
 multi
 Shop
@@ -341,7 +368,9 @@ torrid_leaveen
         inherits: "torrid",
         diag: `
 talk 0 "YASSS 2 hauls in 1 day."
-talk 0 "Let's go to wommart on the way back"
+talk 0 "Come on Beckee let's go to the bookstore."
+incvisit
+gotofadenewchapter 5
 `
     },
 
@@ -352,6 +381,7 @@ lynn leaveen
 pose 0 leaveen
 sfx assets/sfx/leaveen.aac
 talk 0 "I'm leaaveeeeeeeen."
+
 if eq hasSeenLeaveenLynn 1
 talk 1 "Amber..."
 talk 0 "Yes?"
@@ -359,10 +389,13 @@ talk 1 "Do you always have to do that when you're leavin' somewhere?"
 sfx assets/sfx/leaveen.aac
 talk 0 "Yah because I'm liduralllly LEAVEEEEEEEEN right nowwwuh."
 endif
+
+incvisit
 gotofadenewchapter 6
 `,
     },
 
+    // Chapter 4
     "rotisserie": {
         bg: "pillowmountain.png",
         music: [ ALRTHEME_MUSIC_DT ],
@@ -380,7 +413,58 @@ talk - (Amberlynn begins eating)
 callawait mgMookbong
 talk 0 "Mmmmmmm that was so good you guiiisee."
 talk 0 "Definitely saving the rest of this for later, like, ohmuhgosh."
-gotofadeoutnewchapter 5
+incvisit
+gotofadeoutnewchapter 6
+`,
+    },
+
+    // UH books is good for the brain??
+    // Chapter 5
+    "books": {
+        bg: "bookland.jpg",
+        music: [ CALD_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+        diag: `
+chapter 5
+enter 0
+enter 1
+pose 0 heyguys
+pose 1 useless
+talk 0 "Hey you guuys so me and Becky are at Bookland."
+talk 1 "Buying useless things."
+lynn reader
+pose 0 books
+sfx assets/sfx/books.ogg
+shakestart 0
+talk 0 "Uhh, books is good for the brain??"
+callawait mgBooks
+shakeend 0
+pose 0 normal
+talk 0 "Hmm let's also get some journals while we're here."
+talk 0 "How many should I get?"
+multi
+25 Journals ($50)
+books_journals
+50 Journals ($80)
+books_journals
+100 Journals ($130)
+`,
+    },
+
+    // Chapter 6
+    "haul": {
+        bg: "pillowmountain.png",
+        music: [ ALRTHEME_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+        diag: `
+enter 0
+enter 1
+if eq lastChapter 4
+talk 0 ""
+endif
+if eq lastChapter 5
+talk 0 ""
+endif
 `,
     },
 }

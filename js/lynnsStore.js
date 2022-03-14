@@ -6,6 +6,8 @@ const LYNNS = [
     [ "Mookbonglynn", "assets/actors/amberlynn_mook-bong.png" ],
     [ "Pointerlynn", "assets/actors/amberlynn_pointer.png" ],
     [ "Shadowlynn", "assets/actors/amberlynn_shadow.png" ],
+    [ "Confusedlynn", "assets/actors/amberlynn_confused.png" ],
+    [ "Readerlynn", "assets/actors/amberlynn_books.png" ],
 ]
 
 const NUM_LYNNS = LYNNS.length

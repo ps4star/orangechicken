@@ -1,19 +1,24 @@
-function showMgCanvas() {
-    save?.cheevStats
-    $('.canvas-container').addClass('visible')
+function mgShowCanvasContainer(can) {
+    can.addClass('visible')
+
+    // Disable Quit
+    $('#diag-quit').css('pointer-events', 'none')
 }
 
-function hideMgCanvas() {
-    $('.canvas-container').removeClass('visible')
+function mgHideCanvasContainer(can) {
+    can.removeClass('visible')
+
+    // Enable Quit
+    $('#diag-quit').css('pointer-events', 'unset')
 }
 
 const GB_GREEN = "#8bac0f"
 const GB_BLACK = "#0f380f"
 
-function mgInitCanvas() {
+function mgInitCanvas(can) {
     let canvas, realCanvas, ctx, sw, sh, realCtx
 
-    realCanvas = $('.mg-canvas')[0]
+    realCanvas = can[0]
     canvas = makeOffscreenCanvas(realCanvas.width, realCanvas.height)
     realCtx = realCanvas.getContext('2d', { alpha: false, powerPreference: "high-performance" })
     ctx = canvas.getContext('2d', { alpha: false, powerPreference: "high-performance" })
@@ -21,6 +26,26 @@ function mgInitCanvas() {
     sh = canvas.height
 
     return { canvas, ctx, sw, sh, realCanvas, realCtx }
+}
+
+function mgNullifyEvent(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    e.stopImmediatePropagation()
+}
+
+function mgNullifyKeyEvents(candt) {
+    candt.realCanvas.onkeydown = (e) => {
+        mgNullifyEvent(e)
+        return false
+    }
+    candt.realCanvas.onkeyup = candt.realCanvas.onkeydown
+
+    candt.realCanvas.parentElement.onkeydown = (e) => {
+        mgNullifyEvent(e)
+        return false
+    }
+    candt.realCanvas.parentElement.onkeyup = candt.realCanvas.parentElement.onkeydown
 }
 
 function mgDrawToReal(candt) {
@@ -36,10 +61,11 @@ function mgRealToCanvas(canvas, evt) {
     }
 }
 
-function mgDrawBG(can) {
+function mgDrawBG(can, color) {
+    color = color ?? GB_GREEN
     const { ctx, sw, sh } = can
 
-    ctx.fillStyle = GB_GREEN
+    ctx.fillStyle = color
     ctx.fillRect(0, 0, sw, sh)
 }
 
@@ -80,9 +106,12 @@ function mgSetTickFunction(cb) {
     tickFunc = cb
 }
 
+let mgExit = null
 function mgTick() {
     tickFunc()
-    window.requestAnimationFrame(mgTick)
+    if (mgExit !== false) {
+        window.requestAnimationFrame(mgTick)
+    }
 }
 
 // mgMookbong
@@ -287,13 +316,16 @@ async function mgMookbong() {
     await new Promise((resolve, reject) => {
         // Make text instant and disable user input (for minigame text)
         textInputMode = false
-        showMgCanvas()
+        mgShowCanvasContainer($('#mookbong-canvas-container'))
 
         // Set initial score
         mgInitialScore = save.money
 
-        let candt = mgInitCanvas()
-        mgDrawBG(candt)
+        const $can = $('#mookbong-canvas')
+
+        let candt = mgInitCanvas($can)
+        mgNullifyKeyEvents(candt)
+        mgDrawBG(candt, GB_GREEN)
         mgDrawScreenBorder(candt)
 
         // Handlers
@@ -331,7 +363,7 @@ async function mgMookbong() {
                     unlockCollectable('achievements', ACHIEVEMENTS, 'Rich Ninja')
                 }
 
-                hideMgCanvas()
+                mgHideCanvasContainer($('#mookbong-canvas-container'))
                 resolve()
             } else if (typeof mookDt === 'number') {
                 if (localFc >= mookDt) {
@@ -380,9 +412,166 @@ async function mgMookbong() {
             fc++
             localFc++
 
-            console.log(mgMookbongNinjaPath)
-
             mgDrawToReal(candt)
+
+            if (mgExit) return false
+        })
+        mgTick()
+
+        // drawMonoImage(candt, mgMookbongLayg, 40, 40)
+    })
+}
+
+const MUTED_WHITE = '#eeeeee'
+
+function mgBooksGetImage(src) {
+    const img = new Image()
+    img.src = src
+    return img
+}
+
+const mgBooksGoodForTheBrainBooks = [
+    mgBooksGetImage("assets/readerlynn/benotfar.jpg"),
+    mgBooksGetImage("assets/readerlynn/falleen_toewurd.jpg"),
+    mgBooksGetImage("assets/readerlynn/loneliest.jpg"),
+    mgBooksGetImage("assets/readerlynn/lucid.jpg"),
+    mgBooksGetImage("assets/readerlynn/ontheisland.jpg"),
+    mgBooksGetImage("assets/readerlynn/species.jpg"),
+    mgBooksGetImage("assets/readerlynn/tripleshotbettys.jpg"),
+]
+
+const mgBooksBadForTheBrainBooks = [
+    mgBooksGetImage("assets/readerlynn/weightloss1.jpg"),
+    mgBooksGetImage("assets/readerlynn/weightloss2.jpg"),
+    mgBooksGetImage("assets/readerlynn/weightloss3.jpg"),
+    mgBooksGetImage("assets/readerlynn/weightloss4.jpg"),
+    mgBooksGetImage("assets/readerlynn/weightloss5.jpg"),
+    mgBooksGetImage("assets/readerlynn/weightloss6.jpg"),
+    mgBooksGetImage("assets/readerlynn/weightloss7.jpg"),
+]
+
+let mgBooksCurrent = []
+let mgBooksMX, mgBooksMY, mgBooksClicked
+function mgBooksPush(candt, book) {
+    book._xpos = randInt(200, candt.sw - 200)
+    book._ypos = randInt(-400, -100)
+    book._vel = randFloat(3.5, 8.0)
+
+    mgBooksCurrent.push(book)
+}
+
+const mgBooksBadDt =  [ "assets/sfx/books_uh.ogg", false, 0.8 ]
+const mgBooksGoodDt = [ "assets/sfx/books.ogg", false, 0.8 ]
+
+function mgBooksDrawBooks(candt) {
+    $('canvas').css('cursor', 'default')
+
+    let didClick, clickedIdx
+
+    for (let idx = 0; idx < mgBooksCurrent.length; idx++) {
+        const book = mgBooksCurrent[idx]
+
+        book._ypos += book._vel
+        candt.ctx.drawImage(book, 0, 0, book.width, book.height, book._xpos, book._ypos, 150, 300)
+
+        if (mgIsRectOverlap(mgBooksMX, mgBooksMY, 1, 1, book._xpos, book._ypos, 128, 300)) {
+            $('canvas').css('cursor', 'pointer')
+            if (mgBooksClicked) {
+                didClick = true
+                clickedIdx = idx
+            }
+        } else if (book._ypos > candt.sh * 2) {
+            mgBooksCurrent.splice(idx, 1)
+            idx--
+        }
+    }
+
+    if (didClick) {
+        mgBooksClicked = false
+        let book = mgBooksCurrent[clickedIdx]
+
+        // Determine if bad or good
+        let isBad = false
+        mgBooksBadForTheBrainBooks.every(badBook => {
+            if (badBook.src == book.src) {
+                isBad = true
+                return false
+            }
+            return true
+        })
+
+        if (isBad) {
+            // bad
+            doMoneyChange(-2)
+            if (Math.random() > 0.8) playSong(...mgBooksBadDt)
+        } else {
+            // good
+            doMoneyChange(4)
+            if (Math.random() > 0.8) playSong(...mgBooksGoodDt)
+        }
+
+        mgBooksCurrent.splice(clickedIdx, 1)
+    }
+}
+
+async function mgBooks() {
+    await new Promise((resolve, reject) => {
+        textInputMode = false
+        mgShowCanvasContainer($('#books-canvas-container'))
+
+        const $books = $('#books-canvas')
+        let candt = mgInitCanvas($books)
+        mgNullifyKeyEvents(candt)
+
+        candt.realCanvas.onmousemove = (e) => {
+            mgBooksMX = e.offsetX * (candt.sw / window.innerWidth)
+            mgBooksMY = e.offsetY * (candt.sh / window.innerHeight)
+        }
+
+        candt.realCanvas.onmousedown = (e) => {
+            mgBooksClicked = true
+        }
+
+        let fc = 0
+        let nextBookTime = 40
+        let bookSelectionArr, nextBook, stopSpawning
+
+        mgSetTickFunction(() => {
+            // Draws all
+            mgDrawBG(candt, MUTED_WHITE)
+
+            // Draw books
+            // Decide next book
+            if (fc >= nextBookTime && !stopSpawning) {
+                nextBookTime += randInt(16, 60)
+                bookSelectionArr = Math.random() < 0.6 ? mgBooksGoodForTheBrainBooks : mgBooksBadForTheBrainBooks
+                nextBook = pickRandom(bookSelectionArr)
+
+                let copy = new Image()
+                copy._xpos = nextBook._xpos
+                copy._ypos = nextBook._ypos
+                copy._vel = nextBook._vel
+                copy.src = nextBook.src
+
+                mgBooksPush(candt, copy)
+            }
+
+            if (fc >= 2800) {
+                stopSpawning = true
+            }
+
+            if (fc >= 3000) {
+                mgExit = true
+                mgHideCanvasContainer($('#books-canvas-container'))
+                resolve()
+            }
+
+            mgBooksDrawBooks(candt)
+            mgBooksClicked = false
+
+            // Draw to real
+            mgDrawToReal(candt)
+            fc++
         })
         mgTick()
 
