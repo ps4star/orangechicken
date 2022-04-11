@@ -159,8 +159,7 @@ talk - (Amberlynn gives becky the piggy bank)
 affectionchange %AFFCHANGE_INDEX% Becky 15
 talk 2 "Thanks..."
 talk 2 "That was pretty mature of you Amber."
-talk 2 "And look, I know relationships are supposed to be about sharin'..."
-talk 2 "So here, I'll give you some money for the recipe thang."
+talk 2 "Here, I'll give you some money for the recipe thang."
 randint niceMoney 10 35
 moneychange %MONEYCHANGE_INDEX% niceMoney
 talk - (Becky hands Amber some money out of the piggy bank)
@@ -235,7 +234,7 @@ pose 0 heyguys
 talk 0 "Hey guuuuys so me and Becky just got here at Torrid."
 talk 0 "And ohmuhgod you guys there are so many cute dresses."
 pose 0 normal
-talk 0 "Come on Beckeee help me pick out a dress."
+talk 0 "Come on Beckeee let's look at some dresses."
 
 if notfirstvisit
 lynn confused
@@ -246,10 +245,37 @@ talk 0 "Yah let's head over to the bookstore."
 goto torrid_gotochapter5
 endif
 
+talk 0 "Okay so this one just says 'Floral Dress.'"
+talk 0 "Ooh look it has these strings that go over the front, I wanna try it on."
+talk - (Amberlynn puts on the dress)
+pose 0 backwards
+lynn backwards
+talk 0 "You guys it has this like chest piece, but it's too tight for my likeeng."
+talk 0 "I like their other dresses it's honestly just like the material of it."
+talk 0 "Ooh but the price tag says it's only 20 dollars."
+talk 0 "I guess they're doing a clearance type deal."
+pose 0 normal
+talk 0 "Ok let's look at some other ones."
+pose 0 wifeycowprint
+talk 0 "Ooh I like this one, we got a cow print moment."
+talk 0 "Wait wuuuut there's like this piece of paper in here."
+talk - (Amberlynn pulls the paper out from the inside of the cow-print dress.)
+talk 0 "It says 'hello future wifey' and it has someone's instagram handle?? Whaatt???"
+talk 0 "Wow that's so weird you guys."
+talk 0 "Becky what do you think this means?"
+talk 1 "I dunno babe, I guess it's an inside joke."
+talk 0 "Yah probably."
+pose 0 normal
+talk 0 "Ok we're gonna be leaveen soon but there's one more dress I saw that I wanna try."
+talk - (Amberlynn picks up a kimono off the rack)
+talk 0 "So this is aaaa.... kuh- kuh-mee-no?"
+talk - (Amberlynn reids the tag on the dress; it clearly says 'Kimono')
+talk 0 "Yeah it's pronounced kameeno."
+talk 0 "I don't really have time to try this one on. Which one should I get Becky?"
 multi
 Floral Dress ($20)
 torrid_postdress
-Mwav Dress ($50)
+Cow-print Dress that definitely isn't part of a feeder fetish ($50)
 torrid_postdress
 Kameeno ($90)
 torrid_postdress
@@ -307,7 +333,7 @@ endif
 
 ; the goto is necessary because ifblock + multi causes some issues with parsing
 ; (it thinks "endif" is an option with a blank scene target)
-if lteq money moneyDressCost
+if lt money moneyDressCost
 pose 0 pissed
 talk 0 "Oh noooooouhh I can't afford itt."
 goto torrid_cantafford
@@ -399,7 +425,7 @@ gotofadenewchapter 6
     "rotisserie": {
         bg: "pillowmountain.png",
         music: [ ALRTHEME_MUSIC_DT ],
-        stage: [ ["left_back", "Amberlynn"] ],
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
 chapter 4
 enter 0
@@ -413,8 +439,23 @@ talk - (Amberlynn begins eating)
 callawait mgMookbong
 talk 0 "Mmmmmmm that was so good you guiiisee."
 talk 0 "Definitely saving the rest of this for later, like, ohmuhgosh."
+talk 0 "Sooo that was my mook-bong. See you guys later!"
+talk - (Amberlynn shuts the camera off)
+pose 0 closedeyes
+talk 0 "Ughhh thank god that's over."
+talk 0 "Hey Beckeeeee."
+talk 0 ... ... ...
+pose 0 laser
+shakestart 0
+talk 0 "I said HEEEEYYYYY BECKEEEEEEEEEEEEYYYYUUUHHH!11!!111@"
+shakeend 0
+pose 0 normal
+enter 1
+talk 1 "What is it babe?"
+talk 0 ""
 incvisit
-gotofadeoutnewchapter 6
+setglobal sceneAlt 2
+gotofadenewchapter 6
 `,
     },
 
@@ -443,12 +484,48 @@ pose 0 normal
 talk 0 "Hmm let's also get some journals while we're here."
 talk 0 "How many should I get?"
 multi
-25 Journals ($50)
+2 Journals ($3)
 books_journals
-50 Journals ($80)
+50 Journals ($65)
 books_journals
-100 Journals ($130)
+150 Journals ($160)
+books_journals
 `,
+    },
+
+    "books_journals": {
+        inherits: "books",
+        diag: `
+setvar journalCost 0
+
+if eq lastChoice 0
+setvar journalCost 3
+endif
+
+if eq lastChoice 1
+setvar journalCost 65
+endif
+
+if eq lastChoice 2
+setvar journalCost 160
+endif
+
+; ensures journalCost is valid
+if eq journalCost 0
+error journalCost
+endif
+
+copyvarnegative negativeJournalCost journalCost
+
+if gteq money negativeJournalCost
+moneychange %MONEYCHANGE_INDEX% negativeJournalCost
+talk 0 ""
+endif
+
+if lt money negativeJournalCost
+talk 0 "I can't afford these journuuuuuuuuuuhhhhls noooooouh."
+endif
+`
     },
 
     // Chapter 6
@@ -457,14 +534,26 @@ books_journals
         music: [ ALRTHEME_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
+chapter 6
 enter 0
-enter 1
+pose 0 bored
+talk - (Amberlynn is uploading the video she just filmed)
+talk 0 "I'm waaaaiteeeeeen."
+talk 0 "... ... ..."
+talk - (The video finishes uploading)
+pose 0 normal
+talk 0 "Finally it's done."
+talk 0 "... ... ..."
+talk 0 "Gonna reid a few comments real quick."
+talk - (Amberlynn reids the comments)
 if eq lastChapter 4
-talk 0 ""
+setvar _com_seq 1
 endif
 if eq lastChapter 5
-talk 0 ""
+setvar _com_seq 2
 endif
+callawait mgComments
+talk 0 ""
 `,
     },
 }

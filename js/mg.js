@@ -364,6 +364,7 @@ async function mgMookbong() {
                 }
 
                 mgHideCanvasContainer($('#mookbong-canvas-container'))
+                textInputMode = true
                 resolve()
             } else if (typeof mookDt === 'number') {
                 if (localFc >= mookDt) {
@@ -454,8 +455,8 @@ let mgBooksCurrent = []
 let mgBooksMX, mgBooksMY, mgBooksClicked
 function mgBooksPush(candt, book) {
     book._xpos = randInt(200, candt.sw - 200)
-    book._ypos = randInt(-400, -100)
-    book._vel = randFloat(3.5, 8.0)
+    book._ypos = randInt(-400, -300)
+    book._vel = randFloat(3.0, 8.5)
 
     mgBooksCurrent.push(book)
 }
@@ -563,11 +564,57 @@ async function mgBooks() {
             if (fc >= 3000) {
                 mgExit = true
                 mgHideCanvasContainer($('#books-canvas-container'))
+                textInputMode = true
                 resolve()
             }
 
             mgBooksDrawBooks(candt)
             mgBooksClicked = false
+
+            // Draw to real
+            mgDrawToReal(candt)
+            fc++
+        })
+        mgTick()
+
+        // drawMonoImage(candt, mgMookbongLayg, 40, 40)
+    })
+}
+
+const mgCommentsSeqs = [
+    null, // 0
+    [ // 1 - mookbong comments
+        `Ooops:Amberlynn: I want to lose weight. Also Amberlynn: *does mookbong of whole rotiserie chicken*`,
+        `Katie W:GORL I can't believe you ate a whole chicken.`,
+        `Jade F:"I'm trying to eat lean meats" girl you ate a whole ass chicken.`,
+        ``
+    ],    
+]
+
+async function mgComments() {
+    await new Promise((resolve, reject) => {
+        textInputMode = false
+        mgShowCanvasContainer($('#books-canvas-container'))
+
+        const $books = $('#books-canvas')
+        let candt = mgInitCanvas($books)
+        mgNullifyKeyEvents(candt)
+
+        candt.realCanvas.onmousemove = (e) => {
+
+        }
+
+        candt.realCanvas.onmousedown = (e) => {
+
+        }
+
+        let fc = 0
+
+        mgSetTickFunction(() => {
+            // Draws all
+            mgDrawBG(candt, MUTED_WHITE)
+
+            
 
             // Draw to real
             mgDrawToReal(candt)

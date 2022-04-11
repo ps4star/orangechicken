@@ -376,6 +376,10 @@ addCurrent(
             .append($(`<canvas class="mg-canvas" id="books-canvas" width="1280" height="720">`))
             .append($(`<div class="mg-image">`))
         )
+        .append($(`<div class="canvas-container" id="phone-canvas-container">`)
+            .append($(`<canvas class="mg-canvas" id="phone-canvas" width="1280" height="720">`))
+            .append($(`<div class="mg-image">`))
+        )
 )
 hook('unload', function() {
     clearDiagDOM()

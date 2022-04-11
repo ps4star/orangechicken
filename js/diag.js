@@ -32,7 +32,7 @@ const DEFAULT_SAVE = {
 
     visitCounts: fillArr(0, NUM_CHAPTERS),
 
-    textSpeed: 30,
+    textSpeed: 10,
     volume: 50,
 
     money: 0,
@@ -212,6 +212,7 @@ async function putTextBox(speakerIndex, text) {
         }, 6)
 
         function handleAdvanceClick(e) {
+            if (!textInputMode) return false
             e.preventDefault()
 
             if (e.key) {
@@ -572,13 +573,14 @@ function derefInlineVariable(name) {
     if (name === 'lastChoice') return lastChoice
     if (name === 'lastChapter') return lastChapter
     if (name in save.savedVars) return save.savedVars[name]
+    if (name.includes(" ")) return name // is assumed to be string
 
     // If not defined as a var, assumed to be int
     try {
         const asInt = parseInt(name)
-        return Number.isNaN(asInt) ? 0 : asInt
+        return Number.isNaN(asInt) ? name : asInt
     } catch(e) {
-        return 0
+        return name
     }
 }
 
@@ -642,6 +644,8 @@ async function doDialog(name) {
             await updateActorPose(person, pose, hasTalked)
         } else if (args[0] === 'talk') {
             await handleTalk(args)
+        } else if (args[0] === 'talknoconfirm') {
+            handleTalk(args)
         } else if (args[0] === 'multi') {
             // Multichoice box
             const options = []
@@ -697,14 +701,14 @@ async function doDialog(name) {
                 doAffectionChange(args[2], derefInlineVariable(args[3]))
             })
         } else if (args[0] === 'setvar') {
-            inlineVarDict[args[1]] = derefInlineVariable(args[2])
+            inlineVarDict[args[1]] = derefInlineVariable(args.slice(2).join(" "))
         } else if (args[0] === 'setglobal') {
-            save.savedVars[args[1]] = derefInlineVariable(args[2])
+            save.savedVars[args[1]] = derefInlineVariable(args.slice(2).join(" "))
         } else if (args[0] === 'copyvarnegative') {
-            inlineVarDict[args[1]] = (-1) * derefInlineVariable(args[2])
+            inlineVarDict[args[1]] = (-1) * derefInlineVariable(args.slice(2).join(" "))
         } else if (args[0] === 'moneychange') {
             handleFlaggedEvent(derefInlineVariable(args[1]), `money`, () => {
-                doMoneyChange(derefInlineVariable(args[2]))
+                doMoneyChange(derefInlineVariable(args.slice(2).join(" ")))
             })
         } else if (args[0] === 'pushinv') {
             // Push item (string) into inventory
