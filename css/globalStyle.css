@@ -1,5 +1,5 @@
 @font-face {
-    src: url("./Helve Cursive.ttf");
+    src: url("./HelveCursive.ttf");
     font-family: "GCursive";
     font-weight: normal;
 }
@@ -122,6 +122,12 @@ button, input {
 #s-cover.visible {
     opacity: 1;
     pointer-events: all;
+}
+
+#loadeen {
+    margin: auto;
+    font-size: 2rem;
+    color: white;
 }
 
 #root {

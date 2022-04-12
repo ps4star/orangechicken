@@ -160,9 +160,6 @@ const mgMookbongWing = {
 
 const mgMookbongImgs = [mgMookbongLayg, mgMookbongWing]
 const mgMookbongPositions = [0, 1, 2, 3]
-function pickRandom(arr) {
-    return arr[Math.floor(Math.random() * arr.length)]
-}
 
 let mgMookbongNinjaPath = [0]
 const mgMookbongSpawnData = []

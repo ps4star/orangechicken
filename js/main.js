@@ -3,9 +3,11 @@ const debug = true
 const MM_ASSETS_LIST = [
     "assets/titlescreen.jpg",
     "css/GCursive.ttf",
-    "css/Helve Cursive.ttf",
+    "css/HelveCursive.ttf",
     "assets/music/cf.ogg",
 ]
+
+const SPLASH_ASSETS_LIST = MM_ASSETS_LIST
 
 const DIAG_ASSETS_LIST = [
     "assets/music/alrtheme.ogg",
@@ -53,11 +55,23 @@ function nullifyEvent(e) {
     return false
 }
 
+async function bufferAssets(list) {
+    for (const item of list) {
+        await new Promise((resolve, reject) => {
+            fetch(item)
+                .then(res => resolve())
+        })
+    }
+}
+
 hookGlobal('load', function() {
     $('img').on('dragstart', (e) => nullifyEvent(e))
 })
 
 makeScene('splash1')
+hook('before', async function() {
+    await bufferAssets( SPLASH_ASSETS_LIST )
+})
 addCurrent(
     $(`<div class="splash-container" tabindex="-1">`)
         .append($(`<pre class="disclaimer-large">DISCLAIMER TYPE DEAL</pre>`))
@@ -424,18 +438,6 @@ hook('load', function() {
 // hook('unload', function () {
 //     $('#ch-text').removeClass('grow-border')
 // })
-
-async function bufferAssets(list) {
-    list.forEach(async (item) => {
-        await new Promise((resolve, reject) => {
-            const img = new Image()
-            img.src = item
-
-            if (img.completed) resolve()
-            img.onload = resolve
-        })
-    })
-}
 
 makeScene('dialog')
 

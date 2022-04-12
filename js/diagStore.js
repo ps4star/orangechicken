@@ -1,5 +1,5 @@
 const RIZO_ISLAND_MUSIC_DT = ["assets/music/cf.ogg", true, 0, 1.65, 166.32]
-const CALD_MUSIC_DT = ["assets/music/cald.mp3", true, 0, 1.5, 93.3]
+const CALD_MUSIC_DT = ["assets/music/cald.ogg", true, 0, 1.5, 93.3]
 const ALRTHEME_MUSIC_DT = ["assets/music/alrtheme.ogg", true, 0, 0, 93]
 
 const ACTORS = {
