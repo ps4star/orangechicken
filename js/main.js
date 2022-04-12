@@ -1,5 +1,44 @@
 const debug = true
 
+const MM_ASSETS_LIST = [
+    "assets/titlescreen.jpg",
+    "css/GCursive.ttf",
+    "css/Helve Cursive.ttf",
+]
+
+const DIAG_ASSETS_LIST = [
+    "assets/music/alrtheme.ogg",
+    "assets/music/cald.ogg",
+    "assets/music/cf.ogg",
+    "assets/actors/amberlynn.png",
+    "assets/actors/becky.png",
+
+    "assets/gamegorl.png",
+
+    // Readerlynn assets
+    "assets/readerlynn/benotfar.jpg",
+    "assets/readerlynn/falleen_toewurd.jpg",
+    "assets/readerlynn/farfromthetree.jpg",
+    "assets/readerlynn/loneliest.jpg",
+    "assets/readerlynn/lucid.jpg",
+    "assets/readerlynn/ontheisland.jpg",
+    "assets/readerlynn/species.jpg",
+    "assets/readerlynn/tripleshotbettys.jpg",
+    "assets/readerlynn/weightloss1.jpg",
+    "assets/readerlynn/weightloss2.jpg",
+    "assets/readerlynn/weightloss3.jpg",
+    "assets/readerlynn/weightloss4.jpg",
+    "assets/readerlynn/weightloss5.jpg",
+    "assets/readerlynn/weightloss6.jpg",
+    "assets/readerlynn/weightloss7.jpg",
+]
+
+const LYNNS_ASSETS_LIST = [
+    "assets/journalynn.png",
+    "assets/actors/amberlynn_shadow.png",
+    // "assets/actors/amberlynn_leaveen.png",
+]
+
 function splashHandler(s) {
     fadeoutToScene(s)
     $(window).off('mousedown')
@@ -20,6 +59,10 @@ hook('load', function() {
 })
 
 makeScene('mainMenu')
+
+hook('before', async function() {
+    await bufferAssets( MM_ASSETS_LIST )
+})
 
 // 0 = Chapters
 // 1 = Lynns
@@ -138,6 +181,10 @@ addCurrent(
         .append($(`<button class="back-button control-button">X</button>`))
 )
 
+hook('before', async function() {
+    await bufferAssets( LYNNS_ASSETS_LIST )
+})
+
 const PAGE_CUT = 9
 
 // Returns a fake save file used for static chapters (from lynns screen)
@@ -184,38 +231,57 @@ hook('load', function() {
     const $lynnMain = $('#lynns-main')
     $lynnMain.empty()
     let i = 0
-    let $page, $subpage
+    
+    function ensureLynnItems(pageNumber) {
+        while (Array.from($lynnMain[0].children).length <= Math.floor(pageNumber / 2)) {
+            $lynnMain.append(
+                $(`<div class="lynns-page">`)
+                    .append($(`<div class="lynns-subpage left">`))
+                    .append($(`<div class="lynns-subpage right">`))
+            )
+        }
+
+        $('.lynns-page').hide()
+    }
+
+    function findLynnSubpage(itemNumber) {
+        const pageNumber = Math.floor(itemNumber / PAGE_CUT)
+        return $($('.lynns-subpage')[pageNumber])
+    }
 
     for (; i < numItems; i++) {
-        const isLast = (i === numItems - 1)
-        if (i === 0) {
-            $page = $(`<div class="lynns-page">`)
-            $subpage = $(`<div class="lynns-subpage left">`)
-        } else if (i % PAGE_CUT === 0 || isLast) {
-            // 2nd condition triggers if we're actually working on left page
-            if (i % (PAGE_CUT * 2) === 0 || (isLast && !(i % (PAGE_CUT * 2) >= PAGE_CUT))) {
-                // Full sep
-                $page.append($subpage)
-                $page.hide()
-                $lynnMain.append($page)
+        ensureLynnItems(Math.floor(i / PAGE_CUT))
+        // const isLast = (i === numItems - 1)
+        // if (i === 0) {
+        //     $page = $(`<div class="lynns-page">`)
+        //     $subpage = $(`<div class="lynns-subpage left">`)
+        // } else if (i % PAGE_CUT === 0) {
+        //     // 2nd condition triggers if we're actually working on left page
+        //     if (i % (PAGE_CUT * 2) === 0) {
+        //         // Full sep
+        //         $page.append($subpage)
+        //         $page.hide()
+        //         $lynnMain.append($page)
 
-                if (!isLast) {
-                    $page = $(`<div class="lynns-page">`)
-                    $subpage = $(`<div class="lynns-subpage left">`)
-                }
-            } else {
-                // Right page
-                $page.append($subpage)
-                if (!isLast) {
-                    $subpage = $(`<div class="lynns-subpage right">`)
-                }
+        //         // if (!isLast) {
+        //         $page = $(`<div class="lynns-page">`)
+        //         $subpage = $(`<div class="lynns-subpage left">`)
+        //         // }
+        //     } else {
+        //         // Right page
+        //         $page.append($subpage)
+        //         // if (!isLast) {
+        //         $subpage = $(`<div class="lynns-subpage right">`)
+        //         // }
 
-                if (isLast) {
-                    $page.hide()
-                    $lynnMain.append($page)
-                }
-            }
-        }
+        //         // if (isLast) {
+        //         //     $page.hide()
+        //         //     $lynnMain.append($page)
+        //         // }
+        //     }
+        // }
+
+        const $subpage = findLynnSubpage(i)
 
         let url, name
         if (i >= dict.length || !itemList[i]) {
@@ -347,6 +413,18 @@ hook('load', function() {
 //     $('#ch-text').removeClass('grow-border')
 // })
 
+async function bufferAssets(list) {
+    list.forEach(async (item) => {
+        await new Promise((resolve, reject) => {
+            const img = new Image()
+            img.src = item
+
+            if (img.completed) resolve()
+            img.onload = resolve
+        })
+    })
+}
+
 makeScene('dialog')
 
 addCurrent(
@@ -362,8 +440,8 @@ addCurrent(
             )
         )
         .append($(`<div id="multi-box" class="panel">`))
-        .append($(`<div id="lynn-pop" class="panel">`)
-            .append($(`<pre class="lynn-pop-text"></pre>`))
+        .append($(`<div id="lynn-pop-container">`)
+
         )
         .append($(`<div id="saveens" class="panel">`)
             .append($(`<pre id="saveens-text"><span class="saveens-dollar">$</span><span class="saveens-amount"></span></pre>`))
@@ -381,6 +459,11 @@ addCurrent(
             .append($(`<div class="mg-image">`))
         )
 )
+
+hook('before', async function() {
+    await bufferAssets( DIAG_ASSETS_LIST )
+})
+
 hook('unload', function() {
     clearDiagDOM()
 })
