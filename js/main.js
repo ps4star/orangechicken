@@ -23,6 +23,7 @@ const DIAG_ASSETS_LISTS = [
 
         "assets/menupointer.png",
         "assets/money.png",
+        "assets/orangechicken.png",
     ],
 
     [ // Ch 1
