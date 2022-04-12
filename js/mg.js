@@ -524,6 +524,13 @@ async function mgBooks() {
         candt.realCanvas.onmousemove = (e) => {
             mgBooksMX = e.offsetX * (candt.sw / window.innerWidth)
             mgBooksMY = e.offsetY * (candt.sh / window.innerHeight)
+
+            if (debug) {
+                mgExit = true
+                mgHideCanvasContainer($('#books-canvas-container'))
+                textInputMode = true
+                resolve()
+            }
         }
 
         candt.realCanvas.onmousedown = (e) => {

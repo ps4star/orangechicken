@@ -38,14 +38,13 @@ async function loadScene(name, $root) {
     let newScene = name
     let $finalRoot = $root ?? $sroot
 
-    tryHook(globalHooks, 'unload', oldScene)
-    tryHook(localHooks, 'unload', oldScene)
+    tryHook(globalHooks, 'unload', newScene)
+    tryHook(localHooks, 'unload', newScene)
 
     $finalRoot.empty()
 
     // Pre-buffer assets
     if (localHooks[newScene]['before']) {
-        console.log(localHooks[newScene]['before'])
         await localHooks[newScene]['before']()
     }
 
@@ -56,8 +55,8 @@ async function loadScene(name, $root) {
     })
 
     // Run hooks
-    tryHook(globalHooks, 'load', newScene)
-    tryHook(localHooks, 'load', newScene)
+    tryHook(globalHooks, 'load', oldScene)
+    tryHook(localHooks, 'load', oldScene)
 }
 
 function pickRandom(arr) {
@@ -76,7 +75,7 @@ function hideLoadeen() {
     $('#loadeen').hide()
 }
 
-const LOADEEN_INTERVAL = 1000
+const LOADEEN_INTERVAL = 1500
 const LOADEEN_TEXTS = [
     "Waaaaaaaaaaiteeeeeeeeeeeeeeeeeen...",
     "Blaming Twinkie's weight on Eric & Rickie...",
@@ -113,6 +112,15 @@ const LOADEEN_TEXTS = [
     "Being a monster truck in the nightlife...",
     "Accusing ex of rain and petals eavesdrop...",
     "Petting the window seal...",
+    "Flying freely like a bird, maybe a pigeon...",
+    "Asking if there's a sign in your teeth to show high blood pressure...",
+    "Making up lahs...",
+    "Giving Becky almost none of the lah-stream money...",
+    "Ignoring 30 superchats...",
+    "Eating 9th mill of the day...",
+    "Using the treadmeal...",
+    "Being a dainty gorl...",
+    "Waking up overnight...",
 ]
 const FADE_TIME = 400
 function fadeoutNoSceneChange(callback, noLoadingScreen) {

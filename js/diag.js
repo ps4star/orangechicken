@@ -167,12 +167,9 @@ async function updateActorPose(stageIndex, newPose, reanimate) {
         $actorImg.show()
     }
 
-    await new Promise((resolve, reject) => {
-        if ($actorImg[0].complete) resolve()
-        else $actorImg[0].onload = resolve
+    return new Promise((resolve, reject) => {
+        $actorImg.on('load', resolve)
     })
-
-    return Promise.resolve()
 }
 
 let textScrollInt
@@ -350,11 +347,11 @@ function playSong(url, loops, initStart, start, end) {
                 newAudio.currentTime = start
             }
         }, 40)
-        window.onkeydown = (e) => {
-            if (e.key === 'g') {
-                newAudio.currentTime = end - 5.0
-            }
-        }
+        // window.onkeydown = (e) => {
+        //     if (e.key === 'g') {
+        //         newAudio.currentTime = end - 5.0
+        //     }
+        // }
     }
 }
 
@@ -639,6 +636,10 @@ async function handleTalk(args) {
     await new Promise((resolve, reject) => {
         setTimeout(resolve, inputDelayTime)
     })
+}
+
+function addJournals() {
+    save.journals += parseInt(inlineVarDict['_journal_increase'], 10)
 }
 
 let isTransition = false

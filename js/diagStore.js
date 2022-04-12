@@ -513,17 +513,21 @@ books_journals
         inherits: "books",
         diag: `
 setvar journalCost 0
+setvar _journal_increase 0
 
 if eq lastChoice 0
 setvar journalCost 3
+setvar _journal_increase 2
 endif
 
 if eq lastChoice 1
 setvar journalCost 65
+setvar _journal_increase 50
 endif
 
 if eq lastChoice 2
 setvar journalCost 160
+setvar _journal_increase 150
 endif
 
 ; ensures journalCost is valid
@@ -533,12 +537,15 @@ endif
 
 copyvarnegative negativeJournalCost journalCost
 
-if gteq money negativeJournalCost
+if gteq money journalCost
 moneychange %MONEYCHANGE_INDEX% negativeJournalCost
-talk 0 ""
+call addJournals
+talk 0 "So that was a situation"
+talk 0 "..."
+talk 0 "..."
 endif
 
-if lt money negativeJournalCost
+if lt money journalCost
 talk 0 "I can't afford these journuuuuuuuuuuhhhhls noooooouh."
 endif
 `

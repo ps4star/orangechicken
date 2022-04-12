@@ -58,8 +58,26 @@ function nullifyEvent(e) {
 async function bufferAssets(list) {
     for (const item of list) {
         await new Promise((resolve, reject) => {
-            fetch(item)
-                .then(res => resolve())
+            let img, loadedEvent
+            if (item.endsWith('.png') || item.endsWith('.jpg') || item.endsWith('.bmp')) {
+                img = new Image()
+                loadedEvent = 'onload'
+            } else if (item.endsWith('.ogg') || item.endsWith('.mp3')) {
+                img = new Audio()
+                loadedEvent = 'oncanplaythrough'
+            } else if (item.endsWith('.ttf') || item.endsWith('.woff')) {
+                fetch(item).then(resolve)
+                loadedEvent = null
+            } else {
+                resolve()
+                return
+            }
+
+            if (loadedEvent !== null) {
+                img.src = item
+                img[loadedEvent] = resolve
+                console.log('iter ' + item)
+            }
         })
     }
 }
