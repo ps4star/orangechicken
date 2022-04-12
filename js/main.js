@@ -4,6 +4,7 @@ const MM_ASSETS_LIST = [
     "assets/titlescreen.jpg",
     "css/GCursive.ttf",
     "css/Helve Cursive.ttf",
+    "assets/music/cf.ogg",
 ]
 
 const DIAG_ASSETS_LIST = [
@@ -44,6 +45,17 @@ function splashHandler(s) {
     $(window).off('mousedown')
     $(window).off('keydown')
 }
+
+function nullifyEvent(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    e.stopImmediatePropagation()
+    return false
+}
+
+hookGlobal('load', function() {
+    $('img').on('dragstart', (e) => nullifyEvent(e))
+})
 
 makeScene('splash1')
 addCurrent(

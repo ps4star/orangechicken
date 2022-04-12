@@ -213,7 +213,8 @@ async function putTextBox(speakerIndex, text) {
 
         function handleAdvanceClick(e) {
             if (!textInputMode) return false
-            e.preventDefault()
+            // Commented out bc prevents F12/devmenu during dialog
+            //e.preventDefault()
 
             if (e.key) {
                 if (!(e.key === 'Enter' || e.key === ' ')) {
