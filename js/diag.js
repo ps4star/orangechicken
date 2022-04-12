@@ -425,41 +425,59 @@ function clearDiagDOM() {
     $mbox.removeClass('reverse-anim').removeClass('begin')
 }
 
-const lynnQ = []
-function hideLynn($lynnpop) {
-    $lynnpop[0].onanimationend = null
-    $lynnpop.hide()
-    $lynnpop.removeClass('anim-reverse').removeClass('anim')
-    $('.lynn-pop-text').html('')
+function hideNotifs() {
+    $('#lynn-pop-container').html("")
+}
 
-    lynnQ.pop()
+function hideLynn($lynnpop) {
+    $lynnpop.remove()
 }
 
 // Originally only showed Lynn get texts, now general notif function
 // Also has queue functionality
 function showLynn(text) {
     // Shows lynn pop-down
-    if (lynnQ.length < 1) {
-        lynnQ.push(1)
-        const $lynnpop = $('#lynn-pop')
-        $lynnpop.show()
-        $lynnpop.addClass('anim')
-        $('.lynn-pop-text').html(`${text}`)
+    const $lynnpop = $('#lynn-pop-container')
+    
+    const $txt = $(`<div class="lynn-pop panel">`)
+    $txt.append($(`<pre class="lynn-pop-text">${text}</pre>`))
+    $lynnpop.append($txt)
+    $txt.show()
+    $txt.addClass('anim')
+    $lynnpop.show()
 
-        setTimeout(() => {
-            if (!$lynnpop.hasClass('anim')) return
+    setTimeout(() => {
+        if (!$txt.hasClass('anim')) return
 
-            $lynnpop.hide()
-            $lynnpop.removeClass('anim')
-            $lynnpop.show()
-            $lynnpop.addClass('anim-reverse')
+        $txt.hide()
+        $txt.removeClass('anim')
+        $txt.show()
+        $txt.addClass('anim-reverse')
 
-            $lynnpop[0].onanimationend = () => hideLynn($lynnpop)
-        }, 2000)
-    } else {
-        setTimeout(() => showLynn(text), 3000)
-    }
+        $txt[0].onanimationend = () => hideLynn($txt)
+    }, 2000)
 }
+
+// function clearNotifs() {
+//     //$('#lynn-pop-container').html("")
+// }
+
+// function showNotifs() {
+//     // const $lynnpop = $('#lynn-pop-container')
+//     // $lynnpop.show()
+//     // $lynnpop.addClass('anim')
+
+//     // setTimeout(() => {
+//     //     if (!$lynnpop.hasClass('anim')) return
+
+//     //     $lynnpop.hide()
+//     //     $lynnpop.removeClass('anim')
+//     //     $lynnpop.show()
+//     //     $lynnpop.addClass('anim-reverse')
+
+//     //     $lynnpop[0].onanimationend = () => hideLynn($lynnpop)
+//     // }, 2000)
+// }
 
 function startNewScene() {
     iterator = -1
@@ -539,6 +557,10 @@ function endShake() {
     offInt = null
 }
 
+// dictName: STRING name of dict on save to check
+// dict: ARRAY actual array to use/search
+// name: collectable to unlock
+// Goes through dict, finds index of thing to try to unlock, unlocks it if not already unlocked
 function unlockCollectable(dictName, dict, name) {
     let index = -1
     let j = 0
@@ -555,15 +577,17 @@ function unlockCollectable(dictName, dict, name) {
     if (index < 0) {
         // invalid lynn
         console.error("Invalid internal Lynn name provided: " + name)
-    } else {
-        save[dictName][index] = true
-
-        // Lynn pop-down
-        if (dictName.endsWith('s')) {
-            dictName = dictName.slice(0, -1)
-        }
-        showLynn(`New ${dictName.charAt(0).toUpperCase() + dictName.slice(1)}: <span class="ochicken">${dict[index][0]}</span>`)
+        return
     }
+
+    save[dictName][index] = true
+
+    // Lynn pop-down
+    if (dictName.endsWith('s')) {
+        dictName = dictName.slice(0, -1)
+    }
+
+    showLynn(`New ${dictName.charAt(0).toUpperCase() + dictName.slice(1)}: <span class="ochicken">${dict[index][0]}</span>`)
 }
 
 let inlineVarDict = {}
@@ -770,27 +794,24 @@ async function doDialog(name) {
             //     showLynn(LYNNS[index][0], `New Lynn`)
             // }
         } else if (args[0] === 'gotofade') {
-            hideLynn($('#lynn-pop'))
-
             newScene = args[1]
             startNewScene()
             await new Promise((resolve, reject) => {
                 fadeoutNoSceneChange(() => {
+                    hideNotifs()
                     updateSaveens()
                     resolve()
                 })
             })
         } else if (args[0] === 'gotofadenewchapter') {
-            hideLynn($('#lynn-pop'))
-
             lastChapter = save.chapter
             save.chapter = parseInt(args[1])
 
-            fadeoutNoSceneChange(() => {
+            fadeoutNoSceneChange(async () => {
                 clearStage()
                 currentStage = []
-                loadScene('mainMenu')
-                loadScene('dialog')
+                await loadScene('mainMenu')
+                await loadScene('dialog')
             })
         } else if (args[0] === 'chapter') {
             let finalVal

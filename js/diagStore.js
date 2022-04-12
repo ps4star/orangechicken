@@ -25,8 +25,22 @@ enter 1
 pose 0 bored
 talk - (Amberlynn & Becky are waiting at a table in Cheesecake Factory)
 talk - ... ... ...
+talk - (Becky pulls out her phone and starts recording)
+talk 1 "Amberlynn in her natural habitat...... CHEESECAKE FACTORY"
+pose 0 pissed
+lynn angry
+talk 0 "Is that a fat joke? Are you calling me BIG?"
+talk 1 "Babe calm down it's just that we're here a lot."
+talk 0 "BIIIIIIIG???"
+talk - (Amberlynn bangs the table with her fist)
+talk 1 "Amber you're not big, ok? You're makin a scene."
+pose 0 cacklelynn
+lynn cackle
+talk - (Amber starts cackling like the whole thing was a joke)
+pose 0 normal
+talk 0 "Baby I knooww, I'm just kiddeen."
+talk - (Becky awkwardly laughs)
 enter 2
-pose 0 excited
 talk 0 "Finally the waiter is heeere, I'm getting so hongry..."
 talk 0 "Hi, how are you guys doing today?"
 talk - (Amberlynn lies about how she's doeen)
@@ -38,7 +52,7 @@ talk 0 "I'll get 4 orders of the Orange Chicken..."
 talk 2 "I'm sorry, we ran out of that yesterday. Something about a national shortage."
 lynn angry
 pose 0 pissed
-talk 0 "But you always have it here! We drove like 2 hourssss!"
+talk 0 "But you always have it here! We drove 2 hourssss!"
 talk 1 "Babe calm down, we can just go by Panda Express on the way back."
 sfx assets/sfx/orangechickenlikeido.ogg
 talk 0 "But I don't like Panda Express Beckyyy it's all like not authentic-ey."
@@ -68,10 +82,12 @@ talk 0 "Ughh okayyy fine."
 talk - (waitress takes Amber & Becky's orders)
 leave 2
 talk 1 "Look, I found this Orange Chicken recipe on Facebook."
+pose 0 frowny
+lynn frowny
 talk - (Amber doesn't pay attention and stays quiet, still pissed, with a frown on her face)
 talk 1 "See, it looks just like the Orange Chicken they have here."
-talk 0 "But it's not the saaaaaame!"
 pose 0 pissed
+talk 0 "But it's not the saaaaaame!"
 talk - (Amber slams her fists on the table)
 talk 0 "Becky, you don't get it. I like, HAVE to have Orange Chicken, kay?"
 enter 2
@@ -538,7 +554,8 @@ chapter 6
 enter 0
 pose 0 bored
 talk - (Amberlynn is uploading the video she just filmed)
-talk 0 "I'm waaaaiteeeeeen."
+talk 0 "... ... ..."
+talk 0 "I'm waaaaaaaaaaiteeeeeeeeeeeeeeeeeen."
 talk 0 "... ... ..."
 talk - (The video finishes uploading)
 pose 0 normal

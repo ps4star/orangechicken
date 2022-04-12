@@ -31,17 +31,22 @@ function tryHook(hookLib, evtName, sceneChange) {
     hookLib[cScene][evtName](sceneChange)
 }
 
-function loadScene(name, $root) {
+async function loadScene(name, $root) {
     writeSave()
 
     let oldScene = cScene
     let newScene = name
     let $finalRoot = $root ?? $sroot
 
-    tryHook(globalHooks, 'unload', newScene)
-    tryHook(localHooks, 'unload', newScene)
+    tryHook(globalHooks, 'unload', oldScene)
+    tryHook(localHooks, 'unload', oldScene)
 
     $finalRoot.empty()
+
+    // Pre-buffer assets
+    if (localHooks[newScene]['before']) {
+        await localHooks[newScene]['before']()
+    }
 
     // Populate new children
     cScene = newScene
@@ -50,19 +55,19 @@ function loadScene(name, $root) {
     })
 
     // Run hooks
-    tryHook(globalHooks, 'load', oldScene)
-    tryHook(localHooks, 'load', oldScene)
+    tryHook(globalHooks, 'load', newScene)
+    tryHook(localHooks, 'load', newScene)
 }
 
 const FADE_TIME = 400
 function fadeoutNoSceneChange(callback) {
     $('#s-cover').addClass('visible')
-    setTimeout(() => {
-        if (callback) callback()
+    setTimeout(async () => {
+        if (callback) await callback()
         $('#s-cover').removeClass('visible')
     }, FADE_TIME)
 }
 
 function fadeoutToScene(name, $root) {
-    fadeoutNoSceneChange(() => loadScene(name, $root))
+    fadeoutNoSceneChange(async () => await loadScene(name, $root))
 }

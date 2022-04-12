@@ -860,7 +860,7 @@ div.ochicken-bg * {
     }
 }
 
-#lynn-pop {
+#lynn-pop-container {
     position: absolute;
 
     top: 0;
@@ -868,27 +868,33 @@ div.ochicken-bg * {
     width: 65%;
     height: 4rem;
 
-    padding: 1rem;
-    margin: 1rem auto;
-
-    transform: translateX(-50%) translateY(-100rem);
-
-    background: var(--dark-panel-bg);
-
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
+    flex-flow: column nowrap;
 
     z-index: 5;
 }
 
-#lynn-pop.anim {
+.lynn-pop {
+    transform: translateX(-50%) translateY(-100rem);
+
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    margin: 1rem auto 0.5rem auto;
+
+    background: var(--dark-panel-bg);
+}
+
+.lynn-pop.anim {
     animation: lynn-popdown 400ms;
     animation-direction: normal;
     animation-fill-mode: forwards;
 }
 
-#lynn-pop.anim-reverse {
+.lynn-pop.anim-reverse {
     animation: lynn-popdown 400ms;
     animation-direction: reverse;
     animation-fill-mode: forwards;
