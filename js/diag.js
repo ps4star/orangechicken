@@ -121,6 +121,7 @@ async function putBackgroundImage(imgUrl) {
         const bgImage = new Image()
         bgImage.src = imgUrl
         bgImage.onload = resolve
+        if (bgImage.complete) resolve()
         diagScene.style.backgroundImage = `url("${bgImage.src}")`
     })
 }

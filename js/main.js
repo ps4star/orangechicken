@@ -9,37 +9,90 @@ const MM_ASSETS_LIST = [
 
 const SPLASH_ASSETS_LIST = MM_ASSETS_LIST
 
-const DIAG_ASSETS_LIST = [
-    "assets/music/alrtheme.ogg",
-    "assets/music/cald.ogg",
-    "assets/music/cf.ogg",
-    "assets/actors/amberlynn.png",
-    "assets/actors/becky.png",
+const DIAG_ASSETS_LISTS = [
+    [ //    "Ch 0" - composites these into other chapter loads
+    //      i.e. these assets are the most universally-used
+        "assets/actors/amberlynn.png",
+        "assets/actors/becky.png",
 
-    "assets/gamegorl.png",
+        "assets/gamegorl.png",
 
-    // Readerlynn assets
-    "assets/readerlynn/benotfar.jpg",
-    "assets/readerlynn/falleen_toewurd.jpg",
-    "assets/readerlynn/farfromthetree.jpg",
-    "assets/readerlynn/loneliest.jpg",
-    "assets/readerlynn/lucid.jpg",
-    "assets/readerlynn/ontheisland.jpg",
-    "assets/readerlynn/species.jpg",
-    "assets/readerlynn/tripleshotbettys.jpg",
-    "assets/readerlynn/weightloss1.jpg",
-    "assets/readerlynn/weightloss2.jpg",
-    "assets/readerlynn/weightloss3.jpg",
-    "assets/readerlynn/weightloss4.jpg",
-    "assets/readerlynn/weightloss5.jpg",
-    "assets/readerlynn/weightloss6.jpg",
-    "assets/readerlynn/weightloss7.jpg",
+        "assets/music/alrtheme.ogg",
+        "assets/music/cald.ogg",
+        "assets/music/cf.ogg",
+
+        "assets/menupointer.png",
+        "assets/money.png",
+    ],
+
+    [ // Ch 1
+        "assets/scenes/cf.png",
+
+        "assets/actors/amberlynn_bored.png",
+        "assets/actors/amberlynn_leaveen.png",
+        "assets/actors/amberlynn_pissed.png",
+        "assets/actors/amberlynn_cacklelynn.png",
+        "assets/actors/cfwaitress.png",
+    ],
+
+    [ // Ch 2
+        "assets/beckybank.jpg",
+
+        "assets/actors/amberlynn_gasp.png",
+        "assets/actors/amberlynn_laser.png",
+        "assets/actors/amberlynn_shocked.png",
+        "assets/actors/amberlynn_bored.png",
+        "assets/actors/amberlynn_pissed.png",
+    ],
+
+    [ // Ch 3
+        "assets/torrid.png",
+
+        "assets/actors/amberlynn_wifeycowprint.png",
+        "assets/actors/amberlynn_confused.png",
+        "assets/actors/amberlynn_heyguys.png",
+        "assets/actors/amberlynn_leaveen.png",
+        "assets/actors/amberlynn_pissed.png",
+        "assets/actors/amberlynn_backwards.png",
+    ],
+
+    [ // Ch 4
+        "assets/actors/amberlynn_mook-bong.png",
+    ],
+
+    [ // Ch 5
+        "assets/actors/amberlynn_heyguys.png",
+        "assets/actors/amberlynn_books.png",
+        "assets/actors/becky_useless.png",
+
+        // Readerlynn assets
+        "assets/readerlynn/benotfar.jpg",
+        "assets/readerlynn/falleen_toewurd.jpg",
+        "assets/readerlynn/farfromthetree.jpg",
+        "assets/readerlynn/loneliest.jpg",
+        "assets/readerlynn/lucid.jpg",
+        "assets/readerlynn/ontheisland.jpg",
+        "assets/readerlynn/species.jpg",
+        "assets/readerlynn/tripleshotbettys.jpg",
+        "assets/readerlynn/weightloss1.jpg",
+        "assets/readerlynn/weightloss2.jpg",
+        "assets/readerlynn/weightloss3.jpg",
+        "assets/readerlynn/weightloss4.jpg",
+        "assets/readerlynn/weightloss5.jpg",
+        "assets/readerlynn/weightloss6.jpg",
+        "assets/readerlynn/weightloss7.jpg",
+    ],
+
+    [ // Ch 6
+
+    ],
 ]
 
 const LYNNS_ASSETS_LIST = [
     "assets/journalynn.png",
     "assets/actors/amberlynn_shadow.png",
     // "assets/actors/amberlynn_leaveen.png",
+    // "assets/actors/amberlynn_angry.png",
 ]
 
 function splashHandler(s) {
@@ -58,6 +111,8 @@ function nullifyEvent(e) {
 async function bufferAssets(list) {
     for (const item of list) {
         await new Promise((resolve, reject) => {
+            $('#lt2').text(`${item}`)
+
             let img, loadedEvent
             if (item.endsWith('.png') || item.endsWith('.jpg') || item.endsWith('.bmp')) {
                 img = new Image()
@@ -493,7 +548,8 @@ addCurrent(
 )
 
 hook('before', async function() {
-    await bufferAssets( DIAG_ASSETS_LIST )
+    await bufferAssets( DIAG_ASSETS_LISTS[0] )
+    await bufferAssets( DIAG_ASSETS_LISTS[save.chapter] )
 })
 
 hook('unload', function() {

@@ -64,15 +64,15 @@ function pickRandom(arr) {
 }
 
 function showLoadeen() {
-    $('#loadeen').show()
+    $('#loadeen').toggleClass('visible', true)
 }
 
 function cycleLoadeen() {
-    $('#loadeen').text( pickRandom(LOADEEN_TEXTS) )
+    $('#lt1').text( pickRandom(LOADEEN_TEXTS) )
 }
 
 function hideLoadeen() {
-    $('#loadeen').hide()
+    $('#loadeen').toggleClass('visible', false)
 }
 
 const LOADEEN_INTERVAL = 1500
