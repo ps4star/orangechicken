@@ -75,7 +75,7 @@ function hideLoadeen() {
     $('#loadeen').toggleClass('visible', false)
 }
 
-const LOADEEN_INTERVAL = 1500
+const LOADEEN_INTERVAL = 1400
 const LOADEEN_TEXTS = [
     "Waaaaaaaaaaiteeeeeeeeeeeeeeeeeen...",
     "Blaming Twinkie's weight on Eric & Rickie...",

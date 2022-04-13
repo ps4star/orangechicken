@@ -1,5 +1,6 @@
 // name, url
 const LYNNS = [
+    [ "Boredlynn", "assets/actors/amberlynn_bored.png" ],
     [ "Angrylynn", "assets/actors/amberlynn_pissed.png" ],
     [ "Leaveenlynn", "assets/actors/amberlynn_leaveen.png" ],
     [ "Gasplynn", "assets/actors/amberlynn_gasp.png" ],

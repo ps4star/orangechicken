@@ -205,6 +205,7 @@ async function putTextBox(speakerIndex, text) {
                 diag.innerText += text.charAt(revealIndex++)
                 if (diag.innerText.length >= text.length) {
                     $(diag).toggleClass('full', true)
+                    diag.innerHTML += `<span></span>`
                 }
             }
         }, 6)

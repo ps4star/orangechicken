@@ -23,6 +23,7 @@ chapter 1
 enter 0
 enter 1
 pose 0 bored
+lynn bored
 talk - (Amberlynn & Becky are waiting at a table in Cheesecake Factory)
 talk - ... ... ...
 talk - (Becky pulls out her phone and starts recording)
