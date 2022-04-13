@@ -31,7 +31,7 @@ pose 0 pissed
 lynn angry
 talk 0 "Is that a fat joke? Are you calling me BIG?"
 talk 1 "Babe calm down it's just that we're here a lot."
-talk 0 "BIIIIIIIG???"
+talk 0 "BIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIG???"
 talk - (Amberlynn bangs the table with her fist)
 talk 1 "Amber you're not big, ok? You're makin a scene."
 pose 0 cacklelynn

@@ -21,6 +21,9 @@
     color: white;
 
     font-family: sans-serif, all;
+
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 html {
@@ -32,7 +35,7 @@ html {
     top: 0;
     left: 0;
 
-    background: blue;
+    background: none;
 }
 
 body {
@@ -436,6 +439,9 @@ div.ochicken-bg * {
 .lynn-dot {
     position: relative;
     margin: 0;
+
+    overflow-x: initial;
+    overflow-y: initial;
 }
 
 .lynn-dot::after {
@@ -445,14 +451,16 @@ div.ochicken-bg * {
     top: -2px;
     left: 50%;
 
-    width: 5px;
-    height: 5px;
+    width: 0.6vmin;
+    height: 0.6vmin;
 
     background: #EEE;
     border: 0.1rem solid black;
     border-radius: 50%;
 
     transform: translateX(-50%);
+
+    z-index: 14;
 }
 
 .lynn-img {
@@ -591,6 +599,7 @@ div.ochicken-bg * {
     text-transform: capitalize;
 }
 
+/* DIAG */
 #dialog-scene {
     position: relative;
 
@@ -611,6 +620,9 @@ div.ochicken-bg * {
     width: 98%;
 
     display: block;
+
+    overflow-x: initial;
+    overflow-y: initial;
 }
 
 @keyframes pop-in-left {
@@ -626,17 +638,33 @@ div.ochicken-bg * {
 }
 
 .actor {
+    width: 38vmin;
+    height: 38vmin;
     transition: transform 250ms;
+
+    position: relative;
+
+    overflow-x: initial;
+    overflow-y: initial;
 }
 
 .actor-img {
-    width: 17.5rem;
-    height: 17.5rem;
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 
     padding: 0 0.7rem;
     margin-bottom: 0;
 
     transition: transform 400ms;
+
+    z-index: 5;
+
+    overflow-x: initial;
+    overflow-y: initial;
 }
 
 .actor-img.animated {
@@ -671,21 +699,26 @@ div.ochicken-bg * {
 #diag-container {
     position: relative;
     width: 95%;
-    height: 10rem;
+    height: 24%;
     margin: 0 auto;
     margin-bottom: 1rem;
 
     background: var(--dark-panel-bg);
+
+    overflow-x: initial;
+    overflow-y: initial;
+
+    z-index: 6;
 }
 
 #diag-name {
     -webkit-user-select: none;
 
     position: absolute;
-    left: 1rem;
-    top: -3rem;
-    width: 10rem;
-    height: 2.75rem;
+    left: 2.5vmin;
+    top: -7.5vmin;
+    width: 14%;
+    height: 27%;
 
     display: flex;
     align-content: center;
@@ -696,6 +729,8 @@ div.ochicken-bg * {
     font-size: 1.5vw;
 
     background: inherit;
+
+    z-index: 999;
 }
 
 .panel {
@@ -717,6 +752,8 @@ div.ochicken-bg * {
     font-family: sans-serif;
 
     padding: 0.7rem;
+    padding-right: 1%;
+    padding-bottom: 1%;
 }
 
 @keyframes bob-up-down {
@@ -733,16 +770,16 @@ div.ochicken-bg * {
     content: '';
 
     position: absolute;
-    right: -2px;
-    bottom: 40%;
+    right: 0px;
+    bottom: 45%;
     width: 0;
     height: 0;
 
     /* triangle */
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
+    border-left: 0.75vmin solid transparent;
+    border-right: 0.75vmin solid transparent;
 
-    border-top: 5px solid white;
+    border-top: 0.75vmin solid white;
 
     animation: bob-up-down 400ms;
     animation-iteration-count: infinite;
@@ -758,14 +795,22 @@ div.ochicken-bg * {
 
     display: flex;
     flex-flow: row nowrap;
+
+    z-index: 13;
+
+    overflow-x: initial;
+    overflow-y: initial;
+    pointer-events: all;
 }
 
 #diag-options > * {
     padding: 0.5rem;
-    font-size: 1rem;
+    font-size: 2.25vmin;
 
     opacity: 0.65;
     cursor: pointer;
+
+    pointer-events: all;
 }
 
 #diag-options > *:hover {
@@ -787,6 +832,8 @@ div.ochicken-bg * {
     background: var(--dark-panel-bg);
 
     pointer-events: initial;
+
+    z-index: 7;
 }
 
 @keyframes multi-pop-in-left {
@@ -895,14 +942,17 @@ div.ochicken-bg * {
     top: 0;
     left: 50%;
     width: 65%;
-    height: 4rem;
+    height: 8vmin;
 
     display: flex;
     justify-content: flex-start;
     align-items: center;
     flex-flow: column nowrap;
 
-    z-index: 5;
+    z-index: 9;
+
+    overflow-x: initial;
+    overflow-y: initial;
 }
 
 .lynn-pop {
@@ -911,10 +961,13 @@ div.ochicken-bg * {
     text-align: center;
     width: 100%;
     height: 100%;
-    padding: 1rem;
-    margin: 1rem auto 0.5rem auto;
+    padding: 2vmin;
+    margin: 2vmin auto 1vmin auto;
 
     background: var(--dark-panel-bg);
+
+    overflow-x: initial;
+    overflow-y: initial;
 }
 
 .lynn-pop.anim {
@@ -951,6 +1004,7 @@ div.ochicken-bg * {
 .dom-counter span, #saveens span {
     color: green;
 }
+/* END DIAG */
 
 @keyframes pop-in-canvas {
     from {
@@ -975,6 +1029,8 @@ div.ochicken-bg * {
     height: 100%;
 
     pointer-events: none;
+
+    z-index: 12;
 }
 
 .canvas-container.visible {
