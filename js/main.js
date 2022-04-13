@@ -17,9 +17,9 @@ const DIAG_ASSETS_LISTS = [
 
         "assets/gamegorl.png",
 
-        "assets/music/alrtheme.ogg",
-        "assets/music/cald.ogg",
-        "assets/music/cf.ogg",
+        // "assets/music/alrtheme.ogg",
+        // "assets/music/cald.ogg",
+        // "assets/music/cf.ogg",
 
         "assets/menupointer.png",
         "assets/money.png",
@@ -27,6 +27,8 @@ const DIAG_ASSETS_LISTS = [
     ],
 
     [ // Ch 1
+        "assets/music/cf.ogg",
+
         "assets/scenes/cf.png",
 
         "assets/actors/amberlynn_bored.png",
@@ -37,6 +39,8 @@ const DIAG_ASSETS_LISTS = [
     ],
 
     [ // Ch 2
+        "assets/music/alrtheme.ogg",
+
         "assets/beckybank.jpg",
 
         "assets/actors/amberlynn_gasp.png",
@@ -47,6 +51,8 @@ const DIAG_ASSETS_LISTS = [
     ],
 
     [ // Ch 3
+        "assets/music/cf.ogg",
+
         "assets/torrid.png",
 
         "assets/actors/amberlynn_wifeycowprint.png",
@@ -58,10 +64,14 @@ const DIAG_ASSETS_LISTS = [
     ],
 
     [ // Ch 4
+        "assets/music/alrtheme.ogg",
+
         "assets/actors/amberlynn_mook-bong.png",
     ],
 
     [ // Ch 5
+        "assets/music/cald.ogg",
+
         "assets/actors/amberlynn_heyguys.png",
         "assets/actors/amberlynn_books.png",
         "assets/actors/becky_useless.png",
@@ -151,6 +161,8 @@ addCurrent(
         .append($(`<pre class="disclaimer-large">DISCLAIMER TYPE DEAL</pre>`))
         .append($(`<p class="disclaimer-medium cursive">This game is for sailing and entertainment purposes only. Any names, or persons featured here, that may seem similar to anyone in real life, are purely coincidental, or otherwise parodic.</p>`))
         .append($(`<pre class="disclaimer-medium">This game is free to play at <a target="_blank" style="cursor: pointer;" href="https://ps4star.com/orangechicken">this link</a>.<br>If you paid for this, you have been scammed.</pre>`))
+        .append($(`<pre class="disclaimer-small">@ps4star
+GNU GPL v2.0</pre>`))
         .append($(`<p class="press-key">Click or press any key to continue</p>`))
 )
 hook('load', function() {

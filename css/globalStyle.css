@@ -182,8 +182,8 @@ button, input {
 }
 
 .disclaimer-large {
-    font-size: 4rem;
-    padding-bottom: 6rem;
+    font-size: 8vmin;
+    padding-bottom: 4%;
 }
 
 .cursive {
@@ -191,8 +191,8 @@ button, input {
 }
 
 .disclaimer-medium {
-    font-size: 2.5rem;
-    padding-bottom: 6rem;
+    font-size: 5vmin;
+    padding-bottom: 4%;
 }
 
 .press-key {
@@ -200,7 +200,7 @@ button, input {
     bottom: 2rem;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 1.2rem;
+    font-size: 2.4vmin;
 }
 
 span.ochicken {
@@ -262,7 +262,7 @@ div.ochicken-bg * {
     padding-top: 1rem;
     z-index: 2;
 
-    font-size: 4rem;
+    font-size: 9vmin;
     text-align: center;
 
     font-family: "GCursive", cursive, serif, all;
@@ -279,7 +279,7 @@ div.ochicken-bg * {
 
 .mm-button {
     position: relative;
-    font-size: 2.25rem;
+    font-size: 5.25vmin;
     padding: 0.5rem;
 
     cursor: pointer;
@@ -328,8 +328,8 @@ div.ochicken-bg * {
 }
 
 #lynns-main {
-    width: 60%;
-    height: 80%;
+    width: 70%;
+    height: 85%;
 
     display: flex;
     flex-flow: row wrap;
@@ -414,10 +414,10 @@ div.ochicken-bg * {
 }
 
 .lynn {
-    width: 25%;
-    height: 8rem;
+    width: 24%;
+    height: 24%;
 
-    margin: 0.5rem;
+    margin: 1.5%;
 
     background: white;
     box-shadow: 0 0 2px 1px black;
@@ -457,7 +457,7 @@ div.ochicken-bg * {
 
 .lynn-img {
     width: 90%;
-    height: 4rem;
+    height: 45%;
 }
 
 .locked {
@@ -466,7 +466,7 @@ div.ochicken-bg * {
 
 .lynn-text {
     color: black;
-    font-size: 1rem;
+    font-size: 2.15vmin;
 
     text-transform: capitalize;
 }
