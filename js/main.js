@@ -28,6 +28,7 @@ const DIAG_ASSETS_LISTS = [
 
     [ // Ch 1
         "assets/music/cf.ogg",
+        "assets/sfx/leaveen.aac",
 
         "assets/scenes/cf.png",
 
@@ -142,7 +143,7 @@ async function bufferAssets(list) {
             if (loadedEvent !== null) {
                 img.src = item
                 img[loadedEvent] = resolve
-                console.log('iter ' + item)
+                // console.log('iter ' + item)
             }
         })
     }
@@ -163,11 +164,11 @@ addCurrent(
         .append($(`<pre class="disclaimer-medium">This game is free to play at <a target="_blank" style="cursor: pointer;" href="https://ps4star.com/orangechicken">this link</a>.<br>If you paid for this, you have been scammed.</pre>`))
         .append($(`<pre class="disclaimer-small">@ps4star
 GNU GPL v2.0</pre>`))
-        .append($(`<p class="press-key">Click or press any key to continue</p>`))
+        .append($(`<p class="press-key">Click anywhere to continue</p>`))
 )
 hook('load', function() {
     $('a').on('mousedown', (e) => { e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); return false })
-    $(window).on('mousedown keydown', () => splashHandler('mainMenu'))
+    $(window).on('mousedown', () => splashHandler('mainMenu'))
 })
 
 makeScene('mainMenu')

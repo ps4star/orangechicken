@@ -37,6 +37,7 @@ talk - (Amberlynn bangs the table with her fist)
 talk 1 "Amber you're not big, ok? You're makin a scene."
 pose 0 cacklelynn
 lynn cackle
+sfx assets/sfx/cackle.mp3 0.55
 talk - (Amber starts cackling like the whole thing was a joke)
 pose 0 normal
 talk 0 "Baby I knooww, I'm just kiddeen."
@@ -189,7 +190,7 @@ goto craygslist_postbooboo
         inherits: "craygslist",
         diag: `
 talk 0 "You didn't ask if I needed any money booboooo..."
-sfx assets/sfx/break.ogg
+sfx assets/sfx/break.ogg 1.2
 leave 1
 talk - (Amberlynn breaks the piggy bank)
 randint pigMoney 15 99

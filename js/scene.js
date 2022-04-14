@@ -1,37 +1,43 @@
-var scenes = {},
-    cScene = null,
+let scenes = {}
+let cScene = null
 
-    globalHooks = {},
-    localHooks = {}
+let globalHooks = {}
+let localHooks = {}
 
 // Scene root
 const $sroot = $('#root')
 
-function makeScene(name) {
+const makeScene = function(name) {
     scenes[name] = []
     cScene = name
 }
 
-function addCurrent($el) {
+const addCurrent = function($el) {
     scenes[cScene].push($el)
 }
 
-function hook(evtName, cb) {
+const hook = function(evtName, cb) {
     if (!localHooks[cScene]) localHooks[cScene] = {}
     localHooks[cScene][evtName] = cb
 }
 
-function hookGlobal(evtName, cb) {
-    if (!globalHooks[cScene]) globalHooks[cScene] = {}
-    globalHooks[cScene][evtName] = cb
+const hookGlobal = function(evtName, cb) {
+    if (!globalHooks) {
+        window.globalHooks = {}
+    }
+
+    if (!globalHooks[evtName]) globalHooks[evtName] = {}
+    globalHooks[evtName] = cb
 }
 
-function tryHook(hookLib, evtName, sceneChange) {
-    if (!hookLib[cScene] || !hookLib[cScene][evtName]) return false
-    hookLib[cScene][evtName](sceneChange)
+const tryHook = function(hookLib, evtName, sceneChange) {
+    if (!hookLib) return false
+    const func = hookLib === localHooks ? hookLib[cScene][evtName] : hookLib[evtName]
+    if (!func) return false
+    func(sceneChange)
 }
 
-async function loadScene(name, $root) {
+loadScene = async function(name, $root) {
     writeSave()
 
     let oldScene = cScene
@@ -59,19 +65,19 @@ async function loadScene(name, $root) {
     tryHook(localHooks, 'load', oldScene)
 }
 
-function pickRandom(arr) {
+const pickRandom = function(arr) {
     return arr[Math.floor(Math.random() * arr.length)]
 }
 
-function showLoadeen() {
+const showLoadeen = function() {
     $('#loadeen').toggleClass('visible', true)
 }
 
-function cycleLoadeen() {
+const cycleLoadeen = function() {
     $('#lt1').text( pickRandom(LOADEEN_TEXTS) )
 }
 
-function hideLoadeen() {
+const hideLoadeen = function() {
     $('#loadeen').toggleClass('visible', false)
 }
 
@@ -113,7 +119,7 @@ const LOADEEN_TEXTS = [
     "Accusing ex of rain and petals eavesdrop...",
     "Petting the window seal...",
     "Flying freely like a bird, maybe a pigeon...",
-    "Asking if there's a sign in your teeth to show high blood pressure...",
+    "Finding a sign in your teeth to show high blood pressure...",
     "Making up lahs...",
     "Giving Becky almost none of the lah-stream money...",
     "Ignoring 30 superchats...",
@@ -123,7 +129,7 @@ const LOADEEN_TEXTS = [
     "Waking up overnight...",
 ]
 const FADE_TIME = 400
-function fadeoutNoSceneChange(callback, noLoadingScreen) {
+const fadeoutNoSceneChange = function(callback, noLoadingScreen) {
     $('#s-cover').addClass('visible')
     setTimeout(async () => {
         let lInterval
@@ -150,6 +156,6 @@ function fadeoutNoSceneChange(callback, noLoadingScreen) {
     }, FADE_TIME)
 }
 
-function fadeoutToScene(name, $root) {
+const fadeoutToScene = function(name, $root) {
     fadeoutNoSceneChange(async () => { return loadScene(name, $root) })
 }

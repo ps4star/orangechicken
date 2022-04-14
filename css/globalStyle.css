@@ -21,6 +21,10 @@
     color: white;
 
     font-family: sans-serif, all;
+
+    outline: none;
+
+    -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -118,7 +122,7 @@ button, input {
 
     opacity: 0;
 
-    z-index: 10;
+    z-index: 50;
 
     background: black;
 
@@ -135,7 +139,7 @@ button, input {
     margin: auto;
     color: white;
 
-    z-index: 11;
+    z-index: 51;
     pointer-events: none;
 
     display: none;
@@ -282,6 +286,9 @@ div.ochicken-bg * {
 
     display: flex;
     flex-flow: column nowrap;
+
+    overflow-x: initial;
+    overflow-y: initial;
 }
 
 .mm-button {
@@ -773,6 +780,9 @@ div.ochicken-bg * {
 #diag {
     position: relative;
     display: flex;
+
+    overflow-x: initial;
+    overflow-y: initial;
 }
 
 #diag-text {
@@ -786,6 +796,9 @@ div.ochicken-bg * {
     padding: 1.75vmin;
     padding-right: 1%;
     padding-bottom: 1%;
+
+    overflow-x: initial;
+    overflow-y: initial;
 }
 
 /* diag queries */
@@ -811,11 +824,15 @@ div.ochicken-bg * {
     }
 }
 
+#diag-text > span {
+    position: relative;
+}
+
 #diag-text.full > span::after {
     content: '';
 
     position: absolute;
-    right: -0.5%;
+    right: -2vmin;
     bottom: 42%;
     width: 0;
     height: 0;
@@ -872,9 +889,9 @@ div.ochicken-bg * {
 #multi-box {
     position: absolute;
     left: 0;
-    top: 45%;
+    top: 40%;
 
-    transform: translateX(-10rem);
+    transform: translateX(-15vmin);
 
     margin-left: 2vmin;
     padding: 2vmin;
@@ -886,15 +903,18 @@ div.ochicken-bg * {
     pointer-events: initial;
 
     z-index: 7;
+
+    overflow-x: initial;
+    overflow-y: initial;
 }
 
 #multi-box * {
-    font-size: 4vmin;
+    font-size: 2.8vmin;
 }
 
 @keyframes multi-pop-in-left {
     from {
-        transform: translateX(-5rem);
+        transform: translateX(-8vmin);
         opacity: 0;
     }
 
@@ -920,8 +940,12 @@ div.ochicken-bg * {
 
     min-width: 30%;
     text-align: center;
-    padding: 0.5vmin 9vmin;
+    padding: 0.75vmin 9vmin;
     cursor: pointer;
+}
+
+#multi-box pre:not(:last-of-type) {
+    margin-bottom: 1vmin;
 }
 
 #multi-box pre:hover, #multi-box pre.selected {
@@ -942,7 +966,7 @@ div.ochicken-bg * {
 
 @keyframes sausage-finger-move-left {
     from {
-        transform: translateX(0.6rem);
+        transform: translateX(1.5vmin);
     }
 
     to {
@@ -952,7 +976,7 @@ div.ochicken-bg * {
 
 @keyframes sausage-finger-move-right {
     from {
-        transform: translateX(-0.6rem) scaleX(-1);
+        transform: translateX(-1.5vmin) scaleX(-1);
     }
 
     to {
@@ -1047,7 +1071,7 @@ div.ochicken-bg * {
     overflow-x: initial;
     overflow-y: initial;
 
-    z-index: 51;
+    z-index: 19;
 }
 
 .dom-counter pre, #saveens pre {
@@ -1154,7 +1178,7 @@ div.ochicken-bg * {
     animation-fill-mode: forwards;
     animation-direction: normal;
 
-    z-index: 9999999;
+    z-index: 49;
 
     font-size: 5vmin;
 }
