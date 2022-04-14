@@ -38,7 +38,7 @@ talk - (Amberlynn bangs the table with her fist)
 talk 1 "Amber you're not big, ok? You're makin a scene."
 pose 0 cacklelynn
 lynn cackle
-sfx assets/sfx/cackle.mp3 0.5
+sfx assets/sfx/cackle.ogg 0.5
 talk - (Amber starts cackling like the whole thing was a joke)
 pose 0 normal
 talk 0 "Baby I knooww, I'm just kiddeen."
@@ -1047,7 +1047,7 @@ async function putTextBox(speakerIndex, text) {
                 if (!(e.key === 'Enter' || e.key === ' ')) {
                     return
                 }
-            }
+            } else if (e.button !== 0) return
 
             // Advance all text
             if (textScrollInt) clearInterval(textScrollInt)
@@ -2390,7 +2390,7 @@ const DIAG_ASSETS_LISTS = [
     [ // Ch 2
         "assets/music/alrtheme.ogg",
 
-        "assets/beckybank.jpg",
+        "assets/actors/piggybank.png",
 
         "assets/actors/amberlynn_gasp.png",
         "assets/actors/amberlynn_laser.png",

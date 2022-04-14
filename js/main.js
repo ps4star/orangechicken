@@ -42,7 +42,7 @@ const DIAG_ASSETS_LISTS = [
     [ // Ch 2
         "assets/music/alrtheme.ogg",
 
-        "assets/beckybank.jpg",
+        "assets/actors/piggybank.png",
 
         "assets/actors/amberlynn_gasp.png",
         "assets/actors/amberlynn_laser.png",

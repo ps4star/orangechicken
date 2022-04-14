@@ -234,7 +234,7 @@ async function putTextBox(speakerIndex, text) {
                 if (!(e.key === 'Enter' || e.key === ' ')) {
                     return
                 }
-            }
+            } else if (e.button !== 0) return
 
             // Advance all text
             if (textScrollInt) clearInterval(textScrollInt)
