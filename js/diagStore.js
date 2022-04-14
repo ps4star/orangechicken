@@ -1,5 +1,5 @@
 const RIZO_ISLAND_MUSIC_DT = ["assets/music/cf.ogg", true, 0, 1.65, 166.32]
-const CALD_MUSIC_DT = ["assets/music/cald.mp3", true, 0, 1.5, 93.3]
+const CALD_MUSIC_DT = ["assets/music/cald.ogg", true, 0, 1.5, 93.3]
 const ALRTHEME_MUSIC_DT = ["assets/music/alrtheme.ogg", true, 0, 0, 93]
 
 const ACTORS = {
@@ -23,6 +23,7 @@ chapter 1
 enter 0
 enter 1
 pose 0 bored
+lynn bored
 talk - (Amberlynn & Becky are waiting at a table in Cheesecake Factory)
 talk - ... ... ...
 talk - (Becky pulls out her phone and starts recording)
@@ -31,11 +32,12 @@ pose 0 pissed
 lynn angry
 talk 0 "Is that a fat joke? Are you calling me BIG?"
 talk 1 "Babe calm down it's just that we're here a lot."
-talk 0 "BIIIIIIIG???"
+talk 0 "BIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIG???"
 talk - (Amberlynn bangs the table with her fist)
 talk 1 "Amber you're not big, ok? You're makin a scene."
 pose 0 cacklelynn
 lynn cackle
+sfx assets/sfx/cackle.mp3 0.55
 talk - (Amber starts cackling like the whole thing was a joke)
 pose 0 normal
 talk 0 "Baby I knooww, I'm just kiddeen."
@@ -188,7 +190,7 @@ goto craygslist_postbooboo
         inherits: "craygslist",
         diag: `
 talk 0 "You didn't ask if I needed any money booboooo..."
-sfx assets/sfx/break.ogg
+sfx assets/sfx/break.ogg 1.2
 leave 1
 talk - (Amberlynn breaks the piggy bank)
 randint pigMoney 15 99
@@ -513,17 +515,21 @@ books_journals
         inherits: "books",
         diag: `
 setvar journalCost 0
+setvar _journal_increase 0
 
 if eq lastChoice 0
 setvar journalCost 3
+setvar _journal_increase 2
 endif
 
 if eq lastChoice 1
 setvar journalCost 65
+setvar _journal_increase 50
 endif
 
 if eq lastChoice 2
 setvar journalCost 160
+setvar _journal_increase 150
 endif
 
 ; ensures journalCost is valid
@@ -533,12 +539,15 @@ endif
 
 copyvarnegative negativeJournalCost journalCost
 
-if gteq money negativeJournalCost
+if gteq money journalCost
 moneychange %MONEYCHANGE_INDEX% negativeJournalCost
-talk 0 ""
+call addJournals
+talk 0 "So that was a situation"
+talk 0 "..."
+talk 0 "..."
 endif
 
-if lt money negativeJournalCost
+if lt money journalCost
 talk 0 "I can't afford these journuuuuuuuuuuhhhhls noooooouh."
 endif
 `

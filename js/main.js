@@ -3,40 +3,108 @@ const debug = true
 const MM_ASSETS_LIST = [
     "assets/titlescreen.jpg",
     "css/GCursive.ttf",
-    "css/Helve Cursive.ttf",
+    "css/HelveCursive.ttf",
+    "assets/music/cf.ogg",
 ]
 
-const DIAG_ASSETS_LIST = [
-    "assets/music/alrtheme.ogg",
-    "assets/music/cald.ogg",
-    "assets/music/cf.ogg",
-    "assets/actors/amberlynn.png",
-    "assets/actors/becky.png",
+const SPLASH_ASSETS_LIST = MM_ASSETS_LIST
 
-    "assets/gamegorl.png",
+const DIAG_ASSETS_LISTS = [
+    [ //    "Ch 0" - composites these into other chapter loads
+    //      i.e. these assets are the most universally-used
+        "assets/actors/amberlynn.png",
+        "assets/actors/becky.png",
 
-    // Readerlynn assets
-    "assets/readerlynn/benotfar.jpg",
-    "assets/readerlynn/falleen_toewurd.jpg",
-    "assets/readerlynn/farfromthetree.jpg",
-    "assets/readerlynn/loneliest.jpg",
-    "assets/readerlynn/lucid.jpg",
-    "assets/readerlynn/ontheisland.jpg",
-    "assets/readerlynn/species.jpg",
-    "assets/readerlynn/tripleshotbettys.jpg",
-    "assets/readerlynn/weightloss1.jpg",
-    "assets/readerlynn/weightloss2.jpg",
-    "assets/readerlynn/weightloss3.jpg",
-    "assets/readerlynn/weightloss4.jpg",
-    "assets/readerlynn/weightloss5.jpg",
-    "assets/readerlynn/weightloss6.jpg",
-    "assets/readerlynn/weightloss7.jpg",
+        "assets/gamegorl.png",
+
+        // "assets/music/alrtheme.ogg",
+        // "assets/music/cald.ogg",
+        // "assets/music/cf.ogg",
+
+        "assets/menupointer.png",
+        "assets/money.png",
+        "assets/orangechicken.png",
+    ],
+
+    [ // Ch 1
+        "assets/music/cf.ogg",
+        "assets/sfx/leaveen.aac",
+
+        "assets/scenes/cf.png",
+
+        "assets/actors/amberlynn_bored.png",
+        "assets/actors/amberlynn_leaveen.png",
+        "assets/actors/amberlynn_pissed.png",
+        "assets/actors/amberlynn_cacklelynn.png",
+        "assets/actors/cfwaitress.png",
+    ],
+
+    [ // Ch 2
+        "assets/music/alrtheme.ogg",
+
+        "assets/beckybank.jpg",
+
+        "assets/actors/amberlynn_gasp.png",
+        "assets/actors/amberlynn_laser.png",
+        "assets/actors/amberlynn_shocked.png",
+        "assets/actors/amberlynn_bored.png",
+        "assets/actors/amberlynn_pissed.png",
+    ],
+
+    [ // Ch 3
+        "assets/music/cf.ogg",
+
+        "assets/torrid.png",
+
+        "assets/actors/amberlynn_wifeycowprint.png",
+        "assets/actors/amberlynn_confused.png",
+        "assets/actors/amberlynn_heyguys.png",
+        "assets/actors/amberlynn_leaveen.png",
+        "assets/actors/amberlynn_pissed.png",
+        "assets/actors/amberlynn_backwards.png",
+    ],
+
+    [ // Ch 4
+        "assets/music/alrtheme.ogg",
+
+        "assets/actors/amberlynn_mook-bong.png",
+    ],
+
+    [ // Ch 5
+        "assets/music/cald.ogg",
+
+        "assets/actors/amberlynn_heyguys.png",
+        "assets/actors/amberlynn_books.png",
+        "assets/actors/becky_useless.png",
+
+        // Readerlynn assets
+        "assets/readerlynn/benotfar.jpg",
+        "assets/readerlynn/falleen_toewurd.jpg",
+        "assets/readerlynn/farfromthetree.jpg",
+        "assets/readerlynn/loneliest.jpg",
+        "assets/readerlynn/lucid.jpg",
+        "assets/readerlynn/ontheisland.jpg",
+        "assets/readerlynn/species.jpg",
+        "assets/readerlynn/tripleshotbettys.jpg",
+        "assets/readerlynn/weightloss1.jpg",
+        "assets/readerlynn/weightloss2.jpg",
+        "assets/readerlynn/weightloss3.jpg",
+        "assets/readerlynn/weightloss4.jpg",
+        "assets/readerlynn/weightloss5.jpg",
+        "assets/readerlynn/weightloss6.jpg",
+        "assets/readerlynn/weightloss7.jpg",
+    ],
+
+    [ // Ch 6
+
+    ],
 ]
 
 const LYNNS_ASSETS_LIST = [
     "assets/journalynn.png",
     "assets/actors/amberlynn_shadow.png",
     // "assets/actors/amberlynn_leaveen.png",
+    // "assets/actors/amberlynn_angry.png",
 ]
 
 function splashHandler(s) {
@@ -45,17 +113,62 @@ function splashHandler(s) {
     $(window).off('keydown')
 }
 
+function nullifyEvent(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    e.stopImmediatePropagation()
+    return false
+}
+
+async function bufferAssets(list) {
+    for (const item of list) {
+        await new Promise((resolve, reject) => {
+            $('#lt2').text(`${item}`)
+
+            let img, loadedEvent
+            if (item.endsWith('.png') || item.endsWith('.jpg') || item.endsWith('.bmp')) {
+                img = new Image()
+                loadedEvent = 'onload'
+            } else if (item.endsWith('.ogg') || item.endsWith('.mp3')) {
+                img = new Audio()
+                loadedEvent = 'oncanplaythrough'
+            } else if (item.endsWith('.ttf') || item.endsWith('.woff')) {
+                fetch(item).then(resolve)
+                loadedEvent = null
+            } else {
+                resolve()
+                return
+            }
+
+            if (loadedEvent !== null) {
+                img.src = item
+                img[loadedEvent] = resolve
+                // console.log('iter ' + item)
+            }
+        })
+    }
+}
+
+hookGlobal('load', function() {
+    $('img').on('dragstart', (e) => nullifyEvent(e))
+})
+
 makeScene('splash1')
+hook('before', async function() {
+    await bufferAssets( SPLASH_ASSETS_LIST )
+})
 addCurrent(
     $(`<div class="splash-container" tabindex="-1">`)
         .append($(`<pre class="disclaimer-large">DISCLAIMER TYPE DEAL</pre>`))
         .append($(`<p class="disclaimer-medium cursive">This game is for sailing and entertainment purposes only. Any names, or persons featured here, that may seem similar to anyone in real life, are purely coincidental, or otherwise parodic.</p>`))
         .append($(`<pre class="disclaimer-medium">This game is free to play at <a target="_blank" style="cursor: pointer;" href="https://ps4star.com/orangechicken">this link</a>.<br>If you paid for this, you have been scammed.</pre>`))
-        .append($(`<p class="press-key">Click or press any key to continue</p>`))
+        .append($(`<pre class="disclaimer-small">@ps4star
+GNU GPL v2.0</pre>`))
+        .append($(`<p class="press-key">Click anywhere to continue</p>`))
 )
 hook('load', function() {
     $('a').on('mousedown', (e) => { e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); return false })
-    $(window).on('mousedown keydown', () => splashHandler('mainMenu'))
+    $(window).on('mousedown', () => splashHandler('mainMenu'))
 })
 
 makeScene('mainMenu')
@@ -413,18 +526,6 @@ hook('load', function() {
 //     $('#ch-text').removeClass('grow-border')
 // })
 
-async function bufferAssets(list) {
-    list.forEach(async (item) => {
-        await new Promise((resolve, reject) => {
-            const img = new Image()
-            img.src = item
-
-            if (img.completed) resolve()
-            img.onload = resolve
-        })
-    })
-}
-
 makeScene('dialog')
 
 addCurrent(
@@ -461,7 +562,8 @@ addCurrent(
 )
 
 hook('before', async function() {
-    await bufferAssets( DIAG_ASSETS_LIST )
+    await bufferAssets( DIAG_ASSETS_LISTS[0] )
+    await bufferAssets( DIAG_ASSETS_LISTS[save.chapter] )
 })
 
 hook('unload', function() {

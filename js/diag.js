@@ -16,7 +16,7 @@ const DEFAULT_SAVE = {
     // Chapter 1 always unlocked at start
     chapters: [true, ...fillArr(false, NUM_CHAPTERS - 1)],
     diag: "shortage",
-    lynns: fillArr(false, NUM_LYNNS),
+    lynns: fillArr(false, window["NUM_LYNNS"] || 300), // closure pitches a fit about NUM_LYNNS not being defined otherwise...
     achievements: fillArr(false, NUM_ACHIEVEMENTS),
 
     inventory: [],
@@ -67,6 +67,9 @@ let currentStage = []
 async function putStage(actorsList) {
     let hflip = false
     let position = "left_back"
+
+    const actorsDiv = document.getElementById('actors')
+
     for (const actorItem of actorsList) {
         for (let i = 0; i < actorItem.length; i++) {
             // Is last; is char
@@ -84,18 +87,21 @@ async function putStage(actorsList) {
                     finalClasses.push("float-right")
                 }
 
-                const $actorImg = $(`<img class="actor-img animated" src="${ACTORS[actorItem[i]]}" alt="">`)
-                const $actorEl = $(`<div class="actor ${finalClasses.join(" ")}">`)
-                    .append($actorImg)
+                const actorImg = document.createElement('img')
+                actorImg.src = ACTORS[actorItem[i]]
+                actorImg.classList.add('actor-img', 'animated')
+
+                const actorEl = document.createElement('div')
+                actorEl.classList.add('actor', ...finalClasses)
+                actorEl.appendChild(actorImg)
 
                 await new Promise((resolve, reject) => {
-                    if ($actorImg[0].complete) resolve()
-                    else $actorImg[0].onload = resolve
+                    if (actorImg.complete) resolve()
+                    else actorImg.onload = resolve
                 })
 
-                $actorImg.hide()
-
-                $('#actors').append($actorEl)
+                $(actorImg).hide()
+                actorsDiv.appendChild(actorEl)
             } else {
                 if (actorItem[i] === 'hflip') {
                     hflip = true
@@ -121,6 +127,7 @@ async function putBackgroundImage(imgUrl) {
         const bgImage = new Image()
         bgImage.src = imgUrl
         bgImage.onload = resolve
+        if (bgImage.complete) resolve()
         diagScene.style.backgroundImage = `url("${bgImage.src}")`
     })
 }
@@ -150,43 +157,49 @@ async function updateActorPose(stageIndex, newPose, reanimate) {
     }
 
     // Now we know it's a new pose that should reanimate
-    const $actorImg = $($('.actor-img')[stageIndex])
-    if (!$actorImg[0]) return Promise.resolve()
+    const actorImg = document.getElementsByClassName('actor-img')[stageIndex]
+    const $actorImg = $(actorImg)
+    if (!actorImg) return Promise.resolve()
     $actorImg.hide()
-    $actorImg[0].src = getCustomPoseURL(currentStage[stageIndex][0], newPose)
+    actorImg.src = getCustomPoseURL(currentStage[stageIndex][0], newPose)
 
     // Update stage
     currentStage[stageIndex][2] = newPose
 
     if (reanimate) {
-        $actorImg.removeClass('animated')
+        actorImg.classList.remove('animated')
 
         $actorImg.show()
-        $actorImg.addClass('animated')
+        actorImg.classList.add('animated')
     } else {
         $actorImg.show()
     }
 
-    await new Promise((resolve, reject) => {
-        if ($actorImg[0].complete) resolve()
-        else $actorImg[0].onload = resolve
+    return new Promise((resolve, reject) => {
+        actorImg.addEventListener('load', resolve)
     })
-
-    return Promise.resolve()
 }
+
+const $window = $(window)
 
 let textScrollInt
 let textInputMode = true
+
+const TEXT_SPEED_INTERVAL = 5
+
 async function putTextBox(speakerIndex, text) {
     const diag = document.getElementById('diag-text')
+    const diagName = document.getElementById('diag-name')
+
     if (!diag) {
-        $(window).off('mousedown')
-        $(window).off('keydown')
+        $window.off('mousedown')
+        $window.off('keydown')
         return Promise.resolve()
     }
 
-    diag.innerText = ""
-    $(diag).toggleClass('full', false)
+    diag.innerHTML = ""
+    diag.classList.remove('full')
+
     let speakerName
     if (Number.isNaN(speakerIndex)) {
         speakerName = "---"
@@ -195,7 +208,7 @@ async function putTextBox(speakerIndex, text) {
         speakerName = currentStage[speakerIndex][0]
     }
 
-    $('#diag-name').text(speakerName)
+    diagName.innerText = speakerName
     await new Promise((resolve, reject) => {
         if (typeof textScrollInt !== 'undefined') clearInterval(textScrollInt)
 
@@ -206,14 +219,16 @@ async function putTextBox(speakerIndex, text) {
             } else {
                 diag.innerText += text.charAt(revealIndex++)
                 if (diag.innerText.length >= text.length) {
-                    $(diag).toggleClass('full', true)
+                    diag.classList.add('full')
+                    diag.innerHTML += `<span></span>`
                 }
             }
-        }, 6)
+        }, TEXT_SPEED_INTERVAL)
 
         function handleAdvanceClick(e) {
             if (!textInputMode) return false
-            e.preventDefault()
+            // Commented out bc prevents F12/devmenu during dialog
+            //e.preventDefault()
 
             if (e.key) {
                 if (!(e.key === 'Enter' || e.key === ' ')) {
@@ -225,18 +240,19 @@ async function putTextBox(speakerIndex, text) {
             if (textScrollInt) clearInterval(textScrollInt)
             if (diag.innerText.length < text.length) {
                 diag.innerText = text
-                $(diag).toggleClass('full', true)
+                diag.classList.add('full')
+                diag.innerHTML += `<span></span>`
             } else {
                 // Already has finished text; remove listener and resolve
-                $(window).off('mousedown')
-                $(window).off('keydown')
+                $window.off('mousedown')
+                $window.off('keydown')
                 resolve()
             }
         }
 
-        $(window).off('keydown')
-        $(window).off('mousedown')
-        $(window).on('mousedown keydown', handleAdvanceClick)
+        $window.off('keydown')
+        $window.off('mousedown')
+        $window.on('mousedown keydown', handleAdvanceClick)
     })
 }
 
@@ -244,59 +260,70 @@ let newScene, lastChoice, lastChapter
 async function showMulti(options) {
     return new Promise((resolve, reject) => {
         let selected = 0, lastSelected = 0, isMouseOn = false
-        const $mbox = $('#multi-box')
-        $mbox.removeClass('reverse-anim')
-        $mbox.toggleClass('begin', true)
+
+        const mbox = document.getElementById('multi-box')
+        const $mbox = $(mbox)
+
+        mbox.classList.remove('reverse-anim')
+        mbox.classList.add('begin')
 
         let animationDone = false
-        $mbox.css('pointer-events', 'none')
-        $mbox[0].onanimationend = () => {
-            $mbox.css('pointer-events', 'all')
+        mbox.style.pointerEvents = 'non'
+        mbox.onanimationend = () => {
+            mbox.style.pointerEvents = 'all'
             updateSel()
             animationDone = true
-            $mbox[0].onanimationend = null
+            mbox.onanimationend = null
         }
 
         for (let i = 0; i < options.length; i += 2) {
             // Text
-            const $coption = $(`<pre tabindex="-1">${options[i]}</pre>`)
-                .on('mouseenter', function(e) {
+            const coption = document.createElement('pre')
+            coption.tabindex = -1
+            coption.innerHTML = options[i]
+
+            coption
+                .addEventListener('mouseenter', function(e) {
                     if (!animationDone) return
                     $mbox.children().removeClass('selected')
                     lastSelected = $coption[0].index / 2
                     selected = null
                     isMouseOn = true
                 })
-                .on('mousedown', function(e) {
+
+            coption
+                .addEventListener('mousedown', function(e) {
                     if (!animationDone) return
                     $mbox.hide()
-                    $mbox.removeClass('begin')
+                    mbox.classList.remove('begin')
                     $mbox.show()
-                    $mbox.addClass('reverse-anim')
-                    $mbox[0].onanimationend = () => {
+                    mbox.classList.add('reverse-anim')
+                    mbox.onanimationend = () => {
                         $mbox.empty()
-                        $mbox.removeClass('reverse-anim')
-                        $mbox[0].onanimationend = null
+                        mbox.classList.remove('reverse-anim')
+                        mbox.onanimationend = null
                         lastChoice = $coption[0].index / 2
                         resolve()
                     }
                     newScene = $coption[0].scene
                 })
-                .on('mouseleave', function(e) {
+
+            coption
+                .addEventListener('mouseleave', function(e) {
                     if (!animationDone) return
                     selected = lastSelected
                     isMouseOn = false
                     updateSel()
                 })
 
-            $coption[0].scene = options[i + 1]
-            $coption[0].index = i
-            $mbox.append($coption)
+            coption.scene = options[i + 1]
+            coption.index = i
+            mbox.appendChild(coption)
         }
 
         function updateSel() {
             $mbox.children().removeClass('selected')
-            $mbox.children()[selected].classList.add('selected')
+            mbox.children[selected].classList.add('selected')
         }
 
         updateSel()
@@ -313,13 +340,13 @@ async function showMulti(options) {
                     updateSel()
                 } else if (e.key === 'Enter') {
                     // Confirm
-                    $($mbox.children()[selected]).trigger('mousedown')
-                    $(window).off('keydown')
+                    $(mbox.children[selected]).trigger('mousedown')
+                    $window.off('keydown')
                 }
             }
         }
 
-        $(window).on('keydown', handleKeyDown)
+        $window.on('keydown', handleKeyDown)
     })
 }
 
@@ -331,7 +358,7 @@ function derefInheritance(dt) {
     }
 }
 
-const MUS_MULTIPLIER = 0.6
+const MUS_MULTIPLIER = 0.55
 let audioInt, caudio = []
 
 // If loops is falsy then initStart is actually the volume
@@ -349,11 +376,11 @@ function playSong(url, loops, initStart, start, end) {
                 newAudio.currentTime = start
             }
         }, 40)
-        window.onkeydown = (e) => {
-            if (e.key === 'g') {
-                newAudio.currentTime = end - 5.0
-            }
-        }
+        // window.onkeydown = (e) => {
+        //     if (e.key === 'g') {
+        //         newAudio.currentTime = end - 5.0
+        //     }
+        // }
     }
 }
 
@@ -414,8 +441,13 @@ function clearDiagDOM() {
     $('#saveens').hide()
     if ($('#lynn-pop')[0]) {
         hideLynn($('#lynn-pop'))
-    }
+    };
 
+    const ds = document.getElementById('dialog-scene')
+
+    if (ds) ds.style.backgroundImage = 'url("../assets/money.png")';
+
+    stopMusic()
     endShake()
 
     $('.mg-canvas').removeClass('visible')
@@ -640,12 +672,16 @@ async function handleTalk(args) {
     })
 }
 
+function addJournals() {
+    save.journals += parseInt(inlineVarDict['_journal_increase'], 10)
+}
+
 let isTransition = false
 let requireCondition = true
 async function doDialog(name) {
     // Delay 100ms
     await new Promise((resolve, reject) => {
-        setTimeout(resolve, 100)
+        setTimeout(resolve, 120)
     })
 
     hasTalked = false
@@ -769,7 +805,7 @@ async function doDialog(name) {
 
             $img.toggleClass('animated', true).show()
         } else if (args[0] === 'sfx') {
-            playSong(args[1], false, 1.0)
+            playSong(args[1], false, parseFloat(args[2] || "1.0"))
         } else if (args[0] === 'lynn') {
             unlockCollectable('lynns', LYNNS, args[1])
             // let index = -1

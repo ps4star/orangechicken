@@ -1,5 +1,5 @@
 @font-face {
-    src: url("./Helve Cursive.ttf");
+    src: url("./HelveCursive.ttf");
     font-family: "GCursive";
     font-weight: normal;
 }
@@ -21,6 +21,10 @@
     color: white;
 
     font-family: sans-serif, all;
+
+    outline: none;
+
+    -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -32,7 +36,10 @@ html {
     top: 0;
     left: 0;
 
-    background: blue;
+    background: none;
+
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 body {
@@ -44,7 +51,8 @@ body {
 
     background: black;
 
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 p, pre, button {
@@ -74,6 +82,9 @@ img {
 
 div {
     pointer-events: none;
+
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 button, input {
@@ -111,7 +122,7 @@ button, input {
 
     opacity: 0;
 
-    z-index: 999;
+    z-index: 50;
 
     background: black;
 
@@ -122,6 +133,35 @@ button, input {
 #s-cover.visible {
     opacity: 1;
     pointer-events: all;
+}
+
+#loadeen {
+    margin: auto;
+    color: white;
+
+    z-index: 51;
+    pointer-events: none;
+
+    display: none;
+    flex-flow: column nowrap;
+
+    text-align: center;
+}
+
+#loadeen.visible {
+    display: flex;
+}
+
+.loadeen-text {
+    line-height: 1.5em;
+}
+
+#lt1 {
+    font-size: 5vmin;
+}
+
+#lt2 {
+    font-size: 3.25vmin;
 }
 
 #root {
@@ -153,8 +193,8 @@ button, input {
 }
 
 .disclaimer-large {
-    font-size: 4rem;
-    padding-bottom: 6rem;
+    font-size: 8vmin;
+    padding-bottom: 4%;
 }
 
 .cursive {
@@ -162,8 +202,8 @@ button, input {
 }
 
 .disclaimer-medium {
-    font-size: 2.5rem;
-    padding-bottom: 6rem;
+    font-size: 5vmin;
+    padding-bottom: 4%;
 }
 
 .press-key {
@@ -171,7 +211,7 @@ button, input {
     bottom: 2rem;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 1.2rem;
+    font-size: 2.4vmin;
 }
 
 span.ochicken {
@@ -193,8 +233,9 @@ span.ochicken {
     width: 100%; height: 100%;
     background-image: url("../assets/titlescreen.jpg");
     background-repeat: no-repeat;
-    background-size: cover;
-    filter: brightness(60%);
+    background-size: 100% 100%;
+
+    filter: brightness(50%);
 }
 
 @keyframes bg-move {
@@ -214,9 +255,8 @@ span.ochicken {
     width: 100%; height: 100%;
     background-image: url("../assets/orangechicken.png");
     background-repeat: repeat;
-    background-color: #111;
 
-    opacity: 0.35;
+    opacity: 0.5;
 
     animation: bg-move 850ms;
     animation-iteration-count: infinite;
@@ -233,7 +273,7 @@ div.ochicken-bg * {
     padding-top: 1rem;
     z-index: 2;
 
-    font-size: 4rem;
+    font-size: 9vmin;
     text-align: center;
 
     font-family: "GCursive", cursive, serif, all;
@@ -246,11 +286,14 @@ div.ochicken-bg * {
 
     display: flex;
     flex-flow: column nowrap;
+
+    overflow-x: initial;
+    overflow-y: initial;
 }
 
 .mm-button {
     position: relative;
-    font-size: 2.25rem;
+    font-size: 5.2vmin;
     padding: 0.5rem;
 
     cursor: pointer;
@@ -279,6 +322,19 @@ div.ochicken-bg * {
     width: 100%;
 }
 
+/* title media queries */
+@media (orientation: portrait) {
+    /* make title text smaller */
+    .mm-title, .mm-title span {
+        font-size: 6vmin;
+    }
+
+    #title-container::before {
+        background-position: 45% 15%;
+        background-size: 200% 100%;
+    }
+}
+
 /* lynns */
 #lynns-container {
     display: flex;
@@ -293,14 +349,14 @@ div.ochicken-bg * {
 
 #lynns-amount-header {
     text-align: center;
-    font-size: 1.7rem;
+    font-size: 3.5vmin;
 
     margin-bottom: 1rem;
 }
 
 #lynns-main {
-    width: 60%;
-    height: 80%;
+    width: 70%;
+    height: 85%;
 
     display: flex;
     flex-flow: row wrap;
@@ -385,13 +441,13 @@ div.ochicken-bg * {
 }
 
 .lynn {
-    width: 25%;
-    height: 8rem;
+    width: 24%;
+    height: 24%;
 
-    margin: 0.5rem;
+    margin: 1.5%;
 
     background: white;
-    box-shadow: 0 0 2px 1px black;
+    box-shadow: 0 0 0.5vmin 0.125vmin black;
 
     display: flex;
     flex-flow: column nowrap;
@@ -406,29 +462,34 @@ div.ochicken-bg * {
 
 .lynn-dot {
     position: relative;
-    margin: 0 auto;
+    margin: 0;
+
+    overflow-x: initial;
+    overflow-y: initial;
 }
 
 .lynn-dot::after {
     content: '';
 
     position: absolute;
-    top: -6px;
+    top: -2px;
     left: 50%;
 
-    width: 0.3rem;
-    height: 0.3rem;
+    width: 0.6vmin;
+    height: 0.6vmin;
 
     background: #EEE;
     border: 0.1rem solid black;
     border-radius: 50%;
 
     transform: translateX(-50%);
+
+    z-index: 14;
 }
 
 .lynn-img {
     width: 90%;
-    height: 4rem;
+    height: 45%;
 }
 
 .locked {
@@ -437,7 +498,7 @@ div.ochicken-bg * {
 
 .lynn-text {
     color: black;
-    font-size: 1rem;
+    font-size: 2.15vmin;
 
     text-transform: capitalize;
 }
@@ -452,6 +513,19 @@ div.ochicken-bg * {
 
 #lynn-page-text {
     padding: 0 0.5rem;
+}
+
+/* lynns queries */
+@media (orientation: portrait) {
+    .lynn {
+        width: 12vmin;
+        height: 10vmin;
+    }
+
+    #lynns-main {
+        width: 95%;
+        height: 50%;
+    }
 }
 
 .back-button {
@@ -562,6 +636,7 @@ div.ochicken-bg * {
     text-transform: capitalize;
 }
 
+/* DIAG */
 #dialog-scene {
     position: relative;
 
@@ -582,6 +657,9 @@ div.ochicken-bg * {
     width: 98%;
 
     display: block;
+
+    overflow-x: initial;
+    overflow-y: initial;
 }
 
 @keyframes pop-in-left {
@@ -597,17 +675,33 @@ div.ochicken-bg * {
 }
 
 .actor {
+    width: 38vmin;
+    height: 38vmin;
     transition: transform 250ms;
+
+    position: relative;
+
+    overflow-x: initial;
+    overflow-y: initial;
 }
 
 .actor-img {
-    width: 17.5rem;
-    height: 17.5rem;
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 
     padding: 0 0.7rem;
     margin-bottom: 0;
 
     transition: transform 400ms;
+
+    z-index: 5;
+
+    overflow-x: initial;
+    overflow-y: initial;
 }
 
 .actor-img.animated {
@@ -639,24 +733,36 @@ div.ochicken-bg * {
     float: right !important;
 }
 
+.panel {
+    background: var(--dark-panel-bg);
+    box-shadow: 0 0.5vmin 0.5vmin 0.15vmin black;
+}
+
 #diag-container {
     position: relative;
     width: 95%;
-    height: 10rem;
+    height: 24%;
     margin: 0 auto;
     margin-bottom: 1rem;
 
     background: var(--dark-panel-bg);
+
+    overflow-x: initial;
+    overflow-y: initial;
+
+    z-index: 6;
 }
 
 #diag-name {
     -webkit-user-select: none;
 
     position: absolute;
-    left: 1rem;
-    top: -3rem;
-    width: 10rem;
-    height: 2.75rem;
+    left: 1.5%;
+    top: -28%;
+    width: 14%;
+    height: 23%;
+
+    padding-top: 0.125%;
 
     display: flex;
     align-content: center;
@@ -664,19 +770,19 @@ div.ochicken-bg * {
     align-items: center;
 
     font-family: sans-serif;
-    font-size: 1.5vw;
+    font-size: 3.2vmin;
 
     background: inherit;
-}
 
-.panel {
-    background: var(--dark-panel-bg);
-    box-shadow: 0 3px 3px 1px black;
+    z-index: 50;
 }
 
 #diag {
     position: relative;
     display: flex;
+
+    overflow-x: initial;
+    overflow-y: initial;
 }
 
 #diag-text {
@@ -684,10 +790,28 @@ div.ochicken-bg * {
 
     width: auto;
     position: relative;
-    font-size: 1.3vw;
+    font-size: 2.7vmin;
     font-family: sans-serif;
 
-    padding: 0.7rem;
+    padding: 1.75vmin;
+    padding-right: 1%;
+    padding-bottom: 1%;
+
+    overflow-x: initial;
+    overflow-y: initial;
+}
+
+/* diag queries */
+@media screen and (orientation: portrait) {
+    #diag-name {
+        width: 28%;
+        opacity: 0.6;
+    }
+
+    .actor {
+        width: 27vmin;
+        height: 27vmin;
+    }
 }
 
 @keyframes bob-up-down {
@@ -700,26 +824,37 @@ div.ochicken-bg * {
     }
 }
 
-#diag-text.full::after {
+#diag-text > span {
+    position: relative;
+}
+
+#diag-text.full > span::after {
     content: '';
 
     position: absolute;
-    right: -2px;
-    bottom: 40%;
+    right: -2vmin;
+    bottom: 42%;
     width: 0;
     height: 0;
 
     /* triangle */
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
+    border-left: 0.75vmin solid transparent;
+    border-right: 0.75vmin solid transparent;
 
-    border-top: 5px solid white;
+    border-top: 0.75vmin solid white;
 
     animation: bob-up-down 400ms;
     animation-iteration-count: infinite;
     animation-fill-mode: both;
     animation-direction: alternate;
     animation-timing-function: linear;
+}
+
+@media screen and (orientation: portrait) {
+    #diag-text.full > span::after{
+        right: -2vmin;
+        bottom: 35%;
+    }
 }
 
 #diag-options {
@@ -729,14 +864,22 @@ div.ochicken-bg * {
 
     display: flex;
     flex-flow: row nowrap;
+
+    z-index: 13;
+
+    overflow-x: initial;
+    overflow-y: initial;
+    pointer-events: all;
 }
 
 #diag-options > * {
     padding: 0.5rem;
-    font-size: 1rem;
+    font-size: 2.25vmin;
 
     opacity: 0.65;
     cursor: pointer;
+
+    pointer-events: all;
 }
 
 #diag-options > *:hover {
@@ -746,23 +889,32 @@ div.ochicken-bg * {
 #multi-box {
     position: absolute;
     left: 0;
-    top: 45%;
+    top: 40%;
 
-    transform: translateX(-10rem);
+    transform: translateX(-15vmin);
 
-    margin-left: 1rem;
-    padding: 1rem;
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
+    margin-left: 2vmin;
+    padding: 2vmin;
+    padding-top: 3vmin;
+    padding-bottom: 3vmin;
 
     background: var(--dark-panel-bg);
 
     pointer-events: initial;
+
+    z-index: 7;
+
+    overflow-x: initial;
+    overflow-y: initial;
+}
+
+#multi-box * {
+    font-size: 2.8vmin;
 }
 
 @keyframes multi-pop-in-left {
     from {
-        transform: translateX(-5rem);
+        transform: translateX(-8vmin);
         opacity: 0;
     }
 
@@ -786,10 +938,14 @@ div.ochicken-bg * {
 #multi-box pre {
     position: relative;
 
-    min-width: 20rem;
+    min-width: 30%;
     text-align: center;
-    padding: 0.25rem 4rem;
+    padding: 0.75vmin 9vmin;
     cursor: pointer;
+}
+
+#multi-box pre:not(:last-of-type) {
+    margin-bottom: 1vmin;
 }
 
 #multi-box pre:hover, #multi-box pre.selected {
@@ -801,8 +957,8 @@ div.ochicken-bg * {
 
     position: absolute;
 
-    width: 3rem;
-    height: 1.6rem;
+    width: 6vmin;
+    height: 3vmin;
 
     background-image: url("../assets/menupointer.png");
     background-size: cover;
@@ -810,7 +966,7 @@ div.ochicken-bg * {
 
 @keyframes sausage-finger-move-left {
     from {
-        transform: translateX(0.6rem);
+        transform: translateX(1.5vmin);
     }
 
     to {
@@ -820,7 +976,7 @@ div.ochicken-bg * {
 
 @keyframes sausage-finger-move-right {
     from {
-        transform: translateX(-0.6rem) scaleX(-1);
+        transform: translateX(-1.5vmin) scaleX(-1);
     }
 
     to {
@@ -828,8 +984,8 @@ div.ochicken-bg * {
     }
 }
 
-#multi-box pre:hover::before, #multi-box pre.selected::before {
-    top: 10%;
+#multi-box pre:hover::before, #multi-box pre.selected::before, #multi-box pre:hover::after, #multi-box pre.selected::after {
+    top: 50%%;
     left: 0;
 
     animation: sausage-finger-move-left 400ms;
@@ -839,13 +995,9 @@ div.ochicken-bg * {
 }
 
 #multi-box pre:hover::after, #multi-box pre.selected::after {
-    top: 10%;
+    left: unset;
     right: 0;
-
-    animation: sausage-finger-move-right 400ms;
-    animation-direction: alternate;
-    animation-fill-mode: both;
-    animation-iteration-count: infinite;
+    animation-name: sausage-finger-move-right;
 }
 
 @keyframes lynn-popdown {
@@ -865,15 +1017,18 @@ div.ochicken-bg * {
 
     top: 0;
     left: 50%;
-    width: 65%;
-    height: 4rem;
+    width: 50%;
+    height: 10vmin;
 
     display: flex;
     justify-content: flex-start;
     align-items: center;
     flex-flow: column nowrap;
 
-    z-index: 5;
+    z-index: 9;
+
+    overflow-x: initial;
+    overflow-y: initial;
 }
 
 .lynn-pop {
@@ -882,10 +1037,13 @@ div.ochicken-bg * {
     text-align: center;
     width: 100%;
     height: 100%;
-    padding: 1rem;
-    margin: 1rem auto 0.5rem auto;
+    padding: 2vmin;
+    margin: 2vmin auto 1vmin auto;
 
     background: var(--dark-panel-bg);
+
+    overflow-x: initial;
+    overflow-y: initial;
 }
 
 .lynn-pop.anim {
@@ -902,26 +1060,30 @@ div.ochicken-bg * {
 
 .dom-counter, #saveens {
     position: absolute;
-    top: 0.5rem;
-    left: 0.5rem;
-    width: 15rem;
-    height: 2.5rem;
+    top: 1%;
+    left: 1%;
+    width: 15%;
+    height: 5%;
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
 
-    z-index: 5;
+    overflow-x: initial;
+    overflow-y: initial;
+
+    z-index: 19;
 }
 
 .dom-counter pre, #saveens pre {
-    padding: 0 0.7rem;
+    padding: 1.25vmin 2vmin 1vmin 1vmin;
 
-    font-size: 2rem;
+    font-size: 5vmin;
 }
 
 .dom-counter span, #saveens span {
     color: green;
 }
+/* END DIAG */
 
 @keyframes pop-in-canvas {
     from {
@@ -946,6 +1108,8 @@ div.ochicken-bg * {
     height: 100%;
 
     pointer-events: none;
+
+    z-index: 12;
 }
 
 .canvas-container.visible {
@@ -996,26 +1160,27 @@ div.ochicken-bg * {
 
 @keyframes fade-down {
     from {
-        transform: translateY(0rem);
+        transform: translateY(-1vmin);
         opacity: 1;
     }
 
     to {
-        transform: translateY(3rem);
+        transform: translateY(8vmin);
         opacity: 0;
     }
 }
 
 .money-change {
+    opacity: 1;
     position: absolute;
 
     animation: fade-down 700ms;
     animation-fill-mode: forwards;
     animation-direction: normal;
 
-    z-index: 3;
+    z-index: 49;
 
-    font-size: 1.8rem;
+    font-size: 5vmin;
 }
 
 .iq-score {
@@ -1025,4 +1190,10 @@ div.ochicken-bg * {
 .iq-score pre {
     color: lightblue;
     font-size: 1.5rem;
+}
+
+@media screen and (orientation: portrait) {
+    #saveens {
+        width: 30%;
+    }
 }
