@@ -688,7 +688,7 @@ const tryHook = function(hookLib, evtName, sceneChange) {
     func(sceneChange)
 }
 
-loadScene = async function(name, $root) {
+const loadScene = async function(name, $root) {
     writeSave()
 
     let oldScene = cScene
@@ -2468,32 +2468,34 @@ function nullifyEvent(e) {
     return false
 }
 
+// UNUSED; rel="prefetch" is the successor
 async function bufferAssets(list) {
-    for (const item of list) {
-        await new Promise((resolve, reject) => {
-            $('#lt2').text(`${item}`)
+    return Promise.resolve()
+    // for (const item of list) {
+    //     await new Promise((resolve, reject) => {
+    //         $('#lt2').text(`${item}`)
 
-            let img, loadedEvent
-            if (item.endsWith('.png') || item.endsWith('.jpg') || item.endsWith('.bmp')) {
-                img = new Image()
-                loadedEvent = 'onload'
-            } else if (item.endsWith('.ogg') || item.endsWith('.mp3')) {
-                img = new Audio()
-                loadedEvent = 'oncanplaythrough'
-            } else if (item.endsWith('.ttf') || item.endsWith('.woff')) {
-                fetch(item).then(resolve)
-                loadedEvent = null
-            } else {
-                resolve()
-                return
-            }
+    //         let img, loadedEvent
+    //         if (item.endsWith('.png') || item.endsWith('.jpg') || item.endsWith('.bmp')) {
+    //             img = new Image()
+    //             loadedEvent = 'onload'
+    //         } else if (item.endsWith('.ogg') || item.endsWith('.mp3')) {
+    //             img = new Audio()
+    //             loadedEvent = 'oncanplaythrough'
+    //         } else if (item.endsWith('.ttf') || item.endsWith('.woff')) {
+    //             fetch(item).then(resolve)
+    //             loadedEvent = null
+    //         } else {
+    //             resolve()
+    //             return
+    //         }
 
-            if (loadedEvent !== null) {
-                img.src = item
-                img[loadedEvent] = resolve
-                // console.log('iter ' + item)
-            }
-        })
+    //         if (loadedEvent !== null) {
+    //             img.src = item
+    //             img[loadedEvent] = resolve
+    //             // console.log('iter ' + item)
+    //         }
+    //     })
     }
 }
 
