@@ -770,11 +770,16 @@ div.ochicken-bg * {
     align-items: center;
 
     font-family: sans-serif;
-    font-size: 3.2vmin;
+    font-size: 1.65vw;
 
     background: inherit;
 
     z-index: 50;
+}
+
+#diag-name, #diag-name * {
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 #diag {
@@ -938,14 +943,12 @@ div.ochicken-bg * {
 #multi-box pre {
     position: relative;
 
-    min-width: 30%;
+    min-width: 21vw;
     text-align: center;
-    padding: 0.75vmin 9vmin;
+    padding: 1.5vmin 12.5vmin;
     cursor: pointer;
-}
 
-#multi-box pre:not(:last-of-type) {
-    margin-bottom: 1vmin;
+    --scale: 105%;
 }
 
 #multi-box pre:hover, #multi-box pre.selected {
@@ -955,10 +958,12 @@ div.ochicken-bg * {
 #multi-box pre:hover::before, #multi-box pre:hover::after, #multi-box pre.selected::before, #multi-box pre.selected::after {
     content: '';
 
+    display: inline-block;
+
     position: absolute;
 
-    width: 6vmin;
-    height: 3vmin;
+    width: 9vmin;
+    height: 4.5vmin;
 
     background-image: url("../assets/menupointer.png");
     background-size: cover;
@@ -966,26 +971,26 @@ div.ochicken-bg * {
 
 @keyframes sausage-finger-move-left {
     from {
-        transform: translateX(1.5vmin);
+        transform: translateX(1.5vmin) scale(var(--scale));
     }
 
     to {
-        transform: translateX(0px);
+        transform: translateX(0px) scale(var(--scale));
     }
 }
 
 @keyframes sausage-finger-move-right {
     from {
-        transform: translateX(-1.5vmin) scaleX(-1);
+        transform: translateX(-1.5vmin) scale(calc(var(--scale) * -1), var(--scale));
     }
 
     to {
-        transform: translateX(0px) scaleX(-1);
+        transform: translateX(0px) scale(calc(var(--scale) * -1), var(--scale));
     }
 }
 
 #multi-box pre:hover::before, #multi-box pre.selected::before, #multi-box pre:hover::after, #multi-box pre.selected::after {
-    top: 50%%;
+    top: 15%;
     left: 0;
 
     animation: sausage-finger-move-left 400ms;
@@ -1056,6 +1061,10 @@ div.ochicken-bg * {
     animation: lynn-popdown 400ms;
     animation-direction: reverse;
     animation-fill-mode: forwards;
+}
+
+.lynn-pop-text {
+    font-size: 1.5vw !important;
 }
 
 .dom-counter, #saveens {

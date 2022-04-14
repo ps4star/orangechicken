@@ -7,7 +7,7 @@ function fillArr(item, num) {
 }
 
 // Very small intentional lag to prevent too many inputs fucking everything up
-const inputDelayTime = 35
+const inputDelayTime = 25
 
 // This doesn't really matter as long as it's sufficiently large
 const NUM_USEFLAGS = 250
@@ -268,7 +268,7 @@ async function showMulti(options) {
         mbox.classList.add('begin')
 
         let animationDone = false
-        mbox.style.pointerEvents = 'non'
+        mbox.style.pointerEvents = 'none'
         mbox.onanimationend = () => {
             mbox.style.pointerEvents = 'all'
             updateSel()
@@ -282,39 +282,40 @@ async function showMulti(options) {
             coption.tabindex = -1
             coption.innerHTML = options[i]
 
-            coption
-                .addEventListener('mouseenter', function(e) {
-                    if (!animationDone) return
-                    $mbox.children().removeClass('selected')
-                    lastSelected = $coption[0].index / 2
-                    selected = null
-                    isMouseOn = true
-                })
+            const $coption = $(coption)
 
-            coption
-                .addEventListener('mousedown', function(e) {
-                    if (!animationDone) return
-                    $mbox.hide()
-                    mbox.classList.remove('begin')
-                    $mbox.show()
-                    mbox.classList.add('reverse-anim')
-                    mbox.onanimationend = () => {
-                        $mbox.empty()
-                        mbox.classList.remove('reverse-anim')
-                        mbox.onanimationend = null
-                        lastChoice = $coption[0].index / 2
-                        resolve()
-                    }
-                    newScene = $coption[0].scene
-                })
+            $coption.on('mouseenter', function(e) {
+                if (!animationDone) return
+                $mbox.children().removeClass('selected')
+                lastSelected = coption.index / 2
+                selected = null
+                isMouseOn = true
+            })
 
-            coption
-                .addEventListener('mouseleave', function(e) {
-                    if (!animationDone) return
-                    selected = lastSelected
-                    isMouseOn = false
-                    updateSel()
-                })
+            $coption.on('mousedown', function(e) {
+                if (!animationDone) return
+                $mbox.hide()
+                mbox.classList.remove('begin')
+                $mbox.show()
+                mbox.classList.add('reverse-anim')
+
+                mbox.onanimationend = () => {
+                    $mbox.empty()
+                    mbox.classList.remove('reverse-anim')
+                    mbox.onanimationend = null
+                    lastChoice = coption.index / 2
+                    resolve()
+                }
+
+                newScene = coption.scene
+            })
+
+            $coption.on('mouseleave', function(e) {
+                if (!animationDone) return
+                selected = lastSelected
+                isMouseOn = false
+                updateSel()
+            })
 
             coption.scene = options[i + 1]
             coption.index = i
@@ -333,20 +334,21 @@ async function showMulti(options) {
             if (isMouseOn) return
 
             if (e.key) {
-                if (e.key.includes('Arrow')) {
-                    if (e.key === 'ArrowUp' && selected > 0) selected--
-                    else if (e.key === 'ArrowDown' && selected < $mbox[0].children.length - 1) selected++
+                const key = e.key.toLowerCase()
+                if (key.includes('arrow')) {
+                    if (key === 'arrowup' && selected > 0) selected--
+                    else if (key === 'arrowdown' && selected < mbox.children.length - 1) selected++
 
                     updateSel()
-                } else if (e.key === 'Enter') {
+                } else if (key.includes('enter')) {
                     // Confirm
-                    $(mbox.children[selected]).trigger('mousedown')
+                    $($mbox.children()[selected]).trigger('mousedown')
                     $window.off('keydown')
                 }
             }
         }
 
-        $window.on('keydown', handleKeyDown)
+        $(window).on('keydown', handleKeyDown)
     })
 }
 
@@ -487,7 +489,7 @@ function showLynn(text) {
         $txt.addClass('anim-reverse')
 
         $txt[0].onanimationend = () => hideLynn($txt)
-    }, 2000)
+    }, 2100)
 }
 
 // function clearNotifs() {
@@ -701,7 +703,10 @@ async function doDialog(name) {
             const pose = args[2]
 
             // Only reanimate if we have talked
-            await updateActorPose(person, pose, hasTalked)
+            updateActorPose(person, pose, hasTalked)
+            await new Promise((resolve, reject) => {
+                setTimeout(resolve, 0)
+            })
         } else if (args[0] === 'talk') {
             await handleTalk(args)
         } else if (args[0] === 'talknoconfirm') {

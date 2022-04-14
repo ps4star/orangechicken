@@ -332,13 +332,17 @@ async function mgMookbong() {
 
         candt.realCanvas.parentElement.onmousedown = (e) => e.stopPropagation()
 
-        candt.realCanvas.onmousemove = function(e) {
+        $(candt.realCanvas).on('mousemove', function(e) {
             e.stopPropagation()
             const position = mgRealToCanvas(this, e)
             const last = mgMookbongNinjaPath[mgMookbongNinjaPath.length - 1]
             if (last)
                 mgMookbongPutNinjaPathPoint(...last)
             mgMookbongPutNinjaPathPoint(position.x, position.y)
+        })
+
+        candt.realCanvas.ontouchmove = function(e) {
+            $(candt.realCanvas).trigger('mousemove')
         }
 
         let fc = 0,

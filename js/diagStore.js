@@ -1,4 +1,4 @@
-const RIZO_ISLAND_MUSIC_DT = ["assets/music/cf.ogg", true, 0, 1.65, 166.32]
+const RIZO_ISLAND_MUSIC_DT = ["assets/music/cf.ogg", true, 0, 1.65, 166.08]
 const CALD_MUSIC_DT = ["assets/music/cald.ogg", true, 0, 1.5, 93.3]
 const ALRTHEME_MUSIC_DT = ["assets/music/alrtheme.ogg", true, 0, 0, 93]
 
@@ -37,7 +37,7 @@ talk - (Amberlynn bangs the table with her fist)
 talk 1 "Amber you're not big, ok? You're makin a scene."
 pose 0 cacklelynn
 lynn cackle
-sfx assets/sfx/cackle.mp3 0.55
+sfx assets/sfx/cackle.mp3 0.5
 talk - (Amber starts cackling like the whole thing was a joke)
 pose 0 normal
 talk 0 "Baby I knooww, I'm just kiddeen."
@@ -90,7 +90,6 @@ talk - (Amber doesn't pay attention and stays quiet, still pissed, with a frown 
 talk 1 "See, it looks just like the Orange Chicken they have here."
 pose 0 pissed
 talk 0 "But it's not the saaaaaame!"
-talk - (Amber slams her fists on the table)
 talk 0 "Becky, you don't get it. I like, HAVE to have Orange Chicken, kay?"
 enter 2
 talk 2 "Alright ma'am here's your order."
