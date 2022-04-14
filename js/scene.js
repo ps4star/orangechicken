@@ -37,7 +37,7 @@ const tryHook = function(hookLib, evtName, sceneChange) {
     func(sceneChange)
 }
 
-loadScene = async function(name, $root) {
+const loadScene = async function(name, $root) {
     writeSave()
 
     let oldScene = cScene
