@@ -2496,7 +2496,7 @@ async function bufferAssets(list) {
     //             // console.log('iter ' + item)
     //         }
     //     })
-    }
+    // }
 }
 
 hookGlobal('load', function() {
