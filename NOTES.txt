@@ -1,2 +1,0 @@
-GCL COMPILE CMD:
-gcl-compiler js/diagStore.js js/lynnsStore.js js/achievementsStore.js js/chaptersStore.js js/scene.js js/diag.js js/mg.js js/main.js --js_output_file=rollout.js -O=BUNDLE

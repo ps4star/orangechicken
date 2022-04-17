@@ -52,8 +52,8 @@ talk 1 "I'm doing pretty good."
 talk 2 "So, what will you guys be having today?"
 talk 0 "I'll get 4 orders of the Orange Chicken..."
 talk 2 "I'm sorry, we ran out of that yesterday. Something about a national shortage."
-lynn angry
 pose 0 pissed
+lynn angry
 talk 0 "But you always have it here! We drove 2 hourssss!"
 talk 1 "Babe calm down, we can just go by Panda Express on the way back."
 sfx assets/sfx/orangechickenlikeido.ogg
@@ -80,6 +80,7 @@ shortage_leave
         diag: `
 affectionchange %AFFCHANGE_INDEX% Becky 5
 pose 0 bored
+lynn bored
 talk 0 "Ughh okayyy fine."
 talk - (waitress takes Amber & Becky's orders)
 leave 2
@@ -89,6 +90,7 @@ lynn frowny
 talk - (Amber doesn't pay attention and stays quiet, still pissed, with a frown on her face)
 talk 1 "See, it looks just like the Orange Chicken they have here."
 pose 0 pissed
+lynn angry
 talk 0 "But it's not the saaaaaame!"
 talk 0 "Becky, you don't get it. I like, HAVE to have Orange Chicken, kay?"
 enter 2
@@ -105,9 +107,9 @@ gotofadenewchapter 2
         inherits: "shortage",
         diag: `
 setglobal hasSeenLeaveenLynn 1
-lynn leaveen
 pose 0 leaveen
-sfx assets/sfx/leaveen.aac
+lynn leaveen
+sfx assets/sfx/leaveen.ogg
 affectionchange %AFFCHANGE_INDEX% Becky -5
 talk 0 "I'm leaaveeeeeeeen."
 incvisit
@@ -125,14 +127,15 @@ chapter 2
 enter 0
 enter 2
 pose 0 bored
+lynn bored
 talk 0 "Becky, I can't do this. I can't live without Cheesecake Factory's Orange Chicken."
 talk 2 "Babe, like I said you can just look up a recipe online. Why is it such a big deal?"
 talk 0 "I knoowww but then it won't taste like Cheesecake Factory'sss."
 talk 2 "I dunno then. Just try looking it up."
 talk 0 "Ughh I doubt it'll be there but I'll checkk."
 talk 0 ... ... ...
-lynn gasp
 pose 0 gasp
+lynn gasp
 talk 0 "Oh muh gah, I think I found sometheen!"
 talk 2 "What is it?"
 talk 0 "I went on Craygslist and there's apparently this super smart chef guy who can re-create the recipe!"
@@ -221,6 +224,7 @@ craygslist_mookbong
         inherits: "craygslist",
         diag: `
 pose 0 laser
+lynn laser
 shakestart 0
 talk 0 "BECKY GET IN THE CAR NOW WE'RE GOING TO TORRID"
 shakeend 0
@@ -248,6 +252,7 @@ chapter 3
 enter 0
 enter 1
 pose 0 heyguys
+lynn heyguys
 talk 0 "Hey guuuuys so me and Becky just got here at Torrid."
 talk 0 "And ohmuhgod you guys there are so many cute dresses."
 pose 0 normal
@@ -274,6 +279,7 @@ talk 0 "I guess they're doing a clearance type deal."
 pose 0 normal
 talk 0 "Ok let's look at some other ones."
 pose 0 wifeycowprint
+lynn feeder
 talk 0 "Ooh I like this one, we got a cow print moment."
 talk 0 "Wait wuuuut there's like this piece of paper in here."
 talk - (Amberlynn pulls the paper out from the inside of the cow-print dress.)
@@ -352,6 +358,7 @@ endif
 ; (it thinks "endif" is an option with a blank scene target)
 if lt money moneyDressCost
 pose 0 pissed
+lynn angry
 talk 0 "Oh noooooouhh I can't afford itt."
 goto torrid_cantafford
 endif
@@ -422,14 +429,14 @@ gotofadenewchapter 5
         diag: `
 lynn leaveen
 pose 0 leaveen
-sfx assets/sfx/leaveen.aac
+sfx assets/sfx/leaveen.ogg
 talk 0 "I'm leaaveeeeeeeen."
 
 if eq hasSeenLeaveenLynn 1
 talk 1 "Amber..."
 talk 0 "Yes?"
 talk 1 "Do you always have to do that when you're leavin' somewhere?"
-sfx assets/sfx/leaveen.aac
+sfx assets/sfx/leaveen.ogg
 talk 0 "Yah because I'm liduralllly LEAVEEEEEEEEN right nowwwuh."
 endif
 
@@ -487,6 +494,7 @@ chapter 5
 enter 0
 enter 1
 pose 0 heyguys
+lynn heyguys
 pose 1 useless
 talk 0 "Hey you guuys so me and Becky are at Bookland."
 talk 1 "Buying useless things."
@@ -561,6 +569,7 @@ endif
 chapter 6
 enter 0
 pose 0 bored
+lynn bored
 talk - (Amberlynn is uploading the video she just filmed)
 talk 0 "... ... ..."
 talk 0 "I'm waaaaaaaaaaiteeeeeeeeeeeeeeeeeen."
@@ -571,14 +580,52 @@ talk 0 "Finally it's done."
 talk 0 "... ... ..."
 talk 0 "Gonna reid a few comments real quick."
 talk - (Amberlynn reids the comments)
-if eq lastChapter 4
+
+if eq lastChapter 3
 setvar _com_seq 1
 endif
-if eq lastChapter 5
+
+if eq lastChapter 4
 setvar _com_seq 2
 endif
+
+if eq lastChapter 5
+setvar _com_seq 3
+endif
+
 callawait mgComments
 talk 0 ""
+`,
+    },
+
+    // Chapter ?? (SALMON)
+    "salmon": {
+        bg: "kitchen.png",
+        music: [ RIZO_ISLAND_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"] ],
+        diag: `
+; TODO: determine which chapter this fits into
+chapter 7
+enter 0
+pose 0 heyguys
+lynn heyguys
+talk 0 "Hey guiiiise so welcome to a new vlog."
+talk 0 "I'm kinda nervous right now you guise, cuuuz I'm makeen fresh salmon for the first time ever."
+talk 0 "First thing we're gonna grab is some aluuuminuuuuuum foiiiyuhlll."
+
+; _diag_type is a special var in binary format; 4-bit
+; == 0 is the default setting
+; Bit 0 = INSTANT_SPEED
+; Bit 1 = IMMEDIATE_EXIT (often used with delay; auto finish text command when text is fully rendered without user input)
+setvar _diag_type 3
+; so in the above case we're setting to 0b0011 - instant + no user input required, mixed with a delay cmd afterwards
+sfx assets/sfx/foil.ogg 0.9
+talk - (Amberlynn grabs foil)
+delay 2000
+setvar _diag_type 0
+pose 0 holdingsalmon
+talk 0 "Ok so we have this salmon right here.."
+talk 0 "Mmmm I don't really wanna"
 `,
     },
 }

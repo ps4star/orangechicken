@@ -44,14 +44,14 @@ let save = DEFAULT_SAVE
 const LS_KEY = "alrsavedata"
 
 function writeSave() {
-    localStorage[LS_KEY] = JSON.stringify(save)
+    window.localStorage[LS_KEY] = JSON.stringify(save)
 }
 
-if (!localStorage[LS_KEY]) {
+if (!window.localStorage[LS_KEY]) {
     writeSave()
 } else {
     try {
-        save = JSON.parse(localStorage[LS_KEY])
+        save = JSON.parse(window.localStorage[LS_KEY])
     } catch(e) {
         writeSave()
     }
@@ -187,9 +187,18 @@ let textInputMode = true
 
 const TEXT_SPEED_INTERVAL = 5
 
-async function putTextBox(speakerIndex, text) {
+async function putTextBox(speakerIndex, text, type) {
+    if (typeof type !== 'number') type = 0
+
     const diag = document.getElementById('diag-text')
     const diagName = document.getElementById('diag-name')
+
+    // Bit 0 = IM text
+    // Bit 1 = NO_INPUT text
+    const textSpeed = (type & 0b0001) > 0 ? 1 : TEXT_SPEED_INTERVAL
+    const noInput = (type & 0b0010) > 0
+
+    console.log(textSpeed, noInput)
 
     if (!diag) {
         $window.off('mousedown')
@@ -221,9 +230,11 @@ async function putTextBox(speakerIndex, text) {
                 if (diag.innerText.length >= text.length) {
                     diag.classList.add('full')
                     diag.innerHTML += `<span></span>`
+
+                    if (noInput) resolve()
                 }
             }
-        }, TEXT_SPEED_INTERVAL)
+        }, textSpeed)
 
         function handleAdvanceClick(e) {
             if (!textInputMode) return false
@@ -252,7 +263,10 @@ async function putTextBox(speakerIndex, text) {
 
         $window.off('keydown')
         $window.off('mousedown')
-        $window.on('mousedown keydown', handleAdvanceClick)
+
+        if (!noInput) {
+            $window.on('mousedown keydown', handleAdvanceClick)
+        }
     })
 }
 
@@ -447,7 +461,7 @@ function clearDiagDOM() {
 
     const ds = document.getElementById('dialog-scene')
 
-    if (ds) ds.style.backgroundImage = 'url("../assets/money.png")';
+    if (ds) ds.style.backgroundImage = 'url("./assets/money.png")';
 
     stopMusic()
     endShake()
@@ -624,7 +638,12 @@ function unlockCollectable(dictName, dict, name) {
     showLynn(`New ${dictName.charAt(0).toUpperCase() + dictName.slice(1)}: <span class="ochicken">${dict[index][0]}</span>`)
 }
 
-let inlineVarDict = {}
+const DEFAULT_INLINE_VARDICT = {
+    "_diag_type": 0,
+}
+
+let inlineVarDict = {...DEFAULT_INLINE_VARDICT}
+
 function derefInlineVariable(name) {
     if (Object.keys(save).indexOf(name) > -1) return save[name]
     if (name in inlineVarDict) return inlineVarDict[name]
@@ -668,7 +687,7 @@ async function handleTalk(args) {
         $actors[speakerIndex].classList.add('magnified')
     }
 
-    await putTextBox(speakerIndex, text)
+    await putTextBox(speakerIndex, text, inlineVarDict["_diag_type"])
     await new Promise((resolve, reject) => {
         setTimeout(resolve, inputDelayTime)
     })
@@ -760,6 +779,10 @@ async function doDialog(name) {
         } else if (args[0] === 'randint') {
             // randint <var> <s> <e>
             inlineVarDict[args[1]] = randInt(parseInt(args[2]), parseInt(args[3]))
+        } else if (args[0] === 'delay') {
+            await new Promise((resolve, reject) => {
+                setTimeout(resolve, derefInlineVariable(args[1]))
+            })
         } else if (args[0] === 'affectionchange') {
             // Do affection change
             handleFlaggedEvent(derefInlineVariable(args[1]), `affection`, () => {

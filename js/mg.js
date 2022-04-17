@@ -19,7 +19,7 @@ function mgInitCanvas(can) {
     let canvas, realCanvas, ctx, sw, sh, realCtx
 
     realCanvas = can[0]
-    canvas = makeOffscreenCanvas(realCanvas.width, realCanvas.height)
+    canvas = window.makeOffscreenCanvas(realCanvas.width, realCanvas.height)
     realCtx = realCanvas.getContext('2d', { alpha: false, powerPreference: "high-performance" })
     ctx = canvas.getContext('2d', { alpha: false, powerPreference: "high-performance" })
     sw = canvas.width

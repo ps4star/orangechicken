@@ -1,3 +1,5 @@
+var $ = window.$ || window.jQuery
+
 const debug = true
 
 const MM_ASSETS_LIST = [
@@ -280,7 +282,7 @@ hook('load', function() {
         writeSave()
     })
 
-    $('#wipe-save-button').on('mousedown', () => { localStorage[LS_KEY] = ""; window.location.reload() })
+    $('#wipe-save-button').on('mousedown', () => { window.localStorage[LS_KEY] = ""; window.location.reload() })
 })
 
 makeScene('lynns')
