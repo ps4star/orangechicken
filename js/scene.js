@@ -37,7 +37,7 @@ const tryHook = function(hookLib, evtName, sceneChange) {
     func(sceneChange)
 }
 
-loadScene = async function(name, $root) {
+const loadScene = async function(name, $root) {
     writeSave()
 
     let oldScene = cScene
@@ -50,9 +50,9 @@ loadScene = async function(name, $root) {
     $finalRoot.empty()
 
     // Pre-buffer assets
-    if (localHooks[newScene]['before']) {
-        await localHooks[newScene]['before']()
-    }
+    // if (localHooks[newScene]['before']) {
+    //     await localHooks[newScene]['before']()
+    // }
 
     // Populate new children
     cScene = newScene

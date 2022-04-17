@@ -1,3 +1,5 @@
+var $ = window.$ || window.jQuery
+
 const debug = true
 
 const MM_ASSETS_LIST = [
@@ -42,7 +44,7 @@ const DIAG_ASSETS_LISTS = [
     [ // Ch 2
         "assets/music/alrtheme.ogg",
 
-        "assets/beckybank.jpg",
+        "assets/actors/piggybank.png",
 
         "assets/actors/amberlynn_gasp.png",
         "assets/actors/amberlynn_laser.png",
@@ -120,33 +122,35 @@ function nullifyEvent(e) {
     return false
 }
 
+// UNUSED; rel="prefetch" is the successor
 async function bufferAssets(list) {
-    for (const item of list) {
-        await new Promise((resolve, reject) => {
-            $('#lt2').text(`${item}`)
+    return Promise.resolve()
+    // for (const item of list) {
+    //     await new Promise((resolve, reject) => {
+    //         $('#lt2').text(`${item}`)
 
-            let img, loadedEvent
-            if (item.endsWith('.png') || item.endsWith('.jpg') || item.endsWith('.bmp')) {
-                img = new Image()
-                loadedEvent = 'onload'
-            } else if (item.endsWith('.ogg') || item.endsWith('.mp3')) {
-                img = new Audio()
-                loadedEvent = 'oncanplaythrough'
-            } else if (item.endsWith('.ttf') || item.endsWith('.woff')) {
-                fetch(item).then(resolve)
-                loadedEvent = null
-            } else {
-                resolve()
-                return
-            }
+    //         let img, loadedEvent
+    //         if (item.endsWith('.png') || item.endsWith('.jpg') || item.endsWith('.bmp')) {
+    //             img = new Image()
+    //             loadedEvent = 'onload'
+    //         } else if (item.endsWith('.ogg') || item.endsWith('.mp3')) {
+    //             img = new Audio()
+    //             loadedEvent = 'oncanplaythrough'
+    //         } else if (item.endsWith('.ttf') || item.endsWith('.woff')) {
+    //             fetch(item).then(resolve)
+    //             loadedEvent = null
+    //         } else {
+    //             resolve()
+    //             return
+    //         }
 
-            if (loadedEvent !== null) {
-                img.src = item
-                img[loadedEvent] = resolve
-                // console.log('iter ' + item)
-            }
-        })
-    }
+    //         if (loadedEvent !== null) {
+    //             img.src = item
+    //             img[loadedEvent] = resolve
+    //             // console.log('iter ' + item)
+    //         }
+    //     })
+    // }
 }
 
 hookGlobal('load', function() {
@@ -278,7 +282,7 @@ hook('load', function() {
         writeSave()
     })
 
-    $('#wipe-save-button').on('mousedown', () => { localStorage[LS_KEY] = ""; window.location.reload() })
+    $('#wipe-save-button').on('mousedown', () => { window.localStorage[LS_KEY] = ""; window.location.reload() })
 })
 
 makeScene('lynns')
