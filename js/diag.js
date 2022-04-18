@@ -118,6 +118,7 @@ async function putStage(actorsList) {
 }
 
 async function putBackgroundImage(imgUrl) {
+    imgUrl = imgUrl.trim()
     const diagScene = document.getElementById('dialog-scene')
     if (diagScene.style.backgroundImage === `url("${imgUrl}")`) {
         return Promise.resolve()
@@ -374,13 +375,25 @@ function derefInheritance(dt) {
     }
 }
 
-const MUS_MULTIPLIER = 0.55
+const MUS_MULTIPLIER = 0.45
 let audioInt, caudio = []
 
 // If loops is falsy then initStart is actually the volume
-function playSong(url, loops, initStart, start, end) {
+function playSong({ url, loops, initStart, start, end, volume }) {
     let newAudio = new Audio(url)
-    newAudio.volume = (loops ? MUS_MULTIPLIER : initStart) * (save.volume / 100)
+
+    if (typeof volume !== 'number') {
+        volume = 1.0
+    }
+
+    let semiFinalVolume
+    if (loops) {
+        semiFinalVolume = (save.volume / 100) * (volume) * MUS_MULTIPLIER
+    } else {
+        semiFinalVolume = (save.volume / 100) * (volume)
+    }
+
+    newAudio.volume = Math.min(1, semiFinalVolume)
     newAudio.play()
     caudio.push(newAudio)
 
@@ -428,8 +441,11 @@ async function prepareDialog(name) {
     // Saveens check
     updateSaveens()
 
-    if (dt.music)
-        playSong(...dt.music[0])
+    // { url, loops, initStart, start, end, volume }
+    if (dt.music) {
+        const mdt = dt.music[0]
+        playSong(mdt)
+    }
 
     clearStage()
     await putStage(dt.stage)
@@ -577,6 +593,8 @@ function doMoneyChange(amount) {
     }
 }
 
+const SHAKE_AREA = 50
+
 let oldPos, oldOff, $actor, offInt
 function startShake(speakerIndex) {
     $actor = $($('.actor')[speakerIndex])
@@ -586,8 +604,8 @@ function startShake(speakerIndex) {
     $actor.css('position', 'absolute')
     offInt = setInterval(() => {
         $actor.offset({
-            top: randInt(-20, 20) + oldOff.top,
-            left: randInt(-20, 20) + oldOff.left,
+            top: randInt(-SHAKE_AREA, SHAKE_AREA) + oldOff.top,
+            left: randInt(-SHAKE_AREA, SHAKE_AREA) + oldOff.left,
         })
     }, 16)
 }
@@ -676,7 +694,7 @@ async function handleTalk(args) {
     hasTalked = true
 
     let speakerIndex = parseInt(args[1])
-    const text = args.slice(2).join(" ")
+    const text = args.slice(2).join(" ").trim()
 
     // Magnify speaker
     const $actors = $('.actor')
@@ -833,7 +851,11 @@ async function doDialog(name) {
 
             $img.toggleClass('animated', true).show()
         } else if (args[0] === 'sfx') {
-            playSong(args[1], false, parseFloat(args[2] || "1.0"))
+            playSong({
+                url: args[1],
+                loops: false,
+                volume: parseFloat(args[2] || "1.0"),
+            })
         } else if (args[0] === 'lynn') {
             unlockCollectable('lynns', LYNNS, args[1])
             // let index = -1
@@ -862,7 +884,6 @@ async function doDialog(name) {
             startNewScene()
             await new Promise((resolve, reject) => {
                 fadeoutNoSceneChange(() => {
-                    hideNotifs()
                     updateSaveens()
                     resolve()
                 })

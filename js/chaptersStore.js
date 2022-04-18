@@ -6,7 +6,7 @@ const CHAPTERS = [
     [ "books", "assets/scenes/bookland.jpg", {} ], // 5
     [ "haul", "assets/torrid.png", {} ], // 6
     [ "salmon", "assets/torrid.png", {} ], // 7 (PH)
-    [ "salmon", "assets/torrid.png", {} ], // 8 (PH)
+    [ "salad", "assets/torrid.png", {} ], // 8 (PH)
     [ "salmon", "assets/torrid.png", {} ], // 9 (PH)
     [ "salmon", "assets/torrid.png", {} ], // 10 (PH)
     [ "salmon", "assets/torrid.png", {} ], // 11 (PH)
