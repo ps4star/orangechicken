@@ -595,6 +595,7 @@ hook('load', function() {
 
 if (debug) {
     save.chapters = save.chapters.map(el => true)
+    save.hasSaveensJar = true
     writeSave()
 }
 

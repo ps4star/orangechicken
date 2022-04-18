@@ -22,6 +22,14 @@ const ALRTHEME_MUSIC_DT = {
     end: 93,
 }
 
+const DDR_MUSIC_DT = {
+    url: "assets/music/alrtheme.ogg",
+    loops: true,
+    initStart: 0,
+    start: 0,
+    end: 93,
+}
+
 const ACTORS = {
     "Amberlynn": "assets/actors/amberlynn.png",
     "Becky": "assets/actors/becky.png",
@@ -908,7 +916,67 @@ chapter 10
     },
 
     "alr-ddr": {
+        bg: "pillowmountain.png",
+        music: [ RIZO_ISLAND_MUSIC_DT, DDR_MUSIC_DT, RIZO_ISLAND_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+        diag: `
+chapter 15
+enter 0
+pose 0 heyguys
+talk 0 "Hey you guuuuuys welcome to a new video."
+pose 0 normal
+talk 0 "Soo a lot of you guys requested more exerciseen videos."
+talk 0 "I kind of have lieek, a hard time with it because of my heel spur you guise."
+talk 0 "Buuuut I found out about this super fun program called ALR DDR."
+pose 0 cacklelynn
+talk 0 "It's so weird how it has my initials you guise HAHA."
+talk 0 "Isn't that so funny Becky?"
+talk 0 "... ... ..."
+pose 0 pissed
+talk 0 "BECKEEEE WHERE ARE YOU??"
+enter 1
+pose 1 useless
+talk 1 "I'm right here Amber..."
+pose 0 cacklelynn
+talk 0 "Oh HAHA I didn't see you."
+pose 0 normal
+leave 1
+talk 0 "So I'm super excited to start this program and just kind of open a new chapter in my life."
+talk 0 "So I'm gonna go ahead and try this thing out on camera for you guise."
+talk 0 "Do a little test run moment."
+talk 0 "So you're supposed to put like this pad thing down on your floor."
+talk 0 "So I'm putteen it in my liveen room next to all our game councils."
+talk 0 "Oh muh gah you guise all the outlets are plugged up already."
+talk 0 "Gonna unplug some of these councils in here."
+talk - (Amberlynn rips everything out from the outlets behind the TV, then plus up the ALR-DDR controller)
+talk 0 "Ok let's turn it on now..."
+talk - (Nothing shows up on the TV)
+pose 0 frowny
+talk 0 "I'm waiiiiteeeen why is nothing happeneen??"
+pose 0 pissed
+talk 0 "BECKEEEEEEEEEE"
+enter 1
+pose 1 normal
+talk 1 "What?"
+talk 0 "This TV is all like not workeeen I can't figure it out."
+talk 1 "Ok I'll look."
+talk 1 "... ... ..."
+talk 1 "The TV is unplugged babe. Did you do that?"
+pose 0 guilty
+talk 0 "Noouu I think Eric did that."
+talk - (Becky plugs everything up correctly).
+pose 0 normal
+talk 0 "Thanks Beckeeee."
+leave 1
+talk 0 "Sooooo as I was sayeen..."
+talk 0 "These note thingies like come down and you have to like step on the buttons when they hit the thing."
+talk 0 "Kind of like those arcade machines but it's made specifically more for like exerciseen purposes."
+talk 0 "So let's go ahead and step oooon and try some things out."
 
+enter 1
+pose 0 normal
+talk 0 "So anyway "
+`,
     },
 }
 
@@ -934,5 +1002,3 @@ for (let i = 0; i < allDiagsKeys.length; i++) {
     // pre-processor vars
     vlist = doVars(ALL_DIAGS, thisKey, ["%AFFCHANGE_INDEX%", "%MONEYCHANGE_INDEX%", "%INVCHANGE_INDEX%"], vlist)
 }
-
-console.log(ALL_DIAGS)

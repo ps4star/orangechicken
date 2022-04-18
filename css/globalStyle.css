@@ -1160,6 +1160,8 @@ div.ochicken-bg * {
     height: 100%;
 
     display: flex;
+
+    border: 1px solid black;
 }
 
 #phone-canvas-container.visible > #phone-canvas {
