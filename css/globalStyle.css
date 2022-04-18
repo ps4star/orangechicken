@@ -705,7 +705,7 @@ div.ochicken-bg * {
 }
 
 .actor-img.animated {
-    animation: pop-in-left 400ms forwards;
+    animation: pop-in-left 310ms forwards;
     /*-webkit-animation-timing-function: cubic-bezier(0.8, 0.13, 0.83, 0.47);*/
 }
 
@@ -764,6 +764,8 @@ div.ochicken-bg * {
 
     padding-top: 0.125%;
 
+    opacity: 0.64;
+
     display: flex;
     align-content: center;
     justify-content: center;
@@ -810,7 +812,6 @@ div.ochicken-bg * {
 @media screen and (orientation: portrait) {
     #diag-name {
         width: 28%;
-        opacity: 0.6;
     }
 
     .actor {
@@ -1124,7 +1125,7 @@ div.ochicken-bg * {
 .canvas-container.visible {
     display: block;
 
-    animation: pop-in-canvas 200ms;
+    animation: pop-in-canvas 0ms;
     animation-fill-mode: forwards;
     animation-direction: normal;
 }
@@ -1149,9 +1150,20 @@ div.ochicken-bg * {
     height: 100%;
 }
 
-#phone-canvas {
-    width: 50%;
-    height: 85%;
+#phone-canvas-container {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+}
+
+#phone-canvas-container.visible > #phone-canvas {
+    width: 36vw;
+    height: 80vh;
+
+    margin: auto;
+
+    background: white;
 }
 
 .mg-image {

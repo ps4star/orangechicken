@@ -602,30 +602,12 @@ const mgCommentsSeqs = [
 async function mgComments() {
     await new Promise((resolve, reject) => {
         textInputMode = false
-        mgShowCanvasContainer($('#books-canvas-container'))
-
-        const $books = $('#books-canvas')
-        let candt = mgInitCanvas($books)
-        mgNullifyKeyEvents(candt)
-
-        candt.realCanvas.onmousemove = (e) => {
-
-        }
-
-        candt.realCanvas.onmousedown = (e) => {
-
-        }
+        const $phoneCan = $('#phone-canvas-container')
+        mgShowCanvasContainer($phoneCan)
 
         let fc = 0
 
         mgSetTickFunction(() => {
-            // Draws all
-            mgDrawBG(candt, MUTED_WHITE)
-
-            
-
-            // Draw to real
-            mgDrawToReal(candt)
             fc++
         })
         mgTick()

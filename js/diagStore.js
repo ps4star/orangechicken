@@ -1,6 +1,26 @@
-const RIZO_ISLAND_MUSIC_DT = ["assets/music/cf.ogg", true, 0, 1.65, 166.08]
-const CALD_MUSIC_DT = ["assets/music/cald.ogg", true, 0, 1.5, 93.3]
-const ALRTHEME_MUSIC_DT = ["assets/music/alrtheme.ogg", true, 0, 0, 93]
+const RIZO_ISLAND_MUSIC_DT = {
+    url: "assets/music/cf.ogg",
+    loops: true,
+    initStart: 0,
+    start: 1.65,
+    end: 166.08,
+}
+
+const CALD_MUSIC_DT = {
+    url: "assets/music/cald.ogg",
+    loops: true,
+    initStart: 0,
+    start: 1.5,
+    end: 93.3,
+}
+
+const ALRTHEME_MUSIC_DT = {
+    url: "assets/music/alrtheme.ogg",
+    loops: true,
+    initStart: 0,
+    start: 0,
+    end: 93,
+}
 
 const ACTORS = {
     "Amberlynn": "assets/actors/amberlynn.png",
@@ -460,6 +480,13 @@ talk 0 "So today I'm doing a mook-bong of this whole rotiserrie chicken."
 talk 0 "This was so highly-requested you guiiiiise..."
 talk 0 "So I'm just gonna go ahead and dig in here."
 talk - (Amberlynn begins eating)
+gotofade rotisserie_2
+`,
+    },
+
+    "rotisserie_2": {
+        inherits: "rotisserie",
+        diag: `
 callawait mgMookbong
 talk 0 "Mmmmmmm that was so good you guiiisee."
 talk 0 "Definitely saving the rest of this for later, like, ohmuhgosh."
@@ -503,6 +530,13 @@ pose 0 books
 sfx assets/sfx/books.ogg
 shakestart 0
 talk 0 "Uhh, books is good for the brain??"
+gotofade books_2
+`,
+    },
+
+    "books_2": {
+        inherits: "books",
+        diag: `
 callawait mgBooks
 shakeend 0
 pose 0 normal
@@ -515,7 +549,7 @@ books_journals
 books_journals
 150 Journals ($160)
 books_journals
-`,
+`
     },
 
     "books_journals": {
@@ -578,7 +612,7 @@ talk - (The video finishes uploading)
 pose 0 normal
 talk 0 "Finally it's done."
 talk 0 "... ... ..."
-talk 0 "Gonna reid a few comments real quick."
+talk 0 "Gonna read a few comments real quick."
 talk - (Amberlynn reids the comments)
 
 if eq lastChapter 3
@@ -593,8 +627,14 @@ if eq lastChapter 5
 setvar _com_seq 3
 endif
 
+gotofade haul_2
+`,
+    },
+
+    "haul_2": {
+        inherits: "haul",
+        diag: `
 callawait mgComments
-talk 0 ""
 `,
     },
 
@@ -624,8 +664,118 @@ talk - (Amberlynn grabs foil)
 delay 2000
 setvar _diag_type 0
 pose 0 holdingsalmon
-talk 0 "Ok so we have this salmon right here.."
-talk 0 "Mmmm I don't really wanna"
+talk 0 "Ok so we have a salmon moment right here.."
+talk 0 "Mmmm I don't really wanna tooouch it though, like ewwww."
+
+`,
+    },
+
+    "salad": {
+        bg: "pillowmountain.png",
+        music: [ CALD_MUSIC_DT ],
+        //Is there a middle position on screen?
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+        diag: `
+chapter 8
+enter 0
+pose 0 heyguys
+talk 0 "Okay you guise, I'm like literally starveeen. I haven't yet ate yet today."
+talk 0 "So Beckyyyy is gonna go pick up some food for us."
+enter 1
+pose 1 useless
+talk 1 "Hey, I got the food babe."
+pose 0 frowny
+talk 0 "You took literally forever, Becky."
+pose 0  gasp
+;pose 1 sadbeck     sadbeck is not an asset.  Could be fun to expand her reactions
+talk 0 "Anyway guise let's start our mookbong. Wow, this all look so good."
+talk 1 "That's a lot of food, did you get some for me?"
+pose 0 cacklelynn
+talk 0 "No Beckeh hahaha. You're so funneh."
+pose 1 normal
+talk 1 "Can I try some?"
+post 0 pissed
+sfx assets/sfx/breatheen.ogg 99.0
+talk - (Amber breathes heavily)
+shakestart 0
+talk 0 "No beckeeeeeh, go eat the edamommy I made last night. I've been craveen this all dayyyyyyyuhh."
+;pose 1 sadbeck
+talk 1 "I'll just go watch Naruto."
+leave 1
+shakeend 0
+pose 0 closedeyes
+talk 0 "Okay guise, so Becky is gonna watch nuh-ROO-dough."
+sfx assets/sfx/excite.ogg 0.9
+talk 0 "Let's see what food we got, I'm so excited."
+pose 0 normal
+talk 0 "So we haveeee, let's see, this pastaaa."
+talk 0 "I bought three cause their serveens are super small you guise."
+enter 1
+pose 1 useless
+talk 1 "That looks good babe, what type of pasta is it?"
+talk 0 "So it's like this tomato sauce, with chicken, I think?"
+pose 0 frowny
+talk 0 "And we got some breadsticks here, can't believe they only gave me ten, like wut."
+pose 0 gasp
+sfx assets/sfx/bigsalad.ogg 1.9
+talk 0 "Oh wow I didn't realize it came with this huuuuuge salad."
+talk 0 "You guise lidurally I didn't even know it was this big that's so weird."
+talk 0 "Like honestleee I thought it was gonna be super small you guise I dunno if I can like eat this."
+talk 1 "Can I have some then?"
+
+multi
+Let Becky have some salad
+becky_salad
+No beckehhh, I love veggies
+amber_salad
+`,
+    },
+    
+    "becky_salad": {
+        inherits: "salad",
+        diag: `
+affectionchange %AFFCHANGE_INDEX% Becky 15
+pose 0 normal
+pose 1 normal
+talk 0 "You guise I'm literally so nice. That salad was so big I couldn't eat it all. "
+;pose 1 confusedbeck        confusedbeck is not an asset
+talk 1 "Babe did you eat the croutons out of this?"
+pose 0 books
+talk 0 "Beckehhh, I can't believe you would say that."
+talk 0 "Don't you see I'm dealeen with a video situation type deal?!"
+pose 0 laptopyt
+leave 1
+talk 0 "Anyway, I'm gonna upload this now."
+incvisit
+gotofadenewchapter 9
+`,
+    },
+    
+    "amber_salad": {
+        inherits: "salad",
+        diag: `
+pose 0 laser
+shakestart 0
+talk 0 "NO BECKEEEE GET OUT OF HERE."
+leave 1
+shakeend 0
+sfx assets/sfx/looksreallygood.ogg
+pose 0 normal
+talk 0 "So this actually looks really good you guise.."
+talk - (Amber eats the pasta and breadsticks on camera)
+talk 0 "So you guys, I'm feeling so stuffed."
+talk 0 "I'm gonna eat this salad type deal thing later, maybe for like dinner."
+pose 0 laptoptemplate
+talk - "(Amber Lynn cuts the video)"
+pose 0 pissed
+talk 0 "Beckehhhhhhhhh!"
+enter 1 useless
+talk 1 "Babe stop yelling like that, what's wrong?"
+pose 0 cacklelynn
+talk 0 "This salad is so raw Becky, FAWK. I don't want it."
+talk 0 "Just take it out of here I don't even wanna be near it. Make me some more pasta."
+incvisit
+gotofadenewchapter 9
 `,
     },
 }

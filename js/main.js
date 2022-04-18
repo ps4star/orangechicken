@@ -207,7 +207,7 @@ hook('load', function(oldScene) {
     // Play mm music
     if (!(oldScene === 'lynns' || oldScene === 'options')) {
         stopMusic()
-        playSong(...RIZO_ISLAND_MUSIC_DT)
+        playSong(RIZO_ISLAND_MUSIC_DT)
     }
 
     $('.mm-options-button').on('mousedown', function(e) {
@@ -560,8 +560,7 @@ addCurrent(
             .append($(`<div class="mg-image">`))
         )
         .append($(`<div class="canvas-container" id="phone-canvas-container">`)
-            .append($(`<canvas class="mg-canvas" id="phone-canvas" width="1280" height="720">`))
-            .append($(`<div class="mg-image">`))
+            .append($(`<div class="mg-canvas" id="phone-canvas">`))
         )
 )
 
