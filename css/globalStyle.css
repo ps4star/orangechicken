@@ -347,6 +347,11 @@ div.ochicken-bg * {
     margin: auto;
 }
 
+#lynns-container, #lynns-container div {
+    overflow-x: initial;
+    overflow-y: initial;
+}
+
 #lynns-amount-header {
     text-align: center;
     font-size: 3.5vmin;
