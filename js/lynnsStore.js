@@ -14,6 +14,7 @@ const LYNNS = [
     [ "Cacklelynn", "assets/actors/amberlynn_cacklelynn.png" ],
     [ "Frownylynn", "assets/actors/amberlynn_frowny.png" ],
     [ "Backwardslynn", "assets/actors/amberlynn_backwards.png" ],
+    [ "Laptoplynn", "assets/actors/amberlynn_laptoptemplate.png" ],
 ]
 
 const NUM_LYNNS = LYNNS.length

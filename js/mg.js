@@ -529,7 +529,7 @@ async function mgBooks() {
             mgBooksMX = e.offsetX * (candt.sw / window.innerWidth)
             mgBooksMY = e.offsetY * (candt.sh / window.innerHeight)
 
-            if (debug) {
+            if (window.location.href.includes("127.0.0.1")) {
                 mgExit = true
                 mgHideCanvasContainer($('#books-canvas-container'))
                 textInputMode = true

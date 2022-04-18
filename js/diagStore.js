@@ -667,6 +667,31 @@ pose 0 holdingsalmon
 talk 0 "Ok so we have a salmon moment right here.."
 talk 0 "Mmmm I don't really wanna tooouch it though, like ewwww."
 
+multi
+Use Fork
+salmon_fork
+Use Hands
+salmon_hands
+`,
+    },
+
+    "salmon_hands": {
+        inherits: "salmon",
+        diag: `
+talk - (Amberlynn easily gets it out with hands)
+pose 0 disgusted
+talk 0 "Sooo gross you guise I can't even."
+`,
+    },
+
+    "salmon_fork": {
+        inherits: "salmon",
+        diag: `
+talk - (Amberlynn struggles to get salmon out with fork)
+pose 0 pissed
+talk 0 "UGGGH THIS IS SO HARD YOU GUISE FAWK."
+talk - (Amberlynn finally gets it)
+goto salmon_2
 `,
     },
 
@@ -679,6 +704,7 @@ talk 0 "Mmmm I don't really wanna tooouch it though, like ewwww."
 chapter 8
 enter 0
 pose 0 heyguys
+lynn heyguys
 talk 0 "Okay you guise, I'm like literally starveeen. I haven't yet ate yet today."
 talk 0 "So Beckyyyy is gonna go pick up some food for us."
 enter 1
@@ -687,14 +713,17 @@ talk 1 "Hey, I got the food babe."
 pose 0 frowny
 talk 0 "You took literally forever, Becky."
 pose 0  gasp
+lynn gasp
 ;pose 1 sadbeck     sadbeck is not an asset.  Could be fun to expand her reactions
 talk 0 "Anyway guise let's start our mookbong. Wow, this all look so good."
 talk 1 "That's a lot of food, did you get some for me?"
 pose 0 cacklelynn
+lynn cackle
 talk 0 "No Beckeh hahaha. You're so funneh."
 pose 1 normal
 talk 1 "Can I try some?"
 post 0 pissed
+lynn angry
 sfx assets/sfx/breatheen.ogg 99.0
 talk - (Amber breathes heavily)
 shakestart 0
@@ -715,8 +744,10 @@ pose 1 useless
 talk 1 "That looks good babe, what type of pasta is it?"
 talk 0 "So it's like this tomato sauce, with chicken, I think?"
 pose 0 frowny
+lynn frowny
 talk 0 "And we got some breadsticks here, can't believe they only gave me ten, like wut."
 pose 0 gasp
+lynn gasp
 sfx assets/sfx/bigsalad.ogg 1.9
 talk 0 "Oh wow I didn't realize it came with this huuuuuge salad."
 talk 0 "You guise lidurally I didn't even know it was this big that's so weird."
@@ -741,6 +772,7 @@ talk 0 "You guise I'm literally so nice. That salad was so big I couldn't eat it
 ;pose 1 confusedbeck        confusedbeck is not an asset
 talk 1 "Babe did you eat the croutons out of this?"
 pose 0 books
+lynn reader
 talk 0 "Beckehhh, I can't believe you would say that."
 talk 0 "Don't you see I'm dealeen with a video situation type deal?!"
 pose 0 laptopyt
@@ -755,6 +787,7 @@ gotofadenewchapter 9
         inherits: "salad",
         diag: `
 pose 0 laser
+lynn laser
 shakestart 0
 talk 0 "NO BECKEEEE GET OUT OF HERE."
 leave 1
@@ -766,6 +799,7 @@ talk - (Amber eats the pasta and breadsticks on camera)
 talk 0 "So you guys, I'm feeling so stuffed."
 talk 0 "I'm gonna eat this salad type deal thing later, maybe for like dinner."
 pose 0 laptoptemplate
+lynn laptop
 talk - "(Amber Lynn cuts the video)"
 pose 0 pissed
 talk 0 "Beckehhhhhhhhh!"
@@ -776,6 +810,100 @@ talk 0 "This salad is so raw Becky, FAWK. I don't want it."
 talk 0 "Just take it out of here I don't even wanna be near it. Make me some more pasta."
 incvisit
 gotofadenewchapter 9
+`,
+    },
+
+    "sofa": {
+        bg: "pillowmountain.png",
+        music: [ CALD_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+        diag: `
+chapter 9
+enter 0
+pose 0 pissed
+talk 0 "BECKEHHHHHH!"
+enter 1
+talk 1 "Amberlynn stop screaming, what's wrong?"
+talk 0 "You broke the sofeh."
+talk 1 "Babe, no I didn't, you did that last night."
+shakestart 0
+talk 0 "No Becky stop lyeen."
+talk - (Amberlynn looks at the camera nervously.)
+shakeend 0
+pose 0 shocked
+talk 0 "I can't break the sofa, I'm a super dainty gorl rememberer???"
+pose 0 books
+talk 0 "You guise she is totally sayeen I'm big."
+pose 1 useless
+talk 1 "Amberlynn, no one said that."
+talk 1 "You broke it last night when you sat on it babe."
+
+multi
+Insist that Becky broke it
+sofa_becky
+Confess that you broke it
+sofa_amber
+`,
+    },
+
+    "sofa_becky": {
+        inherits: "sofa",
+        diag: `
+pose 0 laser
+shakestart 0
+talk 0 "BECKEHHHH! STOP LYEEEEEEN!"
+shakeend 0
+pose 0 frowny
+talk 0 "It's not even funny anymore."
+talk 0 "You guise don't believe her."
+affectionchange %AFFCHANGE_INDEX% Becky -5
+pose 1 normal
+talk 1 "I don't really care, Amberlynn."
+talk - (Amberlynn cuts the camera.)
+pose 0 laptoptemplate
+talk 0 "Beckyyyy, why didn't you just say you broke eeeet?"
+talk 0 "You don't love me."
+pose 0 frowny
+talk 1 "Why would I lie about that."
+talk 1 "Just tell them the truth babe, it's not a big deal."
+pose 0 pissed
+talk 0 "Becky, you don't understand!"
+pose 0 bored
+talk 0 (Wait, this would make such a great poem... About how nobodee understands me.)
+pose 1 useless
+talk 1 "Okay well I'm gonna go cook dinner."
+pose 0 normal
+talk 0 "Wait Beckeeeh, I was gonna make chili tonight."
+incvisit
+gotofadenewchapter 10
+`,
+    },
+
+    "sofa_amber": {
+        inherits: "sofa",
+        diag: `
+pose 0 cacklelynn
+talk 0 "Oh wait... I remember."
+pose 0 normal
+talk 0 "It totally was me guise."
+talk 0 "This sofa is super old, so yeah that's what lead to that situation type deal."
+affectionchange %AFFCHANGE_INDEX% Becky +5
+pose 0 laptoptemplate
+talk - (Amber shuts the camera off.)
+talk 1 "Thanks for telling them the truth, I'm gonna go cook dinner babe."
+pose 0 pissed
+talk 0 "No beckehhh I'm makeen chili for my next video."
+incvisit
+gotofadenewchapter 10
+`,
+    },
+
+    "chili": {
+        bg: "pillowmountain.png",
+        music: [ CALD_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+        diag: `
+chapter 10
 `,
     },
 }
