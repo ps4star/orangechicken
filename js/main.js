@@ -593,4 +593,9 @@ hook('load', function() {
     doCurrentDiagSequence()
 })
 
+if (debug) {
+    save.chapters = save.chapters.map(el => true)
+    writeSave()
+}
+
 loadScene('splash1')
