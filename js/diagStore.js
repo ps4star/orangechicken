@@ -906,6 +906,10 @@ gotofadenewchapter 10
 chapter 10
 `,
     },
+
+    "alr-ddr": {
+
+    },
 }
 
 function doVars(diagLib, key, varsList, valuesList) {
