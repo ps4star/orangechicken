@@ -4,7 +4,6 @@ const debug = true
 
 const MM_ASSETS_LIST = [
     "assets/titlescreen.jpg",
-    "css/GCursive.ttf",
     "css/HelveCursive.ttf",
     "assets/music/cf.ogg",
 ]
@@ -70,6 +69,8 @@ const DIAG_ASSETS_LISTS = [
         "assets/music/alrtheme.ogg",
 
         "assets/actors/amberlynn_mook-bong.png",
+        "assets/chicken1.png",
+        "assets/chicken2.png",
     ],
 
     [ // Ch 5
@@ -124,33 +125,33 @@ function nullifyEvent(e) {
 
 // UNUSED; rel="prefetch" is the successor
 async function bufferAssets(list) {
-    return Promise.resolve()
-    // for (const item of list) {
-    //     await new Promise((resolve, reject) => {
-    //         $('#lt2').text(`${item}`)
+    // return Promise.resolve()
+    for (const item of list) {
+        await new Promise((resolve, reject) => {
+            $('#lt2').text(`${item}`)
 
-    //         let img, loadedEvent
-    //         if (item.endsWith('.png') || item.endsWith('.jpg') || item.endsWith('.bmp')) {
-    //             img = new Image()
-    //             loadedEvent = 'onload'
-    //         } else if (item.endsWith('.ogg') || item.endsWith('.mp3')) {
-    //             img = new Audio()
-    //             loadedEvent = 'oncanplaythrough'
-    //         } else if (item.endsWith('.ttf') || item.endsWith('.woff')) {
-    //             fetch(item).then(resolve)
-    //             loadedEvent = null
-    //         } else {
-    //             resolve()
-    //             return
-    //         }
+            let img, loadedEvent
+            if (item.endsWith('.png') || item.endsWith('.jpg') || item.endsWith('.bmp')) {
+                img = new Image()
+                loadedEvent = 'onload'
+            } else if (item.endsWith('.ogg') || item.endsWith('.mp3')) {
+                img = new Audio()
+                loadedEvent = 'oncanplaythrough'
+            } else if (item.endsWith('.ttf') || item.endsWith('.woff')) {
+                fetch(item).then(resolve)
+                loadedEvent = null
+            } else {
+                resolve()
+                return
+            }
 
-    //         if (loadedEvent !== null) {
-    //             img.src = item
-    //             img[loadedEvent] = resolve
-    //             // console.log('iter ' + item)
-    //         }
-    //     })
-    // }
+            if (loadedEvent !== null) {
+                img.src = item
+                img[loadedEvent] = resolve
+                // console.log('iter ' + item)
+            }
+        })
+    }
 }
 
 hookGlobal('load', function() {
@@ -201,6 +202,9 @@ addCurrent(
             .append($(`<button class="mm-button mm-achievements-button">Achievements</button>`)
 
             )
+            .append($(`<button class="mm-button mm-arcade-button">Becky's Arcade</button>`)
+
+            )
         )
 )
 hook('load', function(oldScene) {
@@ -208,6 +212,10 @@ hook('load', function(oldScene) {
     if (!(oldScene === 'lynns' || oldScene === 'options')) {
         stopMusic()
         playSong(RIZO_ISLAND_MUSIC_DT)
+    }
+
+    if (save.hasUnlockedArcade) {
+        $('.mm-arcade-button').addClass('visible')
     }
 
     $('.mm-options-button').on('mousedown', function(e) {
@@ -409,10 +417,12 @@ hook('load', function() {
             name = dict[i][0]
         }
 
+        const otherDt = dict[i][2] || {}
+
         const $legitLynn = $(`<div class="lynn">`)
             .append($(`<pre class="lynn-dot"></pre>`))
             .append($(`<img class="lynn-img ${itemList[i] ? "" : "locked"}" alt="" src="${url}">`))
-            .append($(`<p class="lynn-text">${name}</p>`))
+            .append($(`<p class="lynn-text" style="${otherDt.color ? otherDt.color : ""}">${name}</p>`))
 
         // On chapter scene, make elements clickable if unlocked
         if (whichLynnScene === 0 && itemList[i]) {
@@ -552,7 +562,7 @@ addCurrent(
             .append($(`<pre id="saveens-text"><span class="saveens-dollar">$</span><span class="saveens-amount"></span></pre>`))
         )
         .append($(`<div class="canvas-container" id="mookbong-canvas-container">`)
-            .append($(`<canvas class="mg-canvas" id="mookbong-canvas" width="160" height="90" tabindex="-1">`))
+            .append($(`<canvas class="mg-canvas" id="mookbong-canvas" width="320" height="180" tabindex="-1">`))
             .append($(`<div class="mg-image gg">`))
         )
         .append($(`<div class="canvas-container" id="books-canvas-container">`)

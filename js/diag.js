@@ -914,7 +914,7 @@ async function doDialog(name) {
             window[args[1]]()
         } else if (args[0] === 'callawait') {
             // Calls async func by string name and awaits it
-            await window[args[1]]()
+            await window[args[1]].call(inlineVarDict)
         } else if (args[0] === 'setbg') {
             await putBackgroundImage(args.slice(1).join(" "))
         } else if (args[0] === 'shakestart') {

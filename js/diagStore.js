@@ -621,20 +621,9 @@ pose 0 normal
 talk 0 "Finally it's done."
 talk 0 "... ... ..."
 talk 0 "Gonna read a few comments real quick."
+pose 0 laptoptemplate
+lynn laptop
 talk - (Amberlynn reids the comments)
-
-if eq lastChapter 3
-setvar _com_seq 1
-endif
-
-if eq lastChapter 4
-setvar _com_seq 2
-endif
-
-if eq lastChapter 5
-setvar _com_seq 3
-endif
-
 gotofade haul_2
 `,
     },
@@ -642,6 +631,7 @@ gotofade haul_2
     "haul_2": {
         inherits: "haul",
         diag: `
+setvar _com_seq 1
 callawait mgComments
 `,
     },
@@ -971,11 +961,237 @@ leave 1
 talk 0 "Sooooo as I was sayeen..."
 talk 0 "These note thingies like come down and you have to like step on the buttons when they hit the thing."
 talk 0 "Kind of like those arcade machines but it's made specifically more for like exerciseen purposes."
-talk 0 "So let's go ahead and step oooon and try some things out."
+talk 0 "So let's go ahead and step on hereee and try out a few songs."
+talk - (Amber steps onto the DDR pad)
+gotofade alr-ddr_onpad
+`,
+    },
 
-enter 1
+    "alr-ddr_onpad": {
+        inherits: "alr-ddr",
+        diag: `
+callwait mgDDR
+`,
+    },
+
+    "wiping": {
+        bg: "pillowmountain.png",
+        music: [ CALD_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+        diag: `
+chapter 11
+enter 0
+pose 0 pepperonigorlheyguys
+lynn heyguys
+talk 0 "So, you guise."
 pose 0 normal
-talk 0 "So anyway "
+talk 0 "This is a pretty serious video."
+talk 0 "Well, Becky said I deserve better."
+talk 0 "She says she wants to get better, better?"
+pose 0 bored
+lynn bored
+talk 0 "What's that word?"
+pose 0 laptoptemplate
+talk - (Amberlynn gets on her laptop and quickly searches)
+pose 0 normal
+talk 0 "Okay guise yeah she wants to improve."
+talk 0 "So we got a bit of a situation type deal, but it's all good."
+pose 0 cacklelynn
+talk 0 "I want to take this time to enjoy being single."
+pose 0 normal
+talk 0 "Anyway, Becky should be back with my food soon."
+pose 0 laptoptemplate
+lynn laptop
+talk - (Amber looks at her Livestream comments)
+pose 0 pissed
+shakestart 0
+talk 0 "IM NOT MAKEEN HER GET ME FOOD YOU GUISE!"
+shakeend 0
+talk 0 "Becky and I are all cool okay, she wants to work on herself."
+enter 1
+talk 1 "Hey, I'm back."
+pose 0 bored
+lynn bored
+talk 0 "Thank God I'm actually starveen. Why does it always take you so long?"
+pose 1 useless
+talk 1 "Well I have to drive there, and wait for the food... And then drive back."
+pose 0 books
+talk 0 "Yeah just give me my food."
+talk 1 "That's all?"
+
+multi
+Pay Becky for the food
+becky_food_paid
+OMG Beckeeeeeh let me eat my food I'll pay later
+becky_food_not_paid
+`
+    },
+    
+    "becky_food_paid": {
+        inherits: "wiping",
+        diag: `
+moneychange -1 -20
+pose 0 normal
+talk 1 "Thanks."
+leave 1
+talk - (Take out 20 dollars from Becky's piggy bank)
+moneychange -1 20
+pose 0 cacklelynn
+lynn cackle
+talk 0 "Wow this looks so good, you see guise me and Becky are all good."
+pose 0 gasp
+talk 0 "We are just chilling together for now."
+talk - (Amberlynn cuts the live)
+pose 0 pissed
+lynn angry
+talk 0 "BECKEHHHHH!!!"
+enter 1
+talk 1 "Amberlynn what? I'm about to eat."
+pose 0 confused
+lynn confused
+talk 0 "Before we eat I need to go to the bathroom. Come help me."
+incvisit
+gotofadenewchapter 12
+`,
+    },
+    
+    "becky_food_not_paid": {
+        inherits: "wiping",
+        diag: `
+talk 1 "Really, that's all?"
+pose 0 normal
+talk 0 "Oh yeah, I gotta go to the bathroom first."
+pose 0 confused
+lynn confused
+pose 0 "Come help me Becky."
+pose 1 normal
+talk 1 "Amberlynn..."
+pose 0 frowny
+lynn frowny
+talk 0 "What, are you not gonna help me?"
+;pose 1 angry
+talk 1 "Fine, I'll come help."
+incvisit
+gotofadenewchapter 12
+`,
+    },
+
+/*
+Amberlynn: Hey guise, so today I decided to tell you guise about some healthy snack ideas. This is super highly requested from my last video. 
+
+(Amberlynn pull outs out two giant cucumbers, cream cheese, and many bacon)
+
+Amberlynn: So girl, I get hongry throughout the day, and you wanna turn to sometheen unhealthy like a candy bar. This is a super healthy and filling snack you guise. Beckehhhh get out of my shot!
+
+Becky: Sorry babe, just getting something.
+
+Amberlynn: Anyway you guise, get yourself two HUGE cucumbers. No skin on the cucumbers guise because for me, the skin on the cucumbers makes it taste gross.
+
+(Amberlynn only cuts one cucumber in half)
+
+Amberlynn: I'm gonna leave the other one for now. The next step guise is a cream cheese situation type deal. I'm gonna stir this first guise, I just have a thing where I have to stir stuff.
+
+(Amberlynn goes on a rant about stirring things and not touching her food)
+
+Amberlynn: Now we will take cream cheese and put it on the cucumber. I'm scared guise, I don't know how this will pan out. I'm so nervous. 
+
+(Amberlynn only covers one cucumber half)
+
+Amberlynn: Next we have bacon, and I know you guise are probably like whaaat? I wasn't gonna do bacon, I swear you guise. I was gonna use this super healthy topping but it smelled a bit funny you guise. Last step, add a little bit of everything but the bagel seasoneen. I love seasoneens you guise.
+
+(Amberlynn pours tons of seasonings on)
+
+Amberlynn: Wow guise, this is so random.
+
+(Amberlynn takes a bite and makes a funny face)
+
+Amberlynn: Mmmmmm, it tastes like... Hmm, what ties it all together is the bacon.
+
+(Amberlynn takes another bite)
+Amberlynn: Mmm, I'm so shocked you guise. This is really good. I don't think I can this all though, it's so huuuge. I like the bacon on it, adds so many sodiums. I should add more bacon. Very low calorie meal.
+
+(Amberlynn lists the calories for the bacon, but not the massive glop of cream cheese)
+
+Amberlynn: Is this low carb? Only two carbs for the cream cheese you guise. I really wasn't expecting this situation type deal.
+
+(Amberlynn cackles to herself, then realizes she is out of bacon)
+
+Option 1: Continue the mukbang even though you have no more bacon
+Option 2: End the mukbang and insist someone else needs to use the kitchen
+
+(If you pick option 1)
+
+Amberlynn: I'm out of bacon you guise, but I'll finish this cucumber boat before I get off. It's not as good without the bacon, that's fine though. I'm super healthy you guise so I can deal with this situation type deal.
+
+(Amberlynn finishes the cucumber boat and internally let's out a sigh of relief)
+
+Amberlynn: Thanks for watcheen my mookbang guise. Someone else needs to use the kitchen so I'm going to get off now.
+
+(Amberlynn cuts the camera)
+
+(If you pick option 2)
+
+Amberlynn: I need to go you guise. Other people want to use the kitchen, so I had to eat super fast. Thank you for coming to my mookbang.
+
+(Amberlynn cuts the camera)
+*/
+
+    "cucumber": {
+        bg: "pillowmountain.png",
+        music: [ CALD_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+        diag: `
+talk 0 "Hey guise, so today I decided to tell you guise about some healthy snack ideas. This is super highly requested from my last video."
+talk - (Amberlynn pull outs out two giant cucumbers, cream cheese, and many bacons)
+talk 0 "So girl, I get hongry throughout the day, and you wanna turn to sometheen unhealthy like a candy bar."
+talk 0 "This is a super healthy and filling snack you guise."
+talk 0 "Beckehhhh get out of my shot!"
+talk 0 "Sorry babe, just getting something."
+talk 0 "Anyway you guise, get yourself two HUGE cucumbers."
+talk 0 "No skin on the cucumbers guise because for me, the skin on the cucumbers makes it taste gross."
+talk - (Amberlynn only cuts one cucumber in half)
+talk 0 "I'm gonna leave the other one for now. The next step guise is a cream cheese situation type deal."
+talk 0 "I'm gonna stir this first guise, I just have a thing where I have to stir stuff."
+talk - (Amberlynn goes on a rant about stirring things and not touching her food)
+talk 0 "Now we will take cream cheese and put it on the cucumber. I'm scared guise, I don't know how this will pan out. I'm so nervous."
+talk - (Amberlynn only covers one cucumber half)
+talk 0 "Next we have bacon, and I know you guise are probably like whaaat? I wasn't gonna do bacon, I swear you guise."
+talk 0 "I was gonna use this super healthy topping but it smelled a bit funny you guise."
+talk 0 "Last step, add a little bit of everything but the bagel seasoneen. I love seasoneens you guise."
+talk - (Amberlynn pours tons of seasonings on)
+talk 0 "Wow guise, this is so random."
+
+(Amberlynn takes a bite and makes a funny face)
+
+Amberlynn: Mmmmmm, it tastes like... Hmm, what ties it all together is the bacon.
+
+(Amberlynn takes another bite)
+Amberlynn: Mmm, I'm so shocked you guise. This is really good. I don't think I can this all though, it's so huuuge. I like the bacon on it, adds so many sodiums. I should add more bacon. Very low calorie meal.
+
+(Amberlynn lists the calories for the bacon, but not the massive glop of cream cheese)
+
+Amberlynn: Is this low carb? Only two carbs for the cream cheese you guise. I really wasn't expecting this situation type deal.
+
+(Amberlynn cackles to herself, then realizes she is out of bacon)
+
+Option 1: Continue the mukbang even though you have no more bacon
+Option 2: End the mukbang and insist someone else needs to use the kitchen
+
+(If you pick option 1)
+
+Amberlynn: I'm out of bacon you guise, but I'll finish this cucumber boat before I get off. It's not as good without the bacon, that's fine though. I'm super healthy you guise so I can deal with this situation type deal.
+
+(Amberlynn finishes the cucumber boat and internally let's out a sigh of relief)
+
+Amberlynn: Thanks for watcheen my mookbang guise. Someone else needs to use the kitchen so I'm going to get off now.
+
+(Amberlynn cuts the camera)
+
+(If you pick option 2)
+
+Amberlynn: I need to go you guise. Other people want to use the kitchen, so I had to eat super fast. Thank you for coming to my mookbang.
+
+(Amberlynn cuts the camera)
 `,
     },
 }

@@ -12,8 +12,8 @@ function mgHideCanvasContainer(can) {
     $('#diag-quit').css('pointer-events', 'unset')
 }
 
-const GB_GREEN = "#8bac0f"
-const GB_BLACK = "#0f380f"
+const GB_GREEN = "#000000"
+const GB_BLACK = "#000"
 
 function mgInitCanvas(can) {
     let canvas, realCanvas, ctx, sw, sh, realCtx
@@ -95,6 +95,19 @@ function mgDrawMonoImage(can, img, x, y, rot) {
     })
 }
 
+function mgDrawImage(can, img, x, y, rot) {
+    const { ctx } = can
+
+    const url = img.dt
+    ctx.save()
+    ctx.translate(x, y)
+    if (rot) {
+        //
+    }
+    ctx.drawImage(mgBooksGetImage(url), 0, 0, img.width, img.height)
+    ctx.restore()
+}
+
 async function mgDelay(ms) {
     return new Promise((resolve, reject) => {
         setTimeout(resolve, ms)
@@ -116,46 +129,17 @@ function mgTick() {
 
 // mgMookbong
 const mgMookbongLayg = {
-    width: 12,
-    height: 8,
+    width: 12 * 4,
+    height: 10 * 4,
     yields: -1,
-    dt: [
-        [0, 2, 0, 6],
-        [1, 3, 1, 5],
-        [2, 3, 2, 5],
-        [2, 3, 2, 5],
-        [3, 3, 3, 5],
-        [4, 2, 4, 5],
-        [5, 1, 5, 6],
-        [6, 0, 6, 7],
-        [7, 0, 7, 8],
-        [8, 0, 8, 8],
-        [9, 0, 9, 8],
-        [10, 1, 10, 7],
-        [11, 2, 11, 6],
-        [12, 3, 12, 5],
-    ],
+    dt: "assets/chicken1.png",
 }
 
 const mgMookbongWing = {
-    width: 12,
-    height: 7,
+    width: 12 * 4,
+    height: 9 * 4,
     yields: 5,
-    dt: [
-        [0, 3, 0, 4],
-        [1, 3, 1, 4],
-        [2, 4, 2, 5],
-        [3, 4, 3, 6],
-        [4, 0, 4, 6],
-        [5, 0, 5, 6],
-        [6, 0, 6, 4],
-        [7, 1, 7, 4],
-        [8, 1, 8, 5],
-        [9, 2, 9, 7],
-        [10, 3, 10, 7],
-        [11, 3, 11, 7],
-        [12, 3, 12, 7],
-    ],
+    dt: "assets/chicken2.png",
 }
 
 const mgMookbongImgs = [mgMookbongLayg, mgMookbongWing]
@@ -179,7 +163,7 @@ function mgMookbongPutNinjaPathPoint(x, y) {
     setTimeout(() => {
         mgMookbongNinjaPath[0]++
         mgMookbongNinjaPath[cIndex] = null
-    }, 200)
+    }, 150)
 }
 
 function mgMookbongClearNinjaPath() {
@@ -220,7 +204,7 @@ function mgMookbongDrawObjects(candt) {
 
             // ctx.save()
             // ctx.rotate((mgMookbongObjects[idx][4] / 360) * (2 * Math.PI))
-            mgDrawMonoImage(candt, mgMookbongObjects[idx][0], mgMookbongObjects[idx][1][0], mgMookbongObjects[idx][1][1], mgMookbongObjects[idx][4])
+            mgDrawImage(candt, mgMookbongObjects[idx][0], mgMookbongObjects[idx][1][0], mgMookbongObjects[idx][1][1], mgMookbongObjects[idx][4])
             // ctx.restore()
         }
     })
@@ -308,6 +292,31 @@ function mgMookbongDrawNinjaPath(candt) {
     candt.ctx.closePath()
 }
 
+const platePic = mgBooksGetImage("assets/plate.png")
+function mgMookbongDrawPlate(candt) {
+    candt.ctx.drawImage(platePic, 0, 0, candt.sw, candt.sh)
+}
+
+function mgTouch2Mouse(e)
+{
+  var theTouch = e.changedTouches[0];
+  var mouseEv;
+
+  switch(e.type)
+  {
+    case "touchstart": mouseEv="mousedown"; break;  
+    case "touchend":   mouseEv="mouseup"; break;
+    case "touchmove":  mouseEv="mousemove"; break;
+    default: return;
+  }
+
+  var mouseEvent = document.createEvent("MouseEvent");
+  mouseEvent.initMouseEvent(mouseEv, true, true, window, 1, theTouch.screenX, theTouch.screenY, theTouch.clientX, theTouch.clientY, false, false, false, false, 0, null);
+  theTouch.target.dispatchEvent(mouseEvent);
+
+  e.preventDefault();
+}
+
 let mgInitialScore
 async function mgMookbong() {
     await new Promise((resolve, reject) => {
@@ -326,24 +335,34 @@ async function mgMookbong() {
         mgDrawScreenBorder(candt)
 
         // Handlers
-        candt.realCanvas.onmousedown = function(e) {
+        const $realCan = $(candt.realCanvas)
+        $realCan.on('mousedown', function(e) {
             e.stopPropagation()
-        }
+        })
 
         candt.realCanvas.parentElement.onmousedown = (e) => e.stopPropagation()
 
-        $(candt.realCanvas).on('mousemove', function(e) {
+        $realCan.on('mousemove', function(e) {
             e.stopPropagation()
             const position = mgRealToCanvas(this, e)
             const last = mgMookbongNinjaPath[mgMookbongNinjaPath.length - 1]
-            if (last)
+            if (last) {
                 mgMookbongPutNinjaPathPoint(...last)
+            }
             mgMookbongPutNinjaPathPoint(position.x, position.y)
         })
 
-        candt.realCanvas.ontouchmove = function(e) {
-            $(candt.realCanvas).trigger('mousemove')
-        }
+        $realCan.on('touchstart', function(e) {
+            $realCan.trigger(mgTouch2Mouse(e))
+        })
+
+        $realCan.on('touchmove', function(e) {
+            $realCan.trigger(mgTouch2Mouse(e))
+        })
+
+        $realCan.on('touchend', function(e) {
+            $realCan.trigger(mgTouch2Mouse(e))
+        })
 
         let fc = 0,
             localFc = 0,
@@ -352,6 +371,7 @@ async function mgMookbong() {
         mgSetTickFunction(() => {
             // Draws all
             mgDrawBG(candt)
+            mgMookbongDrawPlate(candt)
             mgDrawScreenBorder(candt)
 
             const positionBound = 60
@@ -397,8 +417,8 @@ async function mgMookbong() {
                     grav = [randFloat(-1, -2), 0]
                 }
 
-                vel[0] *= 0.55
-                vel[1] *= 0.55
+                vel[0] *= 1.25
+                vel[1] *= 1.25
 
                 mgMookbongAddObject(mookDt[0], pos, vel, grav, randInt(0, 359), randInt(-2, 2))
                 mookIndex++
@@ -593,17 +613,68 @@ const mgCommentsSeqs = [
     null, // 0
     [ // 1 - mookbong comments
         `Ooops:Amberlynn: I want to lose weight. Also Amberlynn: *does mookbong of whole rotiserie chicken*`,
-        `Katie W:GORL I can't believe you ate a whole chicken.`,
-        `Jade F:"I'm trying to eat lean meats" girl you ate a whole ass chicken.`,
-        ``
+        `Katie W:GIRL I can't believe you ate a whole chicken.`,
+        `Jade Francis:"I'm trying to eat lean meats" you ate a whole ass chicken.`,
+        `AmBaby:Our girl looking fabulous today ✨`,
+        `Julia Hardin:Stop doing these mukbangs and lose some weight!!!`,
+        `Nature Lover:I really wanna see more cooking videos, I use all your recipes!`,
+        `KindaGoodKindaHootenberry:Girl you can't be serious...`,
+        `ItsJustWaterWeight:Dainty gorl eats entire chicken.`,
+        `Amanda Haskell:Love you Amber!! plz do more cooking vids.`,
     ],    
 ]
+
+const mgCommentsTimings = []
+for (let i = 0; i < 100; i++) {
+    mgCommentsTimings.push(Math.floor((i * 40) + (20 * randFloat(1.01, 1.99))))
+}
+
+console.log(mgCommentsTimings)
+
+function mgCommentsShowComment($parent, seq, id) {
+    if (id > mgCommentsSeqs[seq]) {
+        return null
+    }
+    const comdt = mgCommentsSeqs[seq][id]
+    $parent.append($(`<div class="yt-comment"><pre class="username">${comdt.split(":")[0]}</pre><pre class="text">${comdt.split(":").slice(1).join(":")}</pre></div>`))
+}
 
 async function mgComments() {
     await new Promise((resolve, reject) => {
         textInputMode = false
         const $phoneCan = $('#phone-canvas-container')
+        const $phoneCanNonContainer = $($phoneCan[0].children[0])
         mgShowCanvasContainer($phoneCan)
+
+        let fc = 0
+        let ccom = 0
+        let isDone = false
+
+        mgSetTickFunction(() => {
+            if (isDone === true) {
+                isDone = 2
+                setTimeout(resolve, 250)
+            } else if (isDone === 2) { return }
+
+            if (fc === mgCommentsTimings[ccom]) {
+                ccom++
+                if (mgCommentsShowComment($phoneCanNonContainer, this._com_seq, ccom) === null) {
+                    isDone = true
+                }
+            }
+            fc++
+        })
+        mgTick()
+
+        // drawMonoImage(candt, mgMookbongLayg, 40, 40)
+    })
+}
+
+async function mgDDR() {
+    await new Promise((resolve, reject) => {
+        textInputMode = false
+        const $can = $('#ddr-canvas-container')
+        mgShowCanvasContainer($can)
 
         let fc = 0
 
