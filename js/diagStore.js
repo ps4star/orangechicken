@@ -987,15 +987,15 @@ talk 0 "So, you guise."
 pose 0 normal
 talk 0 "This is a pretty serious video."
 talk 0 "Well, Becky said I deserve better."
-talk 0 "She says she wants to get better, better?"
+talk 0 "She says she wants to get better- wait... better? Or like..."
 pose 0 bored
 lynn bored
-talk 0 "What's that word?"
+talk 0 "Hmm what's that word?"
 pose 0 laptoptemplate
 talk - (Amberlynn gets on her laptop and quickly searches)
 pose 0 normal
-talk 0 "Okay guise yeah she wants to improve."
-talk 0 "So we got a bit of a situation type deal, but it's all good."
+talk 0 "IMPROVE yeah she wants to IMPROVE, you guise."
+talk 0 "So anyway we got a bit of a situation type deal goeen on with all that, but it's good."
 pose 0 cacklelynn
 talk 0 "I want to take this time to enjoy being single."
 pose 0 normal
@@ -1021,13 +1021,13 @@ talk 1 "That's all?"
 
 multi
 Pay Becky for the food
-becky_food_paid
+wiping_becky_food_paid
 OMG Beckeeeeeh let me eat my food I'll pay later
-becky_food_not_paid
+wiping_becky_food_not_paid
 `
     },
     
-    "becky_food_paid": {
+    "wiping_becky_food_paid": {
         inherits: "wiping",
         diag: `
 moneychange -1 -20
@@ -1055,7 +1055,7 @@ gotofadenewchapter 12
 `,
     },
     
-    "becky_food_not_paid": {
+    "wiping_becky_food_not_paid": {
         inherits: "wiping",
         diag: `
 talk 1 "Really, that's all?"
@@ -1076,122 +1076,130 @@ gotofadenewchapter 12
 `,
     },
 
-/*
-Amberlynn: Hey guise, so today I decided to tell you guise about some healthy snack ideas. This is super highly requested from my last video. 
-
-(Amberlynn pull outs out two giant cucumbers, cream cheese, and many bacon)
-
-Amberlynn: So girl, I get hongry throughout the day, and you wanna turn to sometheen unhealthy like a candy bar. This is a super healthy and filling snack you guise. Beckehhhh get out of my shot!
-
-Becky: Sorry babe, just getting something.
-
-Amberlynn: Anyway you guise, get yourself two HUGE cucumbers. No skin on the cucumbers guise because for me, the skin on the cucumbers makes it taste gross.
-
-(Amberlynn only cuts one cucumber in half)
-
-Amberlynn: I'm gonna leave the other one for now. The next step guise is a cream cheese situation type deal. I'm gonna stir this first guise, I just have a thing where I have to stir stuff.
-
-(Amberlynn goes on a rant about stirring things and not touching her food)
-
-Amberlynn: Now we will take cream cheese and put it on the cucumber. I'm scared guise, I don't know how this will pan out. I'm so nervous. 
-
-(Amberlynn only covers one cucumber half)
-
-Amberlynn: Next we have bacon, and I know you guise are probably like whaaat? I wasn't gonna do bacon, I swear you guise. I was gonna use this super healthy topping but it smelled a bit funny you guise. Last step, add a little bit of everything but the bagel seasoneen. I love seasoneens you guise.
-
-(Amberlynn pours tons of seasonings on)
-
-Amberlynn: Wow guise, this is so random.
-
-(Amberlynn takes a bite and makes a funny face)
-
-Amberlynn: Mmmmmm, it tastes like... Hmm, what ties it all together is the bacon.
-
-(Amberlynn takes another bite)
-Amberlynn: Mmm, I'm so shocked you guise. This is really good. I don't think I can this all though, it's so huuuge. I like the bacon on it, adds so many sodiums. I should add more bacon. Very low calorie meal.
-
-(Amberlynn lists the calories for the bacon, but not the massive glop of cream cheese)
-
-Amberlynn: Is this low carb? Only two carbs for the cream cheese you guise. I really wasn't expecting this situation type deal.
-
-(Amberlynn cackles to herself, then realizes she is out of bacon)
-
-Option 1: Continue the mukbang even though you have no more bacon
-Option 2: End the mukbang and insist someone else needs to use the kitchen
-
-(If you pick option 1)
-
-Amberlynn: I'm out of bacon you guise, but I'll finish this cucumber boat before I get off. It's not as good without the bacon, that's fine though. I'm super healthy you guise so I can deal with this situation type deal.
-
-(Amberlynn finishes the cucumber boat and internally let's out a sigh of relief)
-
-Amberlynn: Thanks for watcheen my mookbang guise. Someone else needs to use the kitchen so I'm going to get off now.
-
-(Amberlynn cuts the camera)
-
-(If you pick option 2)
-
-Amberlynn: I need to go you guise. Other people want to use the kitchen, so I had to eat super fast. Thank you for coming to my mookbang.
-
-(Amberlynn cuts the camera)
-*/
-
     "cucumber": {
         bg: "pillowmountain.png",
         music: [ CALD_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
+chapter 12
+enter 0
+pose 0 heyguys
+lynn heyguys
 talk 0 "Hey guise, so today I decided to tell you guise about some healthy snack ideas. This is super highly requested from my last video."
-talk - (Amberlynn pull outs out two giant cucumbers, cream cheese, and many bacons)
-talk 0 "So girl, I get hongry throughout the day, and you wanna turn to sometheen unhealthy like a candy bar."
-talk 0 "This is a super healthy and filling snack you guise."
+pose 0 normal
+talk - (Amberlynn pulls outs out two giant cucumbers, cream cheese, and a ton of bacons)
+talk 0 "So girl, I get hongry throughout the day, and you know how you wanna turn to sometheen unhealthy like a candy bar?"
+talk 0 "Well this is a super hulthy and filling snack you guise."
+enter 1
+pose 1 normal
+pose 0 pissed
 talk 0 "Beckehhhh get out of my shot!"
 talk 0 "Sorry babe, just getting something."
+leave 1
 talk 0 "Anyway you guise, get yourself two HUGE cucumbers."
+pose 0 disgusted
 talk 0 "No skin on the cucumbers guise because for me, the skin on the cucumbers makes it taste gross."
+pose 0 normal
 talk - (Amberlynn only cuts one cucumber in half)
 talk 0 "I'm gonna leave the other one for now. The next step guise is a cream cheese situation type deal."
 talk 0 "I'm gonna stir this first guise, I just have a thing where I have to stir stuff."
-talk - (Amberlynn goes on a rant about stirring things and not touching her food)
-talk 0 "Now we will take cream cheese and put it on the cucumber. I'm scared guise, I don't know how this will pan out. I'm so nervous."
+talk 0 "Fun little fact actually, that you guise might not know, is that lieekkkeee..."
+pose 0 confused
+lynn confused
+talk 0 "I have this huge OCD- wait actually I'm confused, didn't someone akshually say it was like, OBCD or whatever?"
+pose 0 cacklelynn
+talk 0 "HAHA I actually can't like remember this is so funny you guys."
+talk 0 "Hey BECKEEEEEE get in heeeere gorl."
+enter 1
+talk 1 "What is it?"
+talk 0 "Was it OCD or OBCD that I have?"
+talk 1 "I think it was OBCD."
+talk 0 "Oh yeah HAH that's right."
+leave 1
+pose 0 normal
+talk 0 "So yeah anyway I have this huge OBCD problem with like other foods toucheen my food, and like stirring stuff, you know?"
+pose 0 stir
+lynn stir
+talk - (Amberlynn begins stirring)
+talk 0 "Sooo that's just a little fun fact about me."
+talk 0 "So now we're gonna take the cream cheese and put it on the cucumber."
+talk 0 "I'm scared guise, I don't know how this will pan out. I'm so nervous."
 talk - (Amberlynn only covers one cucumber half)
 talk 0 "Next we have bacon, and I know you guise are probably like whaaat? I wasn't gonna do bacon, I swear you guise."
 talk 0 "I was gonna use this super healthy topping but it smelled a bit funny you guise."
 talk 0 "Last step, add a little bit of everything but the bagel seasoneen. I love seasoneens you guise."
 talk - (Amberlynn pours tons of seasonings on)
 talk 0 "Wow guise, this is so random."
+talk - (Amberlynn takes a bite and makes a funny face)
+talk 0 "Mmmmmm, it tastes like... Hmm, what ties it all together is the bacon."
+talk - (Amberlynn takes another bite)
+talk 0 "Mmm, I'm so shocked you guise. This is really good. I don't think I can this all though, it's so huuuge.
+talk 0 "I like the bacon on it, adds so many sodiums. I should add more bacon. Very low calorie meal."
+talk - (Amberlynn lists the calories for the bacon, but not the massive glop of cream cheese)
+talk 0 "Is this low carb? Only two carbs for the cream cheese you guise. I really wasn't expecting this situation type deal."
+talk - (Amberlynn cackles to herself, then realizes she is out of bacon)
+multi
+Continue the mukbang even though you have no more bacon
+cucumber_continue
+End the mukbang and insist someone else needs to use the kitchen
+cucumber_end
+`,
+    },
 
-(Amberlynn takes a bite and makes a funny face)
+    "cucumber_continue": {
+        inherits: "cucumber",
+        diag: `
+talk 0 "I'm out of bacon you guise, but I'll finish this cucumber boat before I get off."
+talk 0 "It's not as good without the bacon, that's fine though."
+talk 0 "I'm super healthy you guise so I can deal with this situation type deal."
+talk - (Amberlynn finishes the cucumber boat and internally let's out a sigh of relief)
+talk 0 "Thanks for watcheen my mookbang guise. Someone else needs to use the kitchen so I'm going to get off now."
+talk - (Amberlynn cuts the camera)
+`,
+    },
 
-Amberlynn: Mmmmmm, it tastes like... Hmm, what ties it all together is the bacon.
+    "cucumber_end": {
+        inherits: "cucumber",
+        diag: `
+talk 0 "I need to go you guise. Other people want to use the kitchen, so I had to eat super fast. Thank you for coming to my mookbang."
+talk - (Amberlynn cuts the camera)
+`,
+    },
 
-(Amberlynn takes another bite)
-Amberlynn: Mmm, I'm so shocked you guise. This is really good. I don't think I can this all though, it's so huuuge. I like the bacon on it, adds so many sodiums. I should add more bacon. Very low calorie meal.
+    "fbi": {
+        bg: "pillowmountain.png",
+        music: [ CALD_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+        diag: `
+chapter 13
+enter 0
+talk 0 "BECKEHHHHHH!!!"
+enter 1
+talk 1 "Yeah babe?"
 
-(Amberlynn lists the calories for the bacon, but not the massive glop of cream cheese)
+Amberlynn: Omg you're never gonna beleeve what happened.
 
-Amberlynn: Is this low carb? Only two carbs for the cream cheese you guise. I really wasn't expecting this situation type deal.
+Becky: What do you mean Amberlynn?
 
-(Amberlynn cackles to herself, then realizes she is out of bacon)
+Amberlynn: So, we have a situation type deal where the FBI called me. They are sooper scared for my safety, and they want to send me somewhere safe.
 
-Option 1: Continue the mukbang even though you have no more bacon
-Option 2: End the mukbang and insist someone else needs to use the kitchen
+Becky: Wait, what happened.
 
-(If you pick option 1)
+Amberlynn: I seriously got a really scary comment. They said they are gonna send me to Pluto for a little while and already have everything ready for us.
 
-Amberlynn: I'm out of bacon you guise, but I'll finish this cucumber boat before I get off. It's not as good without the bacon, that's fine though. I'm super healthy you guise so I can deal with this situation type deal.
+Becky: Us?
 
-(Amberlynn finishes the cucumber boat and internally let's out a sigh of relief)
+Amberlynn: Of course Becky, you know I can't live without you.
 
-Amberlynn: Thanks for watcheen my mookbang guise. Someone else needs to use the kitchen so I'm going to get off now.
+(Who would wipe my butt if she didn't come...)
 
-(Amberlynn cuts the camera)
+Becky: Aww, that's sweet babe.
 
-(If you pick option 2)
+Amberlynn: So we need to pack to go to Pluto, I'm like super nervous that they won't have healthy food options. Let's do a mookbang to tell everyone about our fun little trip. Becky, go pick up some food.
 
-Amberlynn: I need to go you guise. Other people want to use the kitchen, so I had to eat super fast. Thank you for coming to my mookbang.
+(Becky leaves to go pick them up some take out. Sadly, not cheesecake factorys orange chicken)
 
-(Amberlynn cuts the camera)
+Becky: I'm back babe.
 `,
     },
 }

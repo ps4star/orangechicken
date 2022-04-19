@@ -613,7 +613,6 @@ const mgCommentsSeqs = [
     null, // 0
     [ // 1 - mookbong comments
         `Ooops:Amberlynn: I want to lose weight. Also Amberlynn: *does mookbong of whole rotiserie chicken*`,
-        `Katie W:GIRL I can't believe you ate a whole chicken.`,
         `Jade Francis:"I'm trying to eat lean meats" you ate a whole ass chicken.`,
         `AmBaby:Our girl looking fabulous today ✨`,
         `Julia Hardin:Stop doing these mukbangs and lose some weight!!!`,
