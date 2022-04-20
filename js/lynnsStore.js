@@ -21,6 +21,9 @@ const LYNNS = [
     [ "Scaredlynn", "assets/actors/amberlynn_scared.png" ],
     [ "Pizzalynn", "assets/actors/amberlynn_pizza.png" ],
     [ "Potlynn", "assets/actors/amberlynn_bigpot.png" ],
+    [ "Siplynn", "assets/actors/amberlynn_sip.png" ],
+    [ "Guiltylynn", "assets/actors/amberlynn_guilty.png" ],
+    [ "Smuglynn", "assets/actors/amberlynn_smug.png" ],
 ]
 
 const NUM_LYNNS = LYNNS.length

@@ -7,3 +7,13 @@ const DDR_SONG_DT = [
 bpm 190
 `
 ]
+
+async function parseDdr(songDt) {
+	let i = 0
+	for (; i < songDt.length; i++) {
+		const args = songDt[i].split(" ")
+		if (args[0] === 'initialoffset') {
+			
+		}
+	}
+}

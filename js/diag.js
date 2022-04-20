@@ -10,6 +10,7 @@ const DEFAULT_SAVE = {
     diag: "shortage",
     lynns: fillArr(false, window["NUM_LYNNS"] || 300), // closure pitches a fit about NUM_LYNNS not being defined otherwise...
     achievements: fillArr(false, NUM_ACHIEVEMENTS),
+    arcades: fillArr(false, NUM_ARCADE_GAMES),
 
     inventory: [],
 
@@ -568,23 +569,26 @@ function handleFlaggedEvent(index, useFlagPrefix, cb) {
     cb()
 }
 
-function doMoneyChange(amount) {
-    save.money += amount
-
-    const $el = $(`<pre class="money-change">`)
+function pushAmountChangeText($root, amount, specificClass) {
+    const $el = $(`<pre class="x-amount-change ${specificClass}-change">`)
     if (amount <= 0) {
         $el.html(`<span style="color: darkred;">${amount.toLocaleString()}</span>`)
     } else {
         $el.html(`<span style="color: darkgreen;">+${amount.toLocaleString()}</span>`)
     }
 
-    updateSaveens()
-
-    $('#saveens-text').append($el)
-
+    $root.append($el)
     $el[0].onanimationend = () => {
         $el.remove()
     }
+}
+
+function doMoneyChange(amount) {
+    if (save.money + amount < 0) { return }
+    save.money += amount
+
+    pushAmountChangeText($('#saveens-text'), amount, "money")
+    updateSaveens()
 }
 
 const SHAKE_AREA = 50

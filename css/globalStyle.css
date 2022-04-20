@@ -1084,12 +1084,11 @@ div.ochicken-bg * {
     font-size: 1.5vw !important;
 }
 
-.dom-counter, #saveens {
+.dom-counter-container {
     position: absolute;
     top: 1%;
     left: 1%;
     width: 15%;
-    height: 5%;
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
@@ -1100,10 +1099,14 @@ div.ochicken-bg * {
     z-index: 19;
 }
 
-.dom-counter pre, #saveens pre {
-    padding: 1.25vmin 2vmin 1vmin 1vmin;
+.dom-counter, #saveens {
+    width: 100%;
+}
 
-    font-size: 5vmin;
+.dom-counter pre, #saveens pre {
+    padding: 1vmin 2vmin 0.5vmin 0vmin;
+
+    font-size: 4vmin;
 }
 
 .dom-counter span, #saveens span {
@@ -1286,9 +1289,11 @@ div.ochicken-bg * {
     }
 }
 
-.money-change {
+.x-amount-change {
     opacity: 1;
     position: absolute;
+
+    left: 1ch;
 
     animation: fade-down 700ms;
     animation-fill-mode: forwards;

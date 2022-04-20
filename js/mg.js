@@ -317,7 +317,7 @@ function mgTouch2Mouse(e)
   e.preventDefault();
 }
 
-let mgInitialScore
+let mgInitialScore, mgInitialScore2, mgInitialScore3, mgInitialScore4
 async function mgMookbong() {
     await new Promise((resolve, reject) => {
         // Make text instant and disable user input (for minigame text)
@@ -473,11 +473,11 @@ const mgBooksBadForTheBrainBooks = [
 ]
 
 let mgBooksCurrent = []
-let mgBooksMX, mgBooksMY, mgBooksClicked
+let mgBooksMX, mgBooksMY, mgBooksClicked, mgBooksStage = 1
 function mgBooksPush(candt, book) {
     book._xpos = randInt(200, candt.sw - 200)
     book._ypos = randInt(-400, -300)
-    book._vel = randFloat(3.0, 8.5)
+    book._vel = randFloat(4.5, 9.5 * mgBooksStage)
 
     mgBooksCurrent.push(book)
 }
@@ -525,6 +525,7 @@ function mgBooksDrawBooks(candt) {
         if (isBad) {
             // bad
             doMoneyChange(-2)
+            mgInitialScore++
             if (Math.random() > 0.8) playSong(...mgBooksBadDt)
         } else {
             // good
@@ -536,6 +537,7 @@ function mgBooksDrawBooks(candt) {
     }
 }
 
+// UHH books is good the brain??
 async function mgBooks() {
     await new Promise((resolve, reject) => {
         textInputMode = false
@@ -544,6 +546,9 @@ async function mgBooks() {
         const $books = $('#books-canvas')
         let candt = mgInitCanvas($books)
         mgNullifyKeyEvents(candt)
+
+        // 1 is number of books missed
+        mgInitialScore = 0
 
         candt.realCanvas.onmousemove = (e) => {
             mgBooksMX = e.offsetX * (candt.sw / window.innerWidth)
@@ -563,6 +568,7 @@ async function mgBooks() {
 
         let fc = 0
         let nextBookTime = 40
+        let stage = 1
         let bookSelectionArr, nextBook, stopSpawning
 
         mgSetTickFunction(() => {
@@ -585,6 +591,10 @@ async function mgBooks() {
                 mgBooksPush(candt, copy)
             }
 
+            if (fc >= 1500) {
+                mgBooksStage = 2
+            }
+
             if (fc >= 2800) {
                 stopSpawning = true
             }
@@ -593,6 +603,14 @@ async function mgBooks() {
                 mgExit = true
                 mgHideCanvasContainer($('#books-canvas-container'))
                 textInputMode = true
+
+                if (mgInitialScore < 1) {
+                    // Did not hit any wrong books
+                    unlockCollectable('achievements', ACHIEVEMENTS, "Good Reads")
+                }
+
+                mgInitialScore = 0
+                mgBooksCurrent = []
                 resolve()
             }
 
@@ -601,7 +619,7 @@ async function mgBooks() {
 
             // Draw to real
             mgDrawToReal(candt)
-            fc++
+            fc += mgBooksStage
         })
         mgTick()
 
@@ -715,7 +733,7 @@ async function mgComments() {
     })
 }
 
-async function mgDDR() {
+async function mgALRDDR() {
     await new Promise((resolve, reject) => {
         textInputMode = false
         const $can = $('#ddr-canvas-container')

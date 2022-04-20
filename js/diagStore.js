@@ -35,6 +35,7 @@ const ACTORS = {
     "Becky": "assets/actors/becky.png",
     "C.F. Waitress": "assets/actors/cfwaitress.png",
     "Piggybank": "assets/actors/piggybank.png",
+    "Frank": "assets/actors/fbifrank.png",
 }
 
 const ALL_DIAGS = {
@@ -502,6 +503,7 @@ talk 0 "So today I'm doing a mook-bong of this whole rotiserrie chicken."
 talk 0 "This was so highly-requested you guiiiiise..."
 talk 0 "So I'm just gonna go ahead and dig in here."
 talk - (Amberlynn begins eating)
+setglobal _com_seq 1
 gotofade rotisserie_2
 `,
     },
@@ -527,7 +529,6 @@ enter 1
 talk 1 "What is it babe?"
 talk 0 ""
 incvisit
-setglobal sceneAlt 2
 gotofadenewchapter 6
 `,
     },
@@ -605,16 +606,57 @@ copyvarnegative negativeJournalCost journalCost
 if gteq money journalCost
 moneychange %MONEYCHANGE_INDEX% negativeJournalCost
 call addJournals
-talk 0 "So that was a situation"
-talk 0 "..."
-talk 0 "..."
+goto books_canafford
 endif
 
 if lt money journalCost
 talk 0 "I can't afford these journuuuuuuuuuuhhhhls noooooouh."
+goto books_cantafford
 endif
 gotofadenewchapter 6
 `
+    },
+
+    "books_canafford": {
+        inherits: "books",
+        diag: `
+talk 0 "Yass we got a little journal haul goeen."
+talk 0 "Ok you guys we're gonna be leaveen now, gonna go home and do a journal haul."
+goto books_becky_complains
+`,
+    },
+
+    "books_cantafford": {
+        inherits: "books",
+        diag: `
+pose 0 gasp
+lynn gasp
+talk 0 "Oh muh god you guys I lidurally didn't even bring enough money for this."
+pose 0 sumg
+talk 0 "I really didn't even get alot of journals though, I guess they're just super expensive now or wudeverrr."
+talk 0 "Anyway I guess we can't any sooo we're goeen home now."
+goto books_becky_complains
+`,
+    },
+
+    "books_becky_complains": {
+        inherits: "books",
+        diag: `
+pose 1 normal
+talk 1 "Babe wait I wanted to look at some more SpongeBob books..."
+pose 0 bored
+talk 0 "No Beckeeee we gotta go come onnnuh."
+gotofadereload books_canafford_film
+`,
+    },
+
+    "books_canafford_film": {
+        bg: "pillowmountain.png",
+        music: [ RIZO_ISLAND_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+        diag: `
+
+`,
     },
 
     // Chapter 6
@@ -632,6 +674,16 @@ talk - (Amberlynn is uploading the video she just filmed)
 talk 0 "... ... ..."
 talk 0 "I'm waaaaaaaaaaiteeeeeeeeeeeeeeeeeen."
 talk 0 "... ... ..."
+pose 0 pissed
+talk 0 "UGHH why is this takeeeen so long."
+talk 0 "BECKEEEEEE"
+enter 1
+pose 1 normal
+talk 0 "Are you useen all the wifi??"
+talk 1 "I'm just watching Naruto..."
+talk 0 "BECKEE you can't watch nuhroodough right nowwwuuuh I'm uploadeen my new vloguh."
+leave 1
+talk - (Becky goes back to her bedroom and turns off Naruto)
 talk - (The video finishes uploading)
 pose 0 normal
 talk 0 "Finally it's done."
@@ -898,7 +950,7 @@ talk 1 "Just tell them the truth babe, it's not a big deal."
 pose 0 pissed
 talk 0 "Becky, you don't understand!"
 pose 0 bored
-talk 0 (Wait, this would make such a great poem... About how nobodee understands me.)
+talk 0 (Wait, this would make such a great poem... about how nobodee understands me)
 pose 1 useless
 talk 1 "Okay well I'm gonna go cook dinner."
 pose 0 normal
@@ -958,7 +1010,7 @@ talk 0 ""
         music: [ RIZO_ISLAND_MUSIC_DT, DDR_MUSIC_DT, RIZO_ISLAND_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
-chapter 15
+chapter 14
 enter 0
 pose 0 heyguys
 talk 0 "Hey you guuuuuys welcome to a new video."
@@ -966,20 +1018,27 @@ pose 0 normal
 talk 0 "Soo a lot of you guys requested more exerciseen videos."
 talk 0 "I kind of have lieek, a hard time with it because of my heel spur you guise."
 talk 0 "Buuuut I found out about this super fun program called ALR-DDR."
+talk 0 "It's like this little danceen game, you just plug it up to your TV and you dance on eeet."
+pose 0 books
+talk 0 "I was a dancer in middle school y'all I would like korey-ah-gruff the dances."
+talk 0 "So I'm honestly really excited to try this, might bring back some memoreees."
 pose 0 cacklelynn
-talk 0 "It's so weird how it has my initials you guise HAHA."
+talk 0 "It's so weird how it has my initials though you guise HAHA."
 talk 0 "Isn't that so funny Becky?"
 talk 0 "... ... ..."
 pose 0 pissed
 talk 0 "BECKEEEE WHERE ARE YOU??"
 enter 1
-pose 1 useless
+pose 1 normal
 talk 1 "I'm right here Amber..."
 pose 0 cacklelynn
 talk 0 "Oh HAHA I didn't see you."
+talk 0 "Isn't that like soo funny Beckeee??"
+talk 1 "Yes Amber..."
 pose 0 normal
 leave 1
 talk 0 "So I'm super excited to start this program and just kind of open a new chapter in my life."
+talk 0 "I feel liek this is just gonna be a super eye-openeen experience kind of situation."
 talk 0 "So I'm gonna go ahead and try this thing out on camera for you guise..."
 talk 0 "...do a little test run moment."
 talk 0 "So you're supposed to put like this pad thing down on your floor."
@@ -1003,7 +1062,7 @@ talk 1 "Ok I'll look."
 talk 1 "... ... ..."
 talk 1 "The TV is unplugged babe. Did you do that?"
 pose 0 guilty
-lynn guiltylynn
+lynn guilty
 talk 0 "Noouu I think Eric did that."
 talk - (Becky plugs everything up correctly).
 pose 0 normal
@@ -1244,29 +1303,41 @@ talk 0 "Omg you're never gonna beleeve what happened."
 talk 1 "What do you mean Amberlynn?"
 pose 0 scared
 lynn scared
-talk 0 "So, we have a situation type deal where the FBI called me."
+talk 0 "So, we have a situation type deal where this guy who works for the FBI called me. His name is Frank."
 talk 0 "Well, to be specifically-er, Density's sister texted me and was like, gorl, the fbi is looking for u."
 talk 0 "But I called them and they're actually like soooooper scared for my safety, and they want to send me somewhere safe."
 pose 1 useless
 talk 1 "Wait, what happened?"
 pose 0 shocked
-talk 0 "I seriously got a really scary comment."
-talk 0 "They said they are gonna send me to Pluto for a little while for safety and already have everything ready for us."
+talk 0 "So I got this seriously really scary comment."
+talk 0 "They threatened to blow up the Cheesecake Factory 2 hours from our house."
+talk 0 "And they're doing it JUST to mess with meee cuz they're a haydur!"
+talk 0 "That's why Frank wants us to pack up and start leaveen this planet. We gotta go to Pluto to be safe."
 ;pose 1 confusedbeck
-talk 1 "Us?"
+talk 1 "Us? Pluto? Frank?"
 pose 0 books
-talk 1 "Of course Becky, you know I can't live without you."
+talk 1 "Of course you're coming too Becky, you know I can't live without you."
 pose 0 bored
 talk 0 (Who would wipe my butt if she didn't come...)
 pose 0 books
+talk 0 "And don't worry Frank is super nice he's like totally on my side."
+talk 0 "He even congratulated me on my youtube success. He said you should totally come along too."
+talk 0 "He was all like, whoever this terrorist is, they probably would go after Becky too."
+pose 0 normal
+talk 0 "So you need to come too."
 talk 1 "Aww, that's sweet babe."
 pose 0 gasp
-talk 0 "So we need to pack to go to Pluto, I'm like super nervous that they won't have hulthy food options, but wudever."
-talk 0 "Anyway I'm gonna do a mook-bong to tell everyone about it."
-pose 0 normal
-talk 0 "Becky, go pick up some food."
+talk 0 "So yeah we need to pack to go to Pluto, I'm like super nervous that they won't have hulthy food options, but wudever."
+talk 0 "Anyway I need to do a mook-bong to tell everyone about it."
+talk 1 "You can't just do a quick video message?"
+pose 0 books
+talk 0 "Uhh, mookbongs is good for the view count?"
+talk 1 "Uhh.... what?"
+pose 0 bored
+talk 0 "Just go get me some food Becky, gaaahh."
+talk - (Becky leaves)
 leave 1
-delay 200
+delay 210
 gotofadereload fbi_after
 `,
     },
@@ -1278,7 +1349,7 @@ gotofadereload fbi_after
         diag:`
 enter 0
 enter 1
-talk - (Becky leaves to go pick them up some take out. Sadly, not CF orange chicken cuz they were still out)
+talk - (Becky comes back with some take out. Sadly, not CF orange chicken cuz they were still out)
 enter 0
 pose 0 laptoptemplate
 enter 1
@@ -1288,21 +1359,35 @@ talk 1 "I'm back babe."
 pose 0 heyguys
 lynn heyguys
 talk 0 "Hey guise, you totally aren't gonna believe what's going on with me right now."
+pose 0 sip
+lynn sip
+sfx assets/sfx/slurp.ogg 2.0
 talk - (Takes long and loud slurp of her diet coke)
 pose 0 frowny
 lynn frowny
-talk 0 "People disappoint me sometimes, you guise. I brush it off, but sometimes..."
-pose 0 shocked
-lynn shocked
-talk - (Amberlynn opens the box of food Becky hands to her)
+talk 0 "You know, being on YouTube, there are a lot of like... wait what's the word?"
+pose 0 laptoptemplate
+talk - (Amber clacks some nonsense into Google)
+pose 0 gasp
+talk 0 "DISAPPOINTMENTS yeah there are a lot of like, disappointments, being a youtuber..."
+pose 0 normal
+talk - (Amberlynn opens the box of food Becky hands her)
 pose 0 pizza
 lynn pizza
-talk 0 "OOOH we got a pizza moment."
-pose 0 normal
-talk 0 "Okay so, you guise, I am totally not a pepperoni gorl, buuut I'm starveen and need to eat something."
+talk 0 "OOOH so we got a pizza moment heeere."
+talk 0 "So this is three, pretty, big, slices of peet-zaaa."
+pose 0 holdingpizza
+talk 0 "So I've actually been on this pill lately that makes it so I'm not as hongry."
+talk 0 "I REALLY don't wanna eat right now, like I don't."
+talk 0 "I just gotta have something like in my systems."
+talk 0 "So yeah, not really a pepperoni gorl buuuuut..."
+pose 0 pizzainmouth
+lynn pizza
+talk - (Amber takes gigantic bite of pizza)
+pose 0 holdingpizza
 talk 0 "I lidurally just woke up TWO hours ago that's so long you guise, I gotta eat sometheen."
 talk 0 "I can lidurally feel myself getting dizzy right nowwuh, liiiike..."
-pose 0 pizza
+pose 0 pizzainmouth
 lynn pizza
 sfx assets/sfx/mmm.ogg
 talk - (Amberlynn takes a huge bite of the pizza and chews loudly, while moaning)
@@ -1316,47 +1401,93 @@ talk 0 "They lidurally did it just to mess with me and jamble up mah life y'all.
 talk 0 "Buuuuut you know at this point I don't know what else to expect from a haydur."
 talk 0 "It is what it is, and it is what it ain't, yaknow?"
 talk 0 "So anyway you guise..."
+sfx assets/sfx/slurp.ogg
+pose 0 sip
+talk - (More slurping)
+pose 0 normal
+talk 0 "The other day I get this text from Destiny's siter and she's like, the FBI wants to talk to you."
 pose 0 scared
 lynn scared
-talk 0 "I'm literally SOO scared right now you guys, I literally can't..."
-pose 0 pizza
+talk 0 "And I was actually SO scared I was like, am I in trouble??"
+pose 0 normal
+talk 0 "So then I get in contact with him, it turns out his name is Frank."
+talk 0 "The very first thing he said, he was like, congratulations on your YouTube success."
+talk 0 "And then he was like, I saw a comment on your YouTube that some people had reported to us."
+talk 0 "And so it turns out this person might actually go through and blow up Cheesecake Factory and stuff."
+sfx assets/sfx/mmm.ogg
+pose 0 pizzainmouth
+setvar _diag_type 2
+talk - (Amber takes several bites)
+delay 800
+sfx assets/sfx/mmm.ogg
+delay 800
+sfx assets/sfx/mmm.ogg
+delay 1600
+setvar _diag_type 0
+pose 0 scared
+talk 0 "So yeah I'm literally SOO scared right now you guys, I literally can't... like what if they actually do it??"
+talk 0 "What if they come after ME too??"
+talk 1 "Or both of us."
+pose 0 bored
+talk 0 (Ughh she always has to ruin my moment)
+pose 0 scared
+talk 0 "Yeah, or Becky you guise..."
+pose 0 pizzainmouth
 lynn pizza
 sfx assets/sfx/mmm.ogg
 talk - (More huge bites, more loud eating noises)
 pose 0 gasp
-talk 0 "So yeah the FBI was SUPER worried about me, and they wanna make sure I'm safe."
+talk 0 "Anyway the FBI is SUPER worried about me, and they wanna make sure I'm safe."
 pose 1 useless
 talk 1 "Yeah guys this is really serious."
-talk 1 "All the people all cheesecake factory could be hurt."
+talk 1 "All the people at cheesecake factory could be hurt."
 pose 0 books
 lynn reader
 talk 0 (How stupid is Becky? Who cares about the people, what about the future of orange chicken?)
 pose 0 normal
-talk 0 "Um, so anyways, the FBI is gonna send me Pluto."
+talk 0 "Um, so anyways, the FBI is gonna send me to Pluto."
 talk 1 "I'm gonna get to go with her, which is really nice."
 pose 0 confused
 talk 0 "Love that for you."
-pose 0 pizza
+pose 0 pizzainmouth
 sfx assets/sfx/mmm.ogg
 talk - (Amberlynn takes several more bites, moaning and chewing loudly)
 pose 0 mentalthings
 lynn mental
-talk 0 "I'm kind of scared to go to Pluto guise."
-talk 0 "Like what if they try to give me a bunch of unhealthy food, or don't give me any food?"
+talk 0 "The only thing is, I'm kind of scared to go to Pluto guise."
+talk 0 "Like what if they try to give me a bunch of unhulthy food, or don't give me any food?"
 pose 0 bored
 lynn bored
 talk 0 "I'm wondering if I should bring my own food with me."
 pose 0 normal
 talk 0 "Comment below and tell me what you think."
-pose 0 pizza
-lynn pizza
-talk - (Amberlynn finishes off the pizza, and slurps more of her diet coke loudly)
+pose 0 sip
+lynn sip
+sfx assets/sfx/slurp.ogg
+talk - (Amberlynn slurps down the rest of the diet coke and finishes the pizza)
 pose 0 heyguys
 lynn heyguys
-talk 0 "Thank you guys for coming to my mookbang, I'll see you after I'm back from Pluto."
+talk 0 "Thank you guys so much for watcheen, I'll see you after I'm back from Pluto."
 pose 0 laptopyt
 lynn youtube
 talk - (Amberlynn shuts the camera off)
+pose 0 gasp
+talk 0 "Ok Beckeeee we gotta be leaveen now."
+talk 0 "Frank said the spaceship leeves in 30 minutes."
+talk 1 "Ok just let me get some of my Naruto shirts and-"
+pose 0 pissed
+talk 0 "NO BECKEEE WE DON'T HAVE TIME JUST GET IN THE CAR"
+gotofadenewchapter 14
+`,
+    },
+
+    "pluto": {
+        bg: "pluto.png",
+        music: [ CALD_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "left_front", "Becky"], ["hflip", "right_front", "Frank"] ],
+        diag: `
+chapter 14
+enter 0
 `,
     },
 }

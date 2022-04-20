@@ -147,6 +147,26 @@ const DIAG_ASSETS_LISTS = [
     ],
 ]
 
+// MG DOM
+const $mgDOM = $(`<div>`)
+    .append($(`<div class="canvas-container" id="mookbong-canvas-container">`)
+        .append($(`<canvas class="mg-canvas" id="mookbong-canvas" width="320" height="180" tabindex="-1">`))
+        .append($(`<div class="mg-image gg">`))
+    )
+    .append($(`<div class="canvas-container" id="books-canvas-container">`)
+        .append($(`<canvas class="mg-canvas" id="books-canvas" width="1280" height="720">`))
+        .append($(`<div class="mg-image">`))
+    )
+    .append($(`<div class="canvas-container" id="phone-canvas-container">`)
+        .append($(`<div class="mg-canvas" id="phone-canvas">`))
+        .append($(`<button class="phone-ok-button">OK</button>`))
+    )
+    .append($(`<div class="dom-counter-container">`)
+        .append($(`<div id="saveens" class="panel">`)
+            .append($(`<pre id="saveens-text"><span class="saveens-dollar">$</span><span class="saveens-amount"></span></pre>`))
+        )
+    )
+
 const LYNNS_ASSETS_LIST = [
     "assets/journalynn.png",
     "assets/actors/amberlynn_shadow.png",
@@ -371,6 +391,7 @@ function fabricateStaticChapterSave(_save, chapterNumber) {
     return finalSave
 }
 
+let nextArcade = null
 hook('load', function() {
     // Back button
     $('.back-button').on('mousedown', () => { fadeoutToScene('mainMenu') })
@@ -397,7 +418,7 @@ hook('load', function() {
     } else if (whichLynnScene === 3) {
         dict = ARCADE_GAMES
         numItems = NUM_ARCADE_GAMES
-        itemList = fillArr(true, NUM_ARCADE_GAMES)
+        itemList = save.arcades
         itemText = "Arcade Games"
         placeholderImage = "assets/missing_chapter.png"
     }
@@ -478,21 +499,26 @@ hook('load', function() {
         const otherDt = dict[i][2] || {}
 
         const rotDeg = i % 2 === 0 ? 1 : -1// Math.random() < 0.5 ? 1 : -1
-        console.log(rotDeg)
         const $legitLynn = $(`<div class="lynn" style="transform: rotateZ(${rotDeg}deg);">`)
             .append($(`<pre class="lynn-dot"></pre>`))
             .append($(`<img class="lynn-img ${itemList[i] ? "" : "locked"}" alt="" src="${url}">`))
             .append($(`<p class="lynn-text" style="${otherDt.color ? otherDt.color : ""}">${name}</p>`))
 
         // On chapter scene, make elements clickable if unlocked
-        if (whichLynnScene === 0 && itemList[i]) {
+        if ((whichLynnScene === 0 || whichLynnScene === 3) && itemList[i]) {
             $legitLynn[0].chapterIndex = i + 1
 
             // For chapters, do click events
             $legitLynn.addClass('clickable')
-            $legitLynn.on('mousedown', () => {
-                save.chapter = $legitLynn[0].chapterIndex
-                fadeoutToScene('dialog')
+            $legitLynn.on('mousedown', async () => {
+                if (whichLynnScene === 0) {
+                    save.chapter = $legitLynn[0].chapterIndex
+                    fadeoutToScene('dialog')
+                } else {
+                    // Goto arcade game
+                    nextArcade = $legitLynn[0].chapterIndex - 1
+                    fadeoutToScene('arcade-gameplay')
+                }
             })
         }
 
@@ -600,6 +626,28 @@ hook('load', function() {
 //     $('#ch-text').removeClass('grow-border')
 // })
 
+makeScene('arcade-gameplay')
+addCurrent(
+    $mgDOM.clone(true, true)
+)
+
+hook('load', async function() {
+    // const children = Array.from($mgDOM[0].children)
+    // children.forEach(ch => {
+    //     $mgDOM[0].parentElement.appendChild(ch)
+    // })
+    // $mgDOM.remove()
+
+    const thisArc = ARCADE_GAMES[nextArcade]
+
+    // Load up game
+    if (thisArc[2].mgFunc) {
+        updateSaveens()
+        await window[thisArc[2].mgFunc].call({  })
+        fadeoutToScene('mainMenu')
+    }
+})
+
 makeScene('dialog')
 
 addCurrent(
@@ -618,21 +666,7 @@ addCurrent(
         .append($(`<div id="lynn-pop-container">`)
 
         )
-        .append($(`<div id="saveens" class="panel">`)
-            .append($(`<pre id="saveens-text"><span class="saveens-dollar">$</span><span class="saveens-amount"></span></pre>`))
-        )
-        .append($(`<div class="canvas-container" id="mookbong-canvas-container">`)
-            .append($(`<canvas class="mg-canvas" id="mookbong-canvas" width="320" height="180" tabindex="-1">`))
-            .append($(`<div class="mg-image gg">`))
-        )
-        .append($(`<div class="canvas-container" id="books-canvas-container">`)
-            .append($(`<canvas class="mg-canvas" id="books-canvas" width="1280" height="720">`))
-            .append($(`<div class="mg-image">`))
-        )
-        .append($(`<div class="canvas-container" id="phone-canvas-container">`)
-            .append($(`<div class="mg-canvas" id="phone-canvas">`))
-            .append($(`<button class="phone-ok-button">OK</button>`))
-        )
+        .append(...$mgDOM.children().clone(true, true))
 )
 
 hook('before', async function() {
@@ -668,7 +702,10 @@ hook('load', function() {
 
 if (debug) {
     save.chapters = save.chapters.map(el => true)
+    save.lynns = save.lynns.map(el => true)
+    save.arcades = save.arcades.map(el => true)
     save.hasSaveensJar = true
+    save.hasUnlockedArcade = true
     writeSave()
 }
 
