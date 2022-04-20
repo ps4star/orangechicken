@@ -50,9 +50,9 @@ const loadScene = async function(name, $root) {
     $finalRoot.empty()
 
     // Pre-buffer assets
-    // if (localHooks[newScene]['before']) {
-    //     await localHooks[newScene]['before']()
-    // }
+    if (localHooks[newScene]['before']) {
+        await localHooks[newScene]['before']()
+    }
 
     // Populate new children
     cScene = newScene

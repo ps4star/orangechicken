@@ -4,7 +4,6 @@ const debug = true
 
 const MM_ASSETS_LIST = [
     "assets/titlescreen.jpg",
-    "css/GCursive.ttf",
     "css/HelveCursive.ttf",
     "assets/music/cf.ogg",
 ]
@@ -70,6 +69,8 @@ const DIAG_ASSETS_LISTS = [
         "assets/music/alrtheme.ogg",
 
         "assets/actors/amberlynn_mook-bong.png",
+        "assets/chicken1.png",
+        "assets/chicken2.png",
     ],
 
     [ // Ch 5
@@ -100,7 +101,71 @@ const DIAG_ASSETS_LISTS = [
     [ // Ch 6
 
     ],
+
+    [ // Ch 7
+
+    ],
+
+    [ // Ch 8
+
+    ],
+
+    [ // Ch 9
+
+    ],
+
+    [ // Ch 10
+
+    ],
+
+    [ // Ch 11
+
+    ],
+
+    [ // Ch 12
+
+    ],
+
+    [ // Ch 13
+
+    ],
+
+    [ // Ch 14
+
+    ],
+
+    [ // Ch 15
+
+    ],
+
+    [ // Ch 16
+
+    ],
+
+    [ // Ch 17
+
+    ],
 ]
+
+// MG DOM
+const $mgDOM = $(`<div>`)
+    .append($(`<div class="canvas-container" id="mookbong-canvas-container">`)
+        .append($(`<canvas class="mg-canvas" id="mookbong-canvas" width="320" height="180" tabindex="-1">`))
+        .append($(`<div class="mg-image gg">`))
+    )
+    .append($(`<div class="canvas-container" id="books-canvas-container">`)
+        .append($(`<canvas class="mg-canvas" id="books-canvas" width="1280" height="720">`))
+        .append($(`<div class="mg-image">`))
+    )
+    .append($(`<div class="canvas-container" id="phone-canvas-container">`)
+        .append($(`<div class="mg-canvas" id="phone-canvas">`))
+        .append($(`<button class="phone-ok-button">OK</button>`))
+    )
+    .append($(`<div class="dom-counter-container">`)
+        .append($(`<div id="saveens" class="panel">`)
+            .append($(`<pre id="saveens-text"><span class="saveens-dollar">$</span><span class="saveens-amount"></span></pre>`))
+        )
+    )
 
 const LYNNS_ASSETS_LIST = [
     "assets/journalynn.png",
@@ -124,33 +189,34 @@ function nullifyEvent(e) {
 
 // UNUSED; rel="prefetch" is the successor
 async function bufferAssets(list) {
-    return Promise.resolve()
-    // for (const item of list) {
-    //     await new Promise((resolve, reject) => {
-    //         $('#lt2').text(`${item}`)
+    if (!list) return Promise.resolve()
+    // return Promise.resolve()
+    for (const item of list) {
+        await new Promise((resolve, reject) => {
+            $('#lt2').text(`${item}`)
 
-    //         let img, loadedEvent
-    //         if (item.endsWith('.png') || item.endsWith('.jpg') || item.endsWith('.bmp')) {
-    //             img = new Image()
-    //             loadedEvent = 'onload'
-    //         } else if (item.endsWith('.ogg') || item.endsWith('.mp3')) {
-    //             img = new Audio()
-    //             loadedEvent = 'oncanplaythrough'
-    //         } else if (item.endsWith('.ttf') || item.endsWith('.woff')) {
-    //             fetch(item).then(resolve)
-    //             loadedEvent = null
-    //         } else {
-    //             resolve()
-    //             return
-    //         }
+            let img, loadedEvent
+            if (item.endsWith('.png') || item.endsWith('.jpg') || item.endsWith('.bmp')) {
+                img = new Image()
+                loadedEvent = 'onload'
+            } else if (item.endsWith('.ogg') || item.endsWith('.mp3')) {
+                img = new Audio()
+                loadedEvent = 'oncanplaythrough'
+            } else if (item.endsWith('.ttf') || item.endsWith('.woff')) {
+                fetch(item).then(resolve)
+                loadedEvent = null
+            } else {
+                resolve()
+                return
+            }
 
-    //         if (loadedEvent !== null) {
-    //             img.src = item
-    //             img[loadedEvent] = resolve
-    //             // console.log('iter ' + item)
-    //         }
-    //     })
-    // }
+            if (loadedEvent !== null) {
+                img.src = item
+                img[loadedEvent] = resolve
+                // console.log('iter ' + item)
+            }
+        })
+    }
 }
 
 hookGlobal('load', function() {
@@ -171,6 +237,8 @@ GNU GPL v2.0</pre>`))
         .append($(`<p class="press-key">Click anywhere to continue</p>`))
 )
 hook('load', function() {
+    save.nextScene = null
+    
     $('a').on('mousedown', (e) => { e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); return false })
     $(window).on('mousedown', () => splashHandler('mainMenu'))
 })
@@ -201,6 +269,9 @@ addCurrent(
             .append($(`<button class="mm-button mm-achievements-button">Achievements</button>`)
 
             )
+            .append($(`<button class="mm-button mm-arcade-button">Becky's Arcade</button>`)
+
+            )
         )
 )
 hook('load', function(oldScene) {
@@ -208,6 +279,10 @@ hook('load', function(oldScene) {
     if (!(oldScene === 'lynns' || oldScene === 'options')) {
         stopMusic()
         playSong(RIZO_ISLAND_MUSIC_DT)
+    }
+
+    if (save.hasUnlockedArcade) {
+        $('.mm-arcade-button').addClass('visible')
     }
 
     $('.mm-options-button').on('mousedown', function(e) {
@@ -240,6 +315,11 @@ hook('load', function(oldScene) {
 
     $('.mm-achievements-button').on('mousedown', function(e) {
         whichLynnScene = 2
+        toLynns(e)
+    })
+
+    $('.mm-arcade-button').on('mousedown', function(e) {
+        whichLynnScene = 3
         toLynns(e)
     })
 
@@ -311,6 +391,7 @@ function fabricateStaticChapterSave(_save, chapterNumber) {
     return finalSave
 }
 
+let nextArcade = null
 hook('load', function() {
     // Back button
     $('.back-button').on('mousedown', () => { fadeoutToScene('mainMenu') })
@@ -333,6 +414,12 @@ hook('load', function() {
         numItems = NUM_ACHIEVEMENTS
         itemList = save.achievements
         itemText = "Achievements"
+        placeholderImage = "assets/missing_chapter.png"
+    } else if (whichLynnScene === 3) {
+        dict = ARCADE_GAMES
+        numItems = NUM_ARCADE_GAMES
+        itemList = save.arcades
+        itemText = "Arcade Games"
         placeholderImage = "assets/missing_chapter.png"
     }
 
@@ -409,20 +496,29 @@ hook('load', function() {
             name = dict[i][0]
         }
 
-        const $legitLynn = $(`<div class="lynn">`)
+        const otherDt = dict[i][2] || {}
+
+        const rotDeg = i % 2 === 0 ? 1 : -1// Math.random() < 0.5 ? 1 : -1
+        const $legitLynn = $(`<div class="lynn" style="transform: rotateZ(${rotDeg}deg);">`)
             .append($(`<pre class="lynn-dot"></pre>`))
             .append($(`<img class="lynn-img ${itemList[i] ? "" : "locked"}" alt="" src="${url}">`))
-            .append($(`<p class="lynn-text">${name}</p>`))
+            .append($(`<p class="lynn-text" style="${otherDt.color ? otherDt.color : ""}">${name}</p>`))
 
         // On chapter scene, make elements clickable if unlocked
-        if (whichLynnScene === 0 && itemList[i]) {
+        if ((whichLynnScene === 0 || whichLynnScene === 3) && itemList[i]) {
             $legitLynn[0].chapterIndex = i + 1
 
             // For chapters, do click events
             $legitLynn.addClass('clickable')
-            $legitLynn.on('mousedown', () => {
-                save.chapter = $legitLynn[0].chapterIndex
-                fadeoutToScene('dialog')
+            $legitLynn.on('mousedown', async () => {
+                if (whichLynnScene === 0) {
+                    save.chapter = $legitLynn[0].chapterIndex
+                    fadeoutToScene('dialog')
+                } else {
+                    // Goto arcade game
+                    nextArcade = $legitLynn[0].chapterIndex - 1
+                    fadeoutToScene('arcade-gameplay')
+                }
             })
         }
 
@@ -530,6 +626,28 @@ hook('load', function() {
 //     $('#ch-text').removeClass('grow-border')
 // })
 
+makeScene('arcade-gameplay')
+addCurrent(
+    $mgDOM.clone(true, true)
+)
+
+hook('load', async function() {
+    // const children = Array.from($mgDOM[0].children)
+    // children.forEach(ch => {
+    //     $mgDOM[0].parentElement.appendChild(ch)
+    // })
+    // $mgDOM.remove()
+
+    const thisArc = ARCADE_GAMES[nextArcade]
+
+    // Load up game
+    if (thisArc[2].mgFunc) {
+        updateSaveens()
+        await window[thisArc[2].mgFunc].call({  })
+        fadeoutToScene('mainMenu')
+    }
+})
+
 makeScene('dialog')
 
 addCurrent(
@@ -548,20 +666,7 @@ addCurrent(
         .append($(`<div id="lynn-pop-container">`)
 
         )
-        .append($(`<div id="saveens" class="panel">`)
-            .append($(`<pre id="saveens-text"><span class="saveens-dollar">$</span><span class="saveens-amount"></span></pre>`))
-        )
-        .append($(`<div class="canvas-container" id="mookbong-canvas-container">`)
-            .append($(`<canvas class="mg-canvas" id="mookbong-canvas" width="160" height="90" tabindex="-1">`))
-            .append($(`<div class="mg-image gg">`))
-        )
-        .append($(`<div class="canvas-container" id="books-canvas-container">`)
-            .append($(`<canvas class="mg-canvas" id="books-canvas" width="1280" height="720">`))
-            .append($(`<div class="mg-image">`))
-        )
-        .append($(`<div class="canvas-container" id="phone-canvas-container">`)
-            .append($(`<div class="mg-canvas" id="phone-canvas">`))
-        )
+        .append(...$mgDOM.children().clone(true, true))
 )
 
 hook('before', async function() {
@@ -574,6 +679,8 @@ hook('unload', function() {
 })
 
 function diagLeaveen(e) {
+    save.nextScene = null
+
     if (e) {
         e.preventDefault()
         e.stopPropagation()
@@ -592,5 +699,14 @@ hook('load', function() {
 
     doCurrentDiagSequence()
 })
+
+if (debug) {
+    save.chapters = save.chapters.map(el => true)
+    save.lynns = save.lynns.map(el => true)
+    save.arcades = save.arcades.map(el => true)
+    save.hasSaveensJar = true
+    save.hasUnlockedArcade = true
+    writeSave()
+}
 
 loadScene('splash1')

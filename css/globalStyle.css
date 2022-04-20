@@ -322,6 +322,14 @@ div.ochicken-bg * {
     width: 100%;
 }
 
+.mm-arcade-button {
+    display: none;
+}
+
+.mm-arcade-button.visible {
+    display: unset;
+}
+
 /* title media queries */
 @media (orientation: portrait) {
     /* make title text smaller */
@@ -345,6 +353,11 @@ div.ochicken-bg * {
     height: 90%;
 
     margin: auto;
+}
+
+#lynns-container, #lynns-container div {
+    overflow-x: initial;
+    overflow-y: initial;
 }
 
 #lynns-amount-header {
@@ -812,6 +825,9 @@ div.ochicken-bg * {
 @media screen and (orientation: portrait) {
     #diag-name {
         width: 28%;
+        font-size: 3.1vmin;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     .actor {
@@ -1031,7 +1047,7 @@ div.ochicken-bg * {
     align-items: center;
     flex-flow: column nowrap;
 
-    z-index: 9;
+    z-index: 22;
 
     overflow-x: initial;
     overflow-y: initial;
@@ -1068,12 +1084,11 @@ div.ochicken-bg * {
     font-size: 1.5vw !important;
 }
 
-.dom-counter, #saveens {
+.dom-counter-container {
     position: absolute;
     top: 1%;
     left: 1%;
     width: 15%;
-    height: 5%;
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
@@ -1084,10 +1099,14 @@ div.ochicken-bg * {
     z-index: 19;
 }
 
-.dom-counter pre, #saveens pre {
-    padding: 1.25vmin 2vmin 1vmin 1vmin;
+.dom-counter, #saveens {
+    width: 100%;
+}
 
-    font-size: 5vmin;
+.dom-counter pre, #saveens pre {
+    padding: 1vmin 2vmin 0.5vmin 0vmin;
+
+    font-size: 4vmin;
 }
 
 .dom-counter span, #saveens span {
@@ -1131,7 +1150,7 @@ div.ochicken-bg * {
 }
 
 #mookbong-canvas-container {
-    padding: 1rem;
+    padding: 2vmin;
     background: gray;
 }
 
@@ -1154,16 +1173,95 @@ div.ochicken-bg * {
     width: 100%;
     height: 100%;
 
-    display: flex;
+    border: 1px solid black;
+
+    z-index: 49;
+}
+
+#phone-canvas-container * {
+    overflow-x: initial;
+    overflow-y: initial;
 }
 
 #phone-canvas-container.visible > #phone-canvas {
-    width: 36vw;
-    height: 80vh;
+    width: 100%;
+    height: 100%;
 
     margin: auto;
+    padding: 1rem;
 
     background: white;
+
+    flex-flow: row wrap;
+}
+
+@keyframes comment-pop {
+    from {
+        transform: translateY(4vmin);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0vmin);
+        opacity: 1;
+    }
+}
+
+.yt-comment {
+    animation: comment-pop 300ms;
+    width: 100%;
+
+    display: flex;
+    flex-flow: column nowrap;
+
+    margin-bottom: 2.25vmin;
+}
+
+.yt-comment, .yt-comment > pre {
+    color: black;
+    background: none;
+
+    font-size: 1.1vw;
+}
+
+.yt-comment > .text {
+    margin-left: 4ch;
+}
+
+.yt-comment > .username {
+    font-weight: bold;
+}
+
+.yt-comment.reply > pre {
+    margin-left: 8ch !important;
+}
+
+.phone-ok-button {
+    display: none;
+
+    position: absolute;
+
+    left: 50%;
+    bottom: 4vmin;
+    width: 50%;
+    height: 8vh;
+
+    color: black;
+    background: lightgray;
+    border: 1px solid black;
+    border-radius: 2rem;
+
+    cursor: pointer;
+
+    transform: translateX(-50%);
+}
+
+.phone-ok-button:hover {
+    background: gray;
+}
+
+.phone-ok-button.visible {
+    display: unset;
 }
 
 .mg-image {
@@ -1191,9 +1289,11 @@ div.ochicken-bg * {
     }
 }
 
-.money-change {
+.x-amount-change {
     opacity: 1;
     position: absolute;
+
+    left: 1ch;
 
     animation: fade-down 700ms;
     animation-fill-mode: forwards;
@@ -1215,6 +1315,19 @@ div.ochicken-bg * {
 
 @media screen and (orientation: portrait) {
     #saveens {
-        width: 30%;
+        width: 25%;
+        height: 3%;
+    }
+
+    #saveens * {
+        font-size: 4vw;
+    }
+
+    .yt-comment > pre {
+        font-size: 2.8vw;
+    }
+
+    #lynn-pop-container, #lynn-pop-container * {
+        font-size: 2.5vw;
     }
 }

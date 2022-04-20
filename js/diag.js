@@ -1,11 +1,3 @@
-function fillArr(item, num) {
-    let arr = []
-    for (let i = 0; i < num; i++) {
-        arr.push(item)
-    }
-    return arr
-}
-
 // Very small intentional lag to prevent too many inputs fucking everything up
 const inputDelayTime = 25
 
@@ -18,13 +10,16 @@ const DEFAULT_SAVE = {
     diag: "shortage",
     lynns: fillArr(false, window["NUM_LYNNS"] || 300), // closure pitches a fit about NUM_LYNNS not being defined otherwise...
     achievements: fillArr(false, NUM_ACHIEVEMENTS),
+    arcades: fillArr(false, NUM_ARCADE_GAMES),
 
     inventory: [],
 
     beckyAffection: 20,
     wifeyAffection: 20,
 
-    savedVars: {},
+    savedVars: {
+        "_com_seq": 1,
+    },
 
     affectionUseFlags: fillArr(false, NUM_USEFLAGS),
     moneyUseFlags: fillArr(false, NUM_USEFLAGS),
@@ -574,23 +569,26 @@ function handleFlaggedEvent(index, useFlagPrefix, cb) {
     cb()
 }
 
-function doMoneyChange(amount) {
-    save.money += amount
-
-    const $el = $(`<pre class="money-change">`)
+function pushAmountChangeText($root, amount, specificClass) {
+    const $el = $(`<pre class="x-amount-change ${specificClass}-change">`)
     if (amount <= 0) {
         $el.html(`<span style="color: darkred;">${amount.toLocaleString()}</span>`)
     } else {
         $el.html(`<span style="color: darkgreen;">+${amount.toLocaleString()}</span>`)
     }
 
-    updateSaveens()
-
-    $('#saveens-text').append($el)
-
+    $root.append($el)
     $el[0].onanimationend = () => {
         $el.remove()
     }
+}
+
+function doMoneyChange(amount) {
+    if (save.money + amount < 0) { return }
+    save.money += amount
+
+    pushAmountChangeText($('#saveens-text'), amount, "money")
+    updateSaveens()
 }
 
 const SHAKE_AREA = 50
@@ -882,11 +880,21 @@ async function doDialog(name) {
         } else if (args[0] === 'gotofade') {
             newScene = args[1]
             startNewScene()
+
             await new Promise((resolve, reject) => {
                 fadeoutNoSceneChange(() => {
                     updateSaveens()
                     resolve()
                 })
+            })
+        } else if (args[0] === 'gotofadereload') {
+            save.nextScene = args[1]
+
+            fadeoutNoSceneChange(async () => {
+                clearStage()
+                currentStage = []
+                await loadScene('mainMenu')
+                await loadScene('dialog')
             })
         } else if (args[0] === 'gotofadenewchapter') {
             lastChapter = save.chapter
@@ -914,7 +922,7 @@ async function doDialog(name) {
             window[args[1]]()
         } else if (args[0] === 'callawait') {
             // Calls async func by string name and awaits it
-            await window[args[1]]()
+            await window[args[1]].call({ inline: inlineVarDict, saved: save.savedVars })
         } else if (args[0] === 'setbg') {
             await putBackgroundImage(args.slice(1).join(" "))
         } else if (args[0] === 'shakestart') {
@@ -933,10 +941,16 @@ async function doDialog(name) {
 }
 
 function getChapterScene() {
+    if (save.nextScene) {
+        const oldScene = save.nextScene
+        save.nextScene = null
+        return oldScene
+    }
     return CHAPTERS[save.chapter - 1][0]
 }
 
 async function doCurrentDiagSequence() {
-    await prepareDialog(getChapterScene())
-    await doDialog(getChapterScene())
+    const nextScene = getChapterScene()
+    await prepareDialog(nextScene)
+    await doDialog(nextScene)
 }
