@@ -611,31 +611,68 @@ async function mgBooks() {
 
 const mgCommentsSeqs = [
     null, // 0
-    [ // 1 - mookbong comments
-        `Ooops:Amberlynn: I want to lose weight. Also Amberlynn: *does mookbong of whole rotiserie chicken*`,
+    [ // 1 - from mookbong comments
+        `Ooops:Amberlynn: I want to lose weight. Also Amberlynn: *does mukbang of whole rotiserie chicken*`,
         `Jade Francis:"I'm trying to eat lean meats" you ate a whole ass chicken.`,
         `AmBaby:Our girl looking fabulous today ✨`,
         `Julia Hardin:Stop doing these mukbangs and lose some weight!!!`,
-        `Nature Lover:I really wanna see more cooking videos, I use all your recipes!`,
+        `Nature Lover:I wann see more cooking videos I use all ur recipes!`,
         `KindaGoodKindaHootenberry:Girl you can't be serious...`,
         `ItsJustWaterWeight:Dainty gorl eats entire chicken.`,
-        `Amanda Haskell:Love you Amber!! plz do more cooking vids.`,
-    ],    
+        `Amanda Haskell:Love yuo Amber!! plz show us how 2 make some healthy snacks pls...`,
+    ],
+    [ // 2 - from torrid comments
+        `Nancy A:Yasss we stan a torrid queen 👸`,
+        `Jessica Y:omg love your outfit!! gonna have to wear that to the girls gym next time`,
+        `Katie W:LMAO when she put on that dress backwards I can't even...`,
+        `Haydur Nation:Girl we all know the Instagram note thing is fake, you're not that special.`,
+        `dainty:Ah yes the HIGHLY REQUESTED torrid haul... girl who even requested it???`,
+        `~Amberlynn Reid:a LOT of peoplemmm. haters just like to hate on everything I do :(`,
+        `~dainty:Amber we both know NO ONE requested this non-content. Stop gaslighting us.`,
+        `~Amberlynn Reid:Who cares if i gaslite my audience?? all these other youtubers are doing it...`,
+        `Zan:The backwards dress had me ROLLING. "it's too tight you guiiise". instant classic.`,
+    ],
+    [ // 3 - post-pluto comments
+        `itsahootenberry:What's next, Uranus? Oh wait, Becky already goes there every day.`,
+        `minecraft creeper:Bruh she's really trying to lie about going to Pluto, I can't even`,
+        `Zenaida Fernandez-Gonzalez:STOP KYING ABOUT EVERGTHING AND GET A LOFE`,
+        `Orange Queen:Our dainty gorl just hopping planets now 💅💅`,
+        `Vajinky:Does hamberlynn count as her own planet? 🤔`,
+        `madison carr:Hi im 11 and I aatch all yur videos!have fun at plito and pls shoot me out `,
+        `JambledUpWords:Didn't know there was a spaceship that could hold our dainty qween`,
+        `HootenberryForSure:Amber: "I went to Pluto you guys" Me: "you're a lah"`,
+        `Apathetic Faxx:SHE WENT TO PLUTO YALL`,
+    ],
 ]
 
 const mgCommentsTimings = []
 for (let i = 0; i < 100; i++) {
-    mgCommentsTimings.push(Math.floor((i * 40) + (20 * randFloat(1.01, 1.99))))
+    mgCommentsTimings.push(Math.floor((i * 86) + (35 * randFloat(1.01, 1.99))))
 }
 
 console.log(mgCommentsTimings)
 
 function mgCommentsShowComment($parent, seq, id) {
-    if (id > mgCommentsSeqs[seq]) {
+    if (id >= mgCommentsSeqs[seq].length) {
         return null
     }
-    const comdt = mgCommentsSeqs[seq][id]
-    $parent.append($(`<div class="yt-comment"><pre class="username">${comdt.split(":")[0]}</pre><pre class="text">${comdt.split(":").slice(1).join(":")}</pre></div>`))
+
+    let comdt = mgCommentsSeqs[seq][id]
+    let isRep = false
+
+    // Reply logic
+    if (comdt.charAt(0) === '~') {
+        comdt = comdt.slice(1)
+        isRep = true
+    }
+
+    const $comment = $(`<div class="yt-comment"><pre class="username">${comdt.split(":")[0]}</pre><pre class="text">${comdt.split(":").slice(1).join(":")}</pre></div>`)
+
+    if (isRep) {
+        $comment.addClass('reply')
+    }
+
+    $parent.append($comment)
 }
 
 async function mgComments() {
@@ -652,12 +689,21 @@ async function mgComments() {
         mgSetTickFunction(() => {
             if (isDone === true) {
                 isDone = 2
-                setTimeout(resolve, 250)
+                setTimeout(() => {
+                    const $phok = $('.phone-ok-button')
+                    $phok.addClass('visible')
+                    $phok.on('mousedown', function(e) {
+                        mgExit = true
+                        mgHideCanvasContainer($phoneCan)
+                        textInputMode = true
+                        resolve()
+                    })
+                }, 1000)
             } else if (isDone === 2) { return }
 
             if (fc === mgCommentsTimings[ccom]) {
                 ccom++
-                if (mgCommentsShowComment($phoneCanNonContainer, this._com_seq, ccom) === null) {
+                if (mgCommentsShowComment($phoneCanNonContainer, this.saved._com_seq, ccom) === null) {
                     isDone = true
                 }
             }

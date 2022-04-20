@@ -101,6 +101,50 @@ const DIAG_ASSETS_LISTS = [
     [ // Ch 6
 
     ],
+
+    [ // Ch 7
+
+    ],
+
+    [ // Ch 8
+
+    ],
+
+    [ // Ch 9
+
+    ],
+
+    [ // Ch 10
+
+    ],
+
+    [ // Ch 11
+
+    ],
+
+    [ // Ch 12
+
+    ],
+
+    [ // Ch 13
+
+    ],
+
+    [ // Ch 14
+
+    ],
+
+    [ // Ch 15
+
+    ],
+
+    [ // Ch 16
+
+    ],
+
+    [ // Ch 17
+
+    ],
 ]
 
 const LYNNS_ASSETS_LIST = [
@@ -125,6 +169,7 @@ function nullifyEvent(e) {
 
 // UNUSED; rel="prefetch" is the successor
 async function bufferAssets(list) {
+    if (!list) return Promise.resolve()
     // return Promise.resolve()
     for (const item of list) {
         await new Promise((resolve, reject) => {
@@ -172,6 +217,8 @@ GNU GPL v2.0</pre>`))
         .append($(`<p class="press-key">Click anywhere to continue</p>`))
 )
 hook('load', function() {
+    save.nextScene = null
+    
     $('a').on('mousedown', (e) => { e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation(); return false })
     $(window).on('mousedown', () => splashHandler('mainMenu'))
 })
@@ -248,6 +295,11 @@ hook('load', function(oldScene) {
 
     $('.mm-achievements-button').on('mousedown', function(e) {
         whichLynnScene = 2
+        toLynns(e)
+    })
+
+    $('.mm-arcade-button').on('mousedown', function(e) {
+        whichLynnScene = 3
         toLynns(e)
     })
 
@@ -342,6 +394,12 @@ hook('load', function() {
         itemList = save.achievements
         itemText = "Achievements"
         placeholderImage = "assets/missing_chapter.png"
+    } else if (whichLynnScene === 3) {
+        dict = ARCADE_GAMES
+        numItems = NUM_ARCADE_GAMES
+        itemList = fillArr(true, NUM_ARCADE_GAMES)
+        itemText = "Arcade Games"
+        placeholderImage = "assets/missing_chapter.png"
     }
 
     haveItems = itemList.reduce((prev, current) => prev + Number(current) )
@@ -419,7 +477,9 @@ hook('load', function() {
 
         const otherDt = dict[i][2] || {}
 
-        const $legitLynn = $(`<div class="lynn">`)
+        const rotDeg = i % 2 === 0 ? 1 : -1// Math.random() < 0.5 ? 1 : -1
+        console.log(rotDeg)
+        const $legitLynn = $(`<div class="lynn" style="transform: rotateZ(${rotDeg}deg);">`)
             .append($(`<pre class="lynn-dot"></pre>`))
             .append($(`<img class="lynn-img ${itemList[i] ? "" : "locked"}" alt="" src="${url}">`))
             .append($(`<p class="lynn-text" style="${otherDt.color ? otherDt.color : ""}">${name}</p>`))
@@ -571,6 +631,7 @@ addCurrent(
         )
         .append($(`<div class="canvas-container" id="phone-canvas-container">`)
             .append($(`<div class="mg-canvas" id="phone-canvas">`))
+            .append($(`<button class="phone-ok-button">OK</button>`))
         )
 )
 
@@ -584,6 +645,8 @@ hook('unload', function() {
 })
 
 function diagLeaveen(e) {
+    save.nextScene = null
+
     if (e) {
         e.preventDefault()
         e.stopPropagation()

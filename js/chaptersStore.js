@@ -4,7 +4,7 @@ const CHAPTERS = [
     [ "torrid", "assets/actors/amberlynn_backwards.png", {} ], // 3
     [ "rotisserie", "assets/actors/amberlynn_mook-bong.png", {} ], // 4
     [ "books", "assets/scenes/bookland.jpg", {} ], // 5
-    [ "haul", "assets/actors/amberlynn_wifeycowprint.png", {} ], // 6
+    [ "comments", "assets/actors/amberlynn_laptopyt.png", {} ], // 6
     [ "salmon", "assets/torrid.png", {} ], // 7 (WIP)
     [ "salad", "assets/torrid.png", {} ], // 8 (WIP)
     [ "sofa", "assets/torrid.png", {} ], // 9 (WIP)
@@ -12,7 +12,7 @@ const CHAPTERS = [
     [ "wiping", "assets/torrid.png", {} ], // 11 (PH)
     [ "cucumber", "assets/torrid.png", {} ], // 12 (PH)
     [ "fbi", "assets/torrid.png", {} ], // 13 (PH)
-    [ "salmon", "assets/torrid.png", {} ], // 14 (PH)
+    [ "alr-ddr", "assets/torrid.png", {} ], // 14 (PH)
     [ "salmon", "assets/torrid.png", {} ], // 15 (PH)
     [ "salmon", "assets/torrid.png", {} ], // 16 (PH)
     [ "salmon", "assets/torrid.png", {} ], // 17 (PH)

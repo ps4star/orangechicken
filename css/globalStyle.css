@@ -1170,11 +1170,9 @@ div.ochicken-bg * {
     width: 100%;
     height: 100%;
 
-    display: flex;
-
     border: 1px solid black;
 
-    z-index: 99;
+    z-index: 49;
 }
 
 #phone-canvas-container * {
@@ -1229,6 +1227,38 @@ div.ochicken-bg * {
 
 .yt-comment > .username {
     font-weight: bold;
+}
+
+.yt-comment.reply > pre {
+    margin-left: 8ch !important;
+}
+
+.phone-ok-button {
+    display: none;
+
+    position: absolute;
+
+    left: 50%;
+    bottom: 4vmin;
+    width: 50%;
+    height: 8vh;
+
+    color: black;
+    background: lightgray;
+    border: 1px solid black;
+    border-radius: 2rem;
+
+    cursor: pointer;
+
+    transform: translateX(-50%);
+}
+
+.phone-ok-button:hover {
+    background: gray;
+}
+
+.phone-ok-button.visible {
+    display: unset;
 }
 
 .mg-image {
@@ -1290,5 +1320,9 @@ div.ochicken-bg * {
 
     .yt-comment > pre {
         font-size: 2.8vw;
+    }
+
+    #lynn-pop-container, #lynn-pop-container * {
+        font-size: 2.5vw;
     }
 }

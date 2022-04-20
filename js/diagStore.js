@@ -64,6 +64,7 @@ talk 0 "BIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIG???"
 talk - (Amberlynn bangs the table with her fist)
 talk 1 "Amber you're not big, ok? You're makin a scene."
 pose 0 cacklelynn
+sfx assets/sfx/cackle.ogg
 lynn cackle
 sfx assets/sfx/cackle.ogg 0.5
 talk - (Amber starts cackling like the whole thing was a joke)
@@ -158,7 +159,18 @@ pose 0 bored
 lynn bored
 talk 0 "Becky, I can't do this. I can't live without Cheesecake Factory's Orange Chicken."
 talk 2 "Babe, like I said you can just look up a recipe online. Why is it such a big deal?"
-talk 0 "I knoowww but then it won't taste like Cheesecake Factory'sss."
+pose 0 mentalthings
+lynn mental
+talk 0 "BECKYY YOU DON'T GET IIIIT"
+talk 0 "I guess you're just not as daintee as meee."
+talk 0 "You have to realize, like, mentuhl things.......... ar- is scary."
+talk 0 "Like that's just a thing, okay, it is what it is, and it is what it ain't."
+talk 0 "Like, I would wake up every morneen and marry orange chicken."
+talk 0 "And just... fall in love with it all over again and experience the love I have for it."
+talk 0 "That's what you have to rilize Becky, I NEED Cheesecake Factory orange chicken in my life."
+talk 1 "Um... you could probably look up a recipe for it still?"
+pose 0 bored
+talk 0 "I knoowww but it still won't taste the same."
 talk 2 "I dunno then. Just try looking it up."
 talk 0 "Ughh I doubt it'll be there but I'll checkk."
 talk 0 ... ... ...
@@ -323,6 +335,8 @@ talk 0 "So this is aaaa.... kuh- kuh-mee-no?"
 talk - (Amberlynn reids the tag on the dress; it clearly says 'Kimono')
 talk 0 "Yeah it's pronounced kameeno."
 talk 0 "I don't really have time to try this one on. Which one should I get Becky?"
+; torrid comments
+setglobal _comp_seq 2
 multi
 Floral Dress ($20)
 torrid_postdress
@@ -599,16 +613,18 @@ endif
 if lt money journalCost
 talk 0 "I can't afford these journuuuuuuuuuuhhhhls noooooouh."
 endif
+gotofadenewchapter 6
 `
     },
 
     // Chapter 6
-    "haul": {
+    "comments": {
         bg: "pillowmountain.png",
         music: [ ALRTHEME_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
 chapter 6
+setglobal _com_seq 2
 enter 0
 pose 0 bored
 lynn bored
@@ -621,18 +637,32 @@ pose 0 normal
 talk 0 "Finally it's done."
 talk 0 "... ... ..."
 talk 0 "Gonna read a few comments real quick."
-pose 0 laptoptemplate
-lynn laptop
+pose 0 laptopyt
+lynn youtube
 talk - (Amberlynn reids the comments)
 gotofade haul_2
 `,
     },
 
     "haul_2": {
-        inherits: "haul",
+        inherits: "comments",
         diag: `
-setvar _com_seq 1
 callawait mgComments
+talk 0 "Hmm... looks like a TON of people want more cookeen videos."
+talk 0 "Should do a mookbong where I make some hulthier snacks."
+pose 0 normal
+talk 0 "Hey Beckeee..."
+talk 0 "... ... ..."
+pose 0 pissed
+lynn angry
+talk 0 "BECKEEEEEEEEEEEEEEYUH!"
+enter 1
+pose 1 normal
+talk 1 "What?"
+pose 0 normal
+talk 0 "Come help me up I need to get into the kitchen..."
+talk 0 "Gonna do a eat with me with some hulthy snacks."
+gotofadenewchapter 12
 `,
     },
 
@@ -717,6 +747,7 @@ talk 0 "Anyway guise let's start our mookbong. Wow, this all look so good."
 talk 1 "That's a lot of food, did you get some for me?"
 pose 0 cacklelynn
 lynn cackle
+sfx assets/sfx/cackle.ogg
 talk 0 "No Beckeh hahaha. You're so funneh."
 pose 1 normal
 talk 1 "Can I try some?"
@@ -797,13 +828,13 @@ talk - (Amber eats the pasta and breadsticks on camera)
 talk 0 "So you guys, I'm feeling so stuffed."
 talk 0 "I'm gonna eat this salad type deal thing later, maybe for like dinner."
 pose 0 laptoptemplate
-lynn laptop
 talk - "(Amber Lynn cuts the video)"
 pose 0 pissed
 talk 0 "Beckehhhhhhhhh!"
 enter 1 useless
 talk 1 "Babe stop yelling like that, what's wrong?"
 pose 0 cacklelynn
+sfx assets/sfx/cackle.ogg
 talk 0 "This salad is so raw Becky, FAWK. I don't want it."
 talk 0 "Just take it out of here I don't even wanna be near it. Make me some more pasta."
 incvisit
@@ -881,6 +912,7 @@ gotofadenewchapter 10
         inherits: "sofa",
         diag: `
 pose 0 cacklelynn
+sfx assets/sfx/cackle.ogg
 talk 0 "Oh wait... I remember."
 pose 0 normal
 talk 0 "It totally was me guise."
@@ -897,11 +929,27 @@ gotofadenewchapter 10
     },
 
     "chili": {
-        bg: "pillowmountain.png",
+        bg: "kitchen.png",
         music: [ CALD_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
 chapter 10
+enter 0
+pose 0 heyguys
+talk 0 "Hey you guiiiise what's uuuuup today I'm gonna be doeen a bit of a chili moment."
+talk 0 "You guise know I love hoe-made chili soooo that's what we're doing today."
+pose 0 bigpot
+lynn pot
+talk 0 "So we're gonna get a pooot here, I dunno why we have this one it's like, rilly big you guise."
+pose 0 cacklelynn
+lynn cackle
+talk 0 "It's the only thing I could find that was like, clean, so, we're goeen with it HAHA."
+pose 0 normal
+talk 0 "Okay SOO first thing we gotta do is get some meat goin in a pan."
+talk 0 "Now I'm akshually just gonna put some water in here, it's hulthier than useen like an oil situation, sooo..."
+talk 0 "Now we're gonna throw in just like one teaspoon of some minced garliiiic..."
+talk - (Amber adds 6 teaspoons of minced garlic)
+talk 0 ""
 `,
     },
 
@@ -917,7 +965,7 @@ talk 0 "Hey you guuuuuys welcome to a new video."
 pose 0 normal
 talk 0 "Soo a lot of you guys requested more exerciseen videos."
 talk 0 "I kind of have lieek, a hard time with it because of my heel spur you guise."
-talk 0 "Buuuut I found out about this super fun program called ALR DDR."
+talk 0 "Buuuut I found out about this super fun program called ALR-DDR."
 pose 0 cacklelynn
 talk 0 "It's so weird how it has my initials you guise HAHA."
 talk 0 "Isn't that so funny Becky?"
@@ -932,12 +980,14 @@ talk 0 "Oh HAHA I didn't see you."
 pose 0 normal
 leave 1
 talk 0 "So I'm super excited to start this program and just kind of open a new chapter in my life."
-talk 0 "So I'm gonna go ahead and try this thing out on camera for you guise."
-talk 0 "Do a little test run moment."
+talk 0 "So I'm gonna go ahead and try this thing out on camera for you guise..."
+talk 0 "...do a little test run moment."
 talk 0 "So you're supposed to put like this pad thing down on your floor."
 talk 0 "So I'm putteen it in my liveen room next to all our game councils."
+pose 0 gasp
 talk 0 "Oh muh gah you guise all the outlets are plugged up already."
 talk 0 "Gonna unplug some of these councils in here."
+pose 0 normal
 talk - (Amberlynn rips everything out from the outlets behind the TV, then plus up the ALR-DDR controller)
 talk 0 "Ok let's turn it on now..."
 talk - (Nothing shows up on the TV)
@@ -953,6 +1003,7 @@ talk 1 "Ok I'll look."
 talk 1 "... ... ..."
 talk 1 "The TV is unplugged babe. Did you do that?"
 pose 0 guilty
+lynn guiltylynn
 talk 0 "Noouu I think Eric did that."
 talk - (Becky plugs everything up correctly).
 pose 0 normal
@@ -1077,7 +1128,7 @@ gotofadenewchapter 12
     },
 
     "cucumber": {
-        bg: "pillowmountain.png",
+        bg: "kitchen.png",
         music: [ CALD_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
@@ -1123,17 +1174,27 @@ lynn stir
 talk - (Amberlynn begins stirring)
 talk 0 "Sooo that's just a little fun fact about me."
 talk 0 "So now we're gonna take the cream cheese and put it on the cucumber."
+pose 0 scared
 talk 0 "I'm scared guise, I don't know how this will pan out. I'm so nervous."
 talk - (Amberlynn only covers one cucumber half)
+pose 0 normal
 talk 0 "Next we have bacon, and I know you guise are probably like whaaat? I wasn't gonna do bacon, I swear you guise."
+pose 0 disgusted
 talk 0 "I was gonna use this super healthy topping but it smelled a bit funny you guise."
+pose 0 normal
 talk 0 "Last step, add a little bit of everything but the bagel seasoneen. I love seasoneens you guise."
 talk - (Amberlynn pours tons of seasonings on)
-talk 0 "Wow guise, this is so random."
+pose 0 cacklelynn
+lynn cackle
+sfx assets/sfx/cackle.ogg
+talk 0 "WOW you guise this is just SO. RANDOM. Like WUUUUUUT HAHAHA."
+pose 0 cucumber
+lynn cucumber
 talk - (Amberlynn takes a bite and makes a funny face)
 talk 0 "Mmmmmm, it tastes like... Hmm, what ties it all together is the bacon."
 talk - (Amberlynn takes another bite)
-talk 0 "Mmm, I'm so shocked you guise. This is really good. I don't think I can this all though, it's so huuuge.
+talk 0 "Mmm, I'm so shocked you guise. This is really good. I don't think I can like, eat this all though, it's SO huuuge.
+pose 0 normal
 talk 0 "I like the bacon on it, adds so many sodiums. I should add more bacon. Very low calorie meal."
 talk - (Amberlynn lists the calories for the bacon, but not the massive glop of cream cheese)
 talk 0 "Is this low carb? Only two carbs for the cream cheese you guise. I really wasn't expecting this situation type deal."
@@ -1155,6 +1216,7 @@ talk 0 "I'm super healthy you guise so I can deal with this situation type deal.
 talk - (Amberlynn finishes the cucumber boat and internally let's out a sigh of relief)
 talk 0 "Thanks for watcheen my mookbang guise. Someone else needs to use the kitchen so I'm going to get off now."
 talk - (Amberlynn cuts the camera)
+gotofadenewchapter 13
 `,
     },
 
@@ -1163,6 +1225,7 @@ talk - (Amberlynn cuts the camera)
         diag: `
 talk 0 "I need to go you guise. Other people want to use the kitchen, so I had to eat super fast. Thank you for coming to my mookbang."
 talk - (Amberlynn cuts the camera)
+gotofadenewchapter 13
 `,
     },
 
@@ -1173,33 +1236,127 @@ talk - (Amberlynn cuts the camera)
         diag: `
 chapter 13
 enter 0
+pose 0 mentalthings
 talk 0 "BECKEHHHHHH!!!"
 enter 1
 talk 1 "Yeah babe?"
+talk 0 "Omg you're never gonna beleeve what happened."
+talk 1 "What do you mean Amberlynn?"
+pose 0 scared
+lynn scared
+talk 0 "So, we have a situation type deal where the FBI called me."
+talk 0 "Well, to be specifically-er, Density's sister texted me and was like, gorl, the fbi is looking for u."
+talk 0 "But I called them and they're actually like soooooper scared for my safety, and they want to send me somewhere safe."
+pose 1 useless
+talk 1 "Wait, what happened?"
+pose 0 shocked
+talk 0 "I seriously got a really scary comment."
+talk 0 "They said they are gonna send me to Pluto for a little while for safety and already have everything ready for us."
+;pose 1 confusedbeck
+talk 1 "Us?"
+pose 0 books
+talk 1 "Of course Becky, you know I can't live without you."
+pose 0 bored
+talk 0 (Who would wipe my butt if she didn't come...)
+pose 0 books
+talk 1 "Aww, that's sweet babe."
+pose 0 gasp
+talk 0 "So we need to pack to go to Pluto, I'm like super nervous that they won't have hulthy food options, but wudever."
+talk 0 "Anyway I'm gonna do a mook-bong to tell everyone about it."
+pose 0 normal
+talk 0 "Becky, go pick up some food."
+leave 1
+delay 200
+gotofadereload fbi_after
+`,
+    },
 
-Amberlynn: Omg you're never gonna beleeve what happened.
-
-Becky: What do you mean Amberlynn?
-
-Amberlynn: So, we have a situation type deal where the FBI called me. They are sooper scared for my safety, and they want to send me somewhere safe.
-
-Becky: Wait, what happened.
-
-Amberlynn: I seriously got a really scary comment. They said they are gonna send me to Pluto for a little while and already have everything ready for us.
-
-Becky: Us?
-
-Amberlynn: Of course Becky, you know I can't live without you.
-
-(Who would wipe my butt if she didn't come...)
-
-Becky: Aww, that's sweet babe.
-
-Amberlynn: So we need to pack to go to Pluto, I'm like super nervous that they won't have healthy food options. Let's do a mookbang to tell everyone about our fun little trip. Becky, go pick up some food.
-
-(Becky leaves to go pick them up some take out. Sadly, not cheesecake factorys orange chicken)
-
-Becky: I'm back babe.
+    "fbi_after": {
+        bg: "pillowmountain.png",
+        music: [ RIZO_ISLAND_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+        diag:`
+enter 0
+enter 1
+talk - (Becky leaves to go pick them up some take out. Sadly, not CF orange chicken cuz they were still out)
+enter 0
+pose 0 laptoptemplate
+enter 1
+pose 1 normal
+talk - (Amberlynn turns on the camera)
+talk 1 "I'm back babe."
+pose 0 heyguys
+lynn heyguys
+talk 0 "Hey guise, you totally aren't gonna believe what's going on with me right now."
+talk - (Takes long and loud slurp of her diet coke)
+pose 0 frowny
+lynn frowny
+talk 0 "People disappoint me sometimes, you guise. I brush it off, but sometimes..."
+pose 0 shocked
+lynn shocked
+talk - (Amberlynn opens the box of food Becky hands to her)
+pose 0 pizza
+lynn pizza
+talk 0 "OOOH we got a pizza moment."
+pose 0 normal
+talk 0 "Okay so, you guise, I am totally not a pepperoni gorl, buuut I'm starveen and need to eat something."
+talk 0 "I lidurally just woke up TWO hours ago that's so long you guise, I gotta eat sometheen."
+talk 0 "I can lidurally feel myself getting dizzy right nowwuh, liiiike..."
+pose 0 pizza
+lynn pizza
+sfx assets/sfx/mmm.ogg
+talk - (Amberlynn takes a huge bite of the pizza and chews loudly, while moaning)
+pose 0 closedeyes
+talk 0 "So as I was saying, people disappoint me."
+talk 0 "A little while ago, I got a super mean comment on my channel."
+talk 0 "It was super scary guise, they said that they were going to blow up the cheesecake factory."
+talk 0 "They also said they were like, responsible for the whole orange chicken shortage thing."
+pose 0 frowny
+talk 0 "They lidurally did it just to mess with me and jamble up mah life y'all..."
+talk 0 "Buuuuut you know at this point I don't know what else to expect from a haydur."
+talk 0 "It is what it is, and it is what it ain't, yaknow?"
+talk 0 "So anyway you guise..."
+pose 0 scared
+lynn scared
+talk 0 "I'm literally SOO scared right now you guys, I literally can't..."
+pose 0 pizza
+lynn pizza
+sfx assets/sfx/mmm.ogg
+talk - (More huge bites, more loud eating noises)
+pose 0 gasp
+talk 0 "So yeah the FBI was SUPER worried about me, and they wanna make sure I'm safe."
+pose 1 useless
+talk 1 "Yeah guys this is really serious."
+talk 1 "All the people all cheesecake factory could be hurt."
+pose 0 books
+lynn reader
+talk 0 (How stupid is Becky? Who cares about the people, what about the future of orange chicken?)
+pose 0 normal
+talk 0 "Um, so anyways, the FBI is gonna send me Pluto."
+talk 1 "I'm gonna get to go with her, which is really nice."
+pose 0 confused
+talk 0 "Love that for you."
+pose 0 pizza
+sfx assets/sfx/mmm.ogg
+talk - (Amberlynn takes several more bites, moaning and chewing loudly)
+pose 0 mentalthings
+lynn mental
+talk 0 "I'm kind of scared to go to Pluto guise."
+talk 0 "Like what if they try to give me a bunch of unhealthy food, or don't give me any food?"
+pose 0 bored
+lynn bored
+talk 0 "I'm wondering if I should bring my own food with me."
+pose 0 normal
+talk 0 "Comment below and tell me what you think."
+pose 0 pizza
+lynn pizza
+talk - (Amberlynn finishes off the pizza, and slurps more of her diet coke loudly)
+pose 0 heyguys
+lynn heyguys
+talk 0 "Thank you guys for coming to my mookbang, I'll see you after I'm back from Pluto."
+pose 0 laptopyt
+lynn youtube
+talk - (Amberlynn shuts the camera off)
 `,
     },
 }

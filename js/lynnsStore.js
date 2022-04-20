@@ -14,9 +14,13 @@ const LYNNS = [
     [ "Cacklelynn", "assets/actors/amberlynn_cacklelynn.png" ],
     [ "Frownylynn", "assets/actors/amberlynn_frowny.png" ],
     [ "Backwardslynn", "assets/actors/amberlynn_backwards.png" ],
-    [ "Laptoplynn", "assets/actors/amberlynn_laptoptemplate.png" ],
+    [ "Youtubelynn", "assets/actors/amberlynn_laptopyt.png" ],
     [ "Stirlynn", "assets/actors/amberlynn_stir.png" ],
     [ "Cucumberlynn", "assets/actors/amberlynn_cucumber.png" ],
+    [ "Mentallynn", "assets/actors/amberlynn_mentalthings.png" ],
+    [ "Scaredlynn", "assets/actors/amberlynn_scared.png" ],
+    [ "Pizzalynn", "assets/actors/amberlynn_pizza.png" ],
+    [ "Potlynn", "assets/actors/amberlynn_bigpot.png" ],
 ]
 
 const NUM_LYNNS = LYNNS.length

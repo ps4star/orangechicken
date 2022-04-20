@@ -1,11 +1,3 @@
-function fillArr(item, num) {
-    let arr = []
-    for (let i = 0; i < num; i++) {
-        arr.push(item)
-    }
-    return arr
-}
-
 // Very small intentional lag to prevent too many inputs fucking everything up
 const inputDelayTime = 25
 
@@ -24,7 +16,9 @@ const DEFAULT_SAVE = {
     beckyAffection: 20,
     wifeyAffection: 20,
 
-    savedVars: {},
+    savedVars: {
+        "_com_seq": 1,
+    },
 
     affectionUseFlags: fillArr(false, NUM_USEFLAGS),
     moneyUseFlags: fillArr(false, NUM_USEFLAGS),
@@ -882,11 +876,21 @@ async function doDialog(name) {
         } else if (args[0] === 'gotofade') {
             newScene = args[1]
             startNewScene()
+
             await new Promise((resolve, reject) => {
                 fadeoutNoSceneChange(() => {
                     updateSaveens()
                     resolve()
                 })
+            })
+        } else if (args[0] === 'gotofadereload') {
+            save.nextScene = args[1]
+
+            fadeoutNoSceneChange(async () => {
+                clearStage()
+                currentStage = []
+                await loadScene('mainMenu')
+                await loadScene('dialog')
             })
         } else if (args[0] === 'gotofadenewchapter') {
             lastChapter = save.chapter
@@ -914,7 +918,7 @@ async function doDialog(name) {
             window[args[1]]()
         } else if (args[0] === 'callawait') {
             // Calls async func by string name and awaits it
-            await window[args[1]].call(inlineVarDict)
+            await window[args[1]].call({ inline: inlineVarDict, saved: save.savedVars })
         } else if (args[0] === 'setbg') {
             await putBackgroundImage(args.slice(1).join(" "))
         } else if (args[0] === 'shakestart') {
@@ -933,10 +937,16 @@ async function doDialog(name) {
 }
 
 function getChapterScene() {
+    if (save.nextScene) {
+        const oldScene = save.nextScene
+        save.nextScene = null
+        return oldScene
+    }
     return CHAPTERS[save.chapter - 1][0]
 }
 
 async function doCurrentDiagSequence() {
-    await prepareDialog(getChapterScene())
-    await doDialog(getChapterScene())
+    const nextScene = getChapterScene()
+    await prepareDialog(nextScene)
+    await doDialog(nextScene)
 }
