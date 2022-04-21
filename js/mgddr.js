@@ -12,6 +12,9 @@ const DDR_IMG_DANCE2_FRAME_0 = getImage("assets/alrddr/dance2_0.png")
 const DDR_IMG_DANCE2_FRAME_1 = getImage("assets/alrddr/dance2_1.png")
 const DDR_IMG_DANCE2_FRAME_2 = getImage("assets/alrddr/dance2_2.png")
 
+const DDR_IMG_DANCE3_FRAME_0 = getImage("assets/alrddr/dance3_0.png")
+const DDR_IMG_DANCE3_FRAME_1 = getImage("assets/alrddr/dance3_1.png")
+
 const DDR_ARR_LEFT = getImage("assets/alrddr/ddr_left.png")
 const DDR_ARR_DOWN = getImage("assets/alrddr/ddr_down.png")
 const DDR_ARR_UP = getImage("assets/alrddr/ddr_up.png")
@@ -48,6 +51,8 @@ const DDR_ALL_IMGS = [
 	DDR_IMG_DANCE2_FRAME_0,
 	DDR_IMG_DANCE2_FRAME_1,
 	DDR_IMG_DANCE2_FRAME_2,
+	DDR_IMG_DANCE3_FRAME_0,
+	DDR_IMG_DANCE3_FRAME_1,
 ]
 
 const DDR_EXERCISE_ANIM_DATA = Object.freeze({
@@ -91,6 +96,14 @@ const DDR_DANCE2_ANIM_DATA = Object.freeze({
 	],
 })
 
+const DDR_DANCE3_ANIM_DATA = Object.freeze({
+	type: DDR_TYPE_MAN,
+	frames: [
+		DDR_IMG_DANCE3_FRAME_0,
+		DDR_IMG_DANCE3_FRAME_1,
+	],
+})
+
 const DDR_SONG_LIST = [
 	{
 		name: "Kameeno Princess",
@@ -100,6 +113,7 @@ const DDR_SONG_LIST = [
 			DDR_DANCE_ANIM_DATA,
 			DDR_HAIR_ANIM_DATA,
 			DDR_DANCE2_ANIM_DATA,
+			DDR_DANCE3_ANIM_DATA,
 		],
 		dt: SDT_KAMEENO,
 	},
@@ -522,9 +536,9 @@ function DDR_Draw() {
 	})
 }
 
-const DDR_DebugTime = 116.65
+const DDR_DebugTime = 116.62
 let DDR_DebugIStart = 0
-let DDR_DebugOverride = false
+let DDR_DebugOverride = true
 
 async function DDR_CountBeat() {
 	await new Promise((resolve, reject) => {
@@ -561,9 +575,9 @@ async function DDR_Parse() {
 			aud.volume = save.volume / 100
 			
 			if (debug && DDR_DebugOverride) {
-				DDR_DebugIStart = 1125
+				DDR_DebugIStart = 1127
 			}
-			
+
 			resolve()
 		}
 	})
@@ -580,6 +594,9 @@ async function DDR_Parse() {
 	let i = 0
 	for (; i < songLines.length; i++) {
 		const thisDt = songLines[i]
+		if (debug) {
+			console.log(i, aud.currentTime)
+		}
 		if (thisDt) {
 			const args = thisDt.split(" ")
 
