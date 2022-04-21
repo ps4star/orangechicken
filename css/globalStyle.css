@@ -1090,13 +1090,17 @@ div.ochicken-bg * {
     left: 1%;
     width: 15%;
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: column nowrap;
     align-items: center;
 
     overflow-x: initial;
     overflow-y: initial;
 
     z-index: 19;
+}
+
+.dom-counter-container > * {
+    margin-bottom: 2vmin;
 }
 
 .dom-counter, #saveens {
@@ -1300,8 +1304,27 @@ div.ochicken-bg * {
     animation-direction: normal;
 
     z-index: 49;
+}
 
-    font-size: 5vmin;
+.x-amount-change * {
+    font-size: 2.5vw;
+}
+
+#calories {
+    /* top: 3.5vmin; */
+    display: none;
+}
+
+#calories.visible {
+    display: unset;
+}
+
+#calories * {
+    color: cyan;
+}
+
+.calories-change {
+    -webkit-text-stroke: 1px black;
 }
 
 .iq-score {

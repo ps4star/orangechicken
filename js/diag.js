@@ -569,12 +569,12 @@ function handleFlaggedEvent(index, useFlagPrefix, cb) {
     cb()
 }
 
-function pushAmountChangeText($root, amount, specificClass) {
+function pushAmountChangeText($root, amount, specificClass, col1, col2) {
     const $el = $(`<pre class="x-amount-change ${specificClass}-change">`)
     if (amount <= 0) {
-        $el.html(`<span style="color: darkred;">${amount.toLocaleString()}</span>`)
+        $el.html(`<span style="color: ${col2 ?? "darkred"};">${amount.toLocaleString()}</span>`)
     } else {
-        $el.html(`<span style="color: darkgreen;">+${amount.toLocaleString()}</span>`)
+        $el.html(`<span style="color: ${col1 ?? "darkgreen"};">+${amount.toLocaleString()}</span>`)
     }
 
     $root.append($el)

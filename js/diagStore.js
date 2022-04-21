@@ -292,6 +292,8 @@ gotofadenewchapter 4
 chapter 3
 enter 0
 enter 1
+; torrid comments
+setglobal _com_seq 2
 pose 0 heyguys
 lynn heyguys
 talk 0 "Hey guuuuys so me and Becky just got here at Torrid."
@@ -336,8 +338,6 @@ talk 0 "So this is aaaa.... kuh- kuh-mee-no?"
 talk - (Amberlynn reids the tag on the dress; it clearly says 'Kimono')
 talk 0 "Yeah it's pronounced kameeno."
 talk 0 "I don't really have time to try this one on. Which one should I get Becky?"
-; torrid comments
-setglobal _comp_seq 2
 multi
 Floral Dress ($20)
 torrid_postdress
@@ -496,6 +496,8 @@ gotofadenewchapter 6
         diag: `
 chapter 4
 enter 0
+; mookbong comments
+setglobal _com_seq 1
 lynn mookbong
 pose 0 mook-bong
 talk 0 "Hey guise! So welcome to a new videooo..."
@@ -503,7 +505,6 @@ talk 0 "So today I'm doing a mook-bong of this whole rotiserrie chicken."
 talk 0 "This was so highly-requested you guiiiiise..."
 talk 0 "So I'm just gonna go ahead and dig in here."
 talk - (Amberlynn begins eating)
-setglobal _com_seq 1
 gotofade rotisserie_2
 `,
     },
@@ -1006,7 +1007,7 @@ talk 0 ""
     },
 
     "alr-ddr": {
-        bg: "pillowmountain.png",
+        bg: "tv.png",
         music: [ RIZO_ISLAND_MUSIC_DT, DDR_MUSIC_DT, RIZO_ISLAND_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
@@ -1080,7 +1081,7 @@ gotofade alr-ddr_onpad
     "alr-ddr_onpad": {
         inherits: "alr-ddr",
         diag: `
-callwait mgDDR
+callawait mgALRDDR
 `,
     },
 

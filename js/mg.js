@@ -15,13 +15,13 @@ function mgHideCanvasContainer(can) {
 const GB_GREEN = "#000000"
 const GB_BLACK = "#000"
 
-function mgInitCanvas(can) {
+function mgInitCanvas(can, settings) {
     let canvas, realCanvas, ctx, sw, sh, realCtx
 
     realCanvas = can[0]
     canvas = window.makeOffscreenCanvas(realCanvas.width, realCanvas.height)
-    realCtx = realCanvas.getContext('2d', { alpha: false, powerPreference: "high-performance" })
-    ctx = canvas.getContext('2d', { alpha: false, powerPreference: "high-performance" })
+    realCtx = realCanvas.getContext('2d', settings ?? { alpha: false, powerPreference: "high-performance" })
+    ctx = canvas.getContext('2d', settings ?? { alpha: false, powerPreference: "high-performance" })
     sw = canvas.width
     sh = canvas.height
 
@@ -120,6 +120,7 @@ function mgSetTickFunction(cb) {
 }
 
 let mgExit = null
+let mgDateStart = null, mgDateEnd = null
 function mgTick() {
     tickFunc()
     if (mgExit !== false) {
@@ -210,10 +211,6 @@ function mgMookbongDrawObjects(candt) {
     })
 }
 
-function mgIsRectOverlap(x1, y1, w1, h1, x2, y2, w2, h2) {
-    return x1 < x2 + w2 && x1 + w1 > x2 && y1 < y2 + h2 && y1 + h1 > y2
-}
-
 function mgMookbongDrawNinjaPath(candt) {
     if (mgMookbongNinjaPath[0] >= mgMookbongNinjaPath.length) {
         mgMookbongNinjaPath = []
@@ -247,7 +244,7 @@ function mgMookbongDrawNinjaPath(candt) {
 
             while (true) {
                 // check
-                if (mgIsRectOverlap(nx, ny, 1, 1, left, top, width, height)) {
+                if (isRectOverlap(nx, ny, 1, 1, left, top, width, height)) {
                     isOverlap = true
                     break
                 }
@@ -447,9 +444,7 @@ async function mgMookbong() {
 const MUTED_WHITE = '#eeeeee'
 
 function mgBooksGetImage(src) {
-    const img = new Image()
-    img.src = src
-    return img
+    return getImage(src)
 }
 
 const mgBooksGoodForTheBrainBooks = [
@@ -494,9 +489,9 @@ function mgBooksDrawBooks(candt) {
         const book = mgBooksCurrent[idx]
 
         book._ypos += book._vel
-        candt.ctx.drawImage(book, 0, 0, book.width, book.height, book._xpos, book._ypos, 150, 300)
+        candt.ctx.drawImage(book, 0, 0, book.width, book.height, book._xpos, book._ypos, 130, 220)
 
-        if (mgIsRectOverlap(mgBooksMX, mgBooksMY, 1, 1, book._xpos, book._ypos, 128, 300)) {
+        if (isRectOverlap(mgBooksMX, mgBooksMY, 1, 1, book._xpos, book._ypos, 130, 220)) {
             $('canvas').css('cursor', 'pointer')
             if (mgBooksClicked) {
                 didClick = true
@@ -668,8 +663,6 @@ for (let i = 0; i < 100; i++) {
     mgCommentsTimings.push(Math.floor((i * 86) + (35 * randFloat(1.01, 1.99))))
 }
 
-console.log(mgCommentsTimings)
-
 function mgCommentsShowComment($parent, seq, id) {
     if (id >= mgCommentsSeqs[seq].length) {
         return null
@@ -733,15 +726,61 @@ async function mgComments() {
     })
 }
 
+const mgAlrDdrTargetFrameTime = 16.67
 async function mgALRDDR() {
     await new Promise((resolve, reject) => {
+        stopMusic()
+
         textInputMode = false
-        const $can = $('#ddr-canvas-container')
+        const $can = $('#books-canvas-container')
+        const $books = $('#books-canvas')
         mgShowCanvasContainer($can)
+
+        let candt = mgInitCanvas($books, { alpha: false, powerPreference: "high-performance" })
+        // mgNullifyKeyEvents(candt)
+        candt.realCanvas.tabIndex = '-1'
+
+        const $realCan = $(candt.realCanvas)
+
+        $realCan.on('mousedown', function(e) {
+            DDR_SubmitClickEvent(e)
+        })
+
+        $realCan.on('keydown', function(e) {
+            DDR_SubmitKeyEvent(e)
+        })
+
+        $realCan.on('touchstart', function(e) {
+            $realCan.trigger(mgTouch2Mouse(e))
+        })
+
+        $realCan.on('blur', function(e) {
+            $realCan[0].focus()
+        })
+
+        $realCan[0].focus()
 
         let fc = 0
 
+        // DOM setup
+        const $cal = $('#calories')
+        $cal.addClass('visible')
+
+        // DDR setup
+        DDR_ClearState()
+        DDR_SetSongPtr(this?.saved?._ddr_song_ptr ?? 0)
+        DDR_SetCandt(candt)
+
+        DDR_SetDOMInputs({
+            calories: $cal,
+        })
+
+        DDR_Parse()
+
         mgSetTickFunction(() => {
+            DDR_Tick()
+            DDR_Draw()
+            mgDrawToReal(candt)
             fc++
         })
         mgTick()
