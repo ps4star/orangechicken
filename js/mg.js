@@ -15,13 +15,13 @@ function mgHideCanvasContainer(can) {
 const GB_GREEN = "#000000"
 const GB_BLACK = "#000"
 
-function mgInitCanvas(can) {
+function mgInitCanvas(can, settings) {
     let canvas, realCanvas, ctx, sw, sh, realCtx
 
     realCanvas = can[0]
     canvas = window.makeOffscreenCanvas(realCanvas.width, realCanvas.height)
-    realCtx = realCanvas.getContext('2d', { alpha: false, powerPreference: "high-performance" })
-    ctx = canvas.getContext('2d', { alpha: false, powerPreference: "high-performance" })
+    realCtx = realCanvas.getContext('2d', settings ?? { alpha: false, powerPreference: "high-performance" })
+    ctx = canvas.getContext('2d', settings ?? { alpha: false, powerPreference: "high-performance" })
     sw = canvas.width
     sh = canvas.height
 
@@ -120,6 +120,7 @@ function mgSetTickFunction(cb) {
 }
 
 let mgExit = null
+let mgDateStart = null, mgDateEnd = null
 function mgTick() {
     tickFunc()
     if (mgExit !== false) {
@@ -210,10 +211,6 @@ function mgMookbongDrawObjects(candt) {
     })
 }
 
-function mgIsRectOverlap(x1, y1, w1, h1, x2, y2, w2, h2) {
-    return x1 < x2 + w2 && x1 + w1 > x2 && y1 < y2 + h2 && y1 + h1 > y2
-}
-
 function mgMookbongDrawNinjaPath(candt) {
     if (mgMookbongNinjaPath[0] >= mgMookbongNinjaPath.length) {
         mgMookbongNinjaPath = []
@@ -247,7 +244,7 @@ function mgMookbongDrawNinjaPath(candt) {
 
             while (true) {
                 // check
-                if (mgIsRectOverlap(nx, ny, 1, 1, left, top, width, height)) {
+                if (isRectOverlap(nx, ny, 1, 1, left, top, width, height)) {
                     isOverlap = true
                     break
                 }
@@ -299,7 +296,6 @@ function mgMookbongDrawPlate(candt) {
 
 function mgTouch2Mouse(e)
 {
-  var theTouch = e.changedTouches[0];
   var mouseEv;
 
   switch(e.type)
@@ -310,11 +306,15 @@ function mgTouch2Mouse(e)
     default: return;
   }
 
-  var mouseEvent = document.createEvent("MouseEvent");
-  mouseEvent.initMouseEvent(mouseEv, true, true, window, 1, theTouch.screenX, theTouch.screenY, theTouch.clientX, theTouch.clientY, false, false, false, false, 0, null);
-  theTouch.target.dispatchEvent(mouseEvent);
+  for (let i = 0; i < e.changedTouches.length; i++) {
+    const cTouch = e.changedTouches[i]
 
-  e.preventDefault();
+    var mouseEvent = document.createEvent("MouseEvent");
+    mouseEvent.initMouseEvent(mouseEv, true, true, window, 1, cTouch.screenX, cTouch.screenY, cTouch.clientX, cTouch.clientY, false, false, false, false, 0, null);
+    cTouch.target.dispatchEvent(mouseEvent);
+
+    e.preventDefault();
+  }
 }
 
 let mgInitialScore, mgInitialScore2, mgInitialScore3, mgInitialScore4
@@ -353,15 +353,15 @@ async function mgMookbong() {
         })
 
         $realCan.on('touchstart', function(e) {
-            $realCan.trigger(mgTouch2Mouse(e))
+            mgTouch2Mouse(e)
         })
 
         $realCan.on('touchmove', function(e) {
-            $realCan.trigger(mgTouch2Mouse(e))
+            mgTouch2Mouse(e)
         })
 
         $realCan.on('touchend', function(e) {
-            $realCan.trigger(mgTouch2Mouse(e))
+            mgTouch2Mouse(e)
         })
 
         let fc = 0,
@@ -447,9 +447,7 @@ async function mgMookbong() {
 const MUTED_WHITE = '#eeeeee'
 
 function mgBooksGetImage(src) {
-    const img = new Image()
-    img.src = src
-    return img
+    return getImage(src)
 }
 
 const mgBooksGoodForTheBrainBooks = [
@@ -494,9 +492,9 @@ function mgBooksDrawBooks(candt) {
         const book = mgBooksCurrent[idx]
 
         book._ypos += book._vel
-        candt.ctx.drawImage(book, 0, 0, book.width, book.height, book._xpos, book._ypos, 150, 300)
+        candt.ctx.drawImage(book, 0, 0, book.width, book.height, book._xpos, book._ypos, 130, 220)
 
-        if (mgIsRectOverlap(mgBooksMX, mgBooksMY, 1, 1, book._xpos, book._ypos, 128, 300)) {
+        if (isRectOverlap(mgBooksMX, mgBooksMY, 1, 1, book._xpos, book._ypos, 130, 220)) {
             $('canvas').css('cursor', 'pointer')
             if (mgBooksClicked) {
                 didClick = true
@@ -636,30 +634,29 @@ const mgCommentsSeqs = [
         `Julia Hardin:Stop doing these mukbangs and lose some weight!!!`,
         `Nature Lover:I wann see more cooking videos I use all ur recipes!`,
         `KindaGoodKindaHootenberry:Girl you can't be serious...`,
-        `ItsJustWaterWeight:Dainty gorl eats entire chicken.`,
-        `Amanda Haskell:Love yuo Amber!! plz show us how 2 make some healthy snacks pls...`,
+        `ItsJustWaterWeight:So dainty you guys.`,
+        `Amanda Haskell:Love yuo Amber!! plz do more healthy cooking and exercise videos...`,
     ],
     [ // 2 - from torrid comments
         `Nancy A:Yasss we stan a torrid queen 👸`,
         `Jessica Y:omg love your outfit!! gonna have to wear that to the girls gym next time`,
         `Katie W:LMAO when she put on that dress backwards I can't even...`,
         `Haydur Nation:Girl we all know the Instagram note thing is fake, you're not that special.`,
-        `dainty:Ah yes the HIGHLY REQUESTED torrid haul... girl who even requested it???`,
-        `~Amberlynn Reid:a LOT of peoplemmm. haters just like to hate on everything I do :(`,
-        `~dainty:Amber we both know NO ONE requested this non-content. Stop gaslighting us.`,
-        `~Amberlynn Reid:Who cares if i gaslite my audience?? all these other youtubers are doing it...`,
-        `Zan:The backwards dress had me ROLLING. "it's too tight you guiiise". instant classic.`,
+        `Another Haydur:Why don't you do some exercise or buy healthy foods instead of shopping at torrid?`,
+        `Zan:PLEASE stop the torrid hauls and lose some weight.`,
+        `2 6:I am HIGHLY REQUESTING a going outside or exercising video.`,
+        `Angelica:These videos are so boring. We didn't get any weight gain updates, not even a layg or a scooterlynn.`,
     ],
     [ // 3 - post-pluto comments
         `itsahootenberry:What's next, Uranus? Oh wait, Becky already goes there every day.`,
         `minecraft creeper:Bruh she's really trying to lie about going to Pluto, I can't even`,
         `Zenaida Fernandez-Gonzalez:STOP KYING ABOUT EVERGTHING AND GET A LOFE`,
-        `Orange Queen:Our dainty gorl just hopping planets now 💅💅`,
+        `Orange Queen:Our dainty gorl just hopping planets now 💅💅 love that for you`,
         `Vajinky:Does hamberlynn count as her own planet? 🤔`,
-        `madison carr:Hi im 11 and I aatch all yur videos!have fun at plito and pls shoot me out `,
+        `madison c:Hi im 11 and I aatch all yur videos!have fun at plito and pls shoot me out `,
         `JambledUpWords:Didn't know there was a spaceship that could hold our dainty qween`,
-        `HootenberryForSure:Amber: "I went to Pluto you guys" Me: "you're a lah"`,
-        `Apathetic Faxx:SHE WENT TO PLUTO YALL`,
+        `HootenberryForSure:Amber: "I went to Pluto you guys" Me: you're a lah`,
+        `Apathetic Faxx:SHE'S AN ASTRONAUT YALL`,
     ],
 ]
 
@@ -667,8 +664,6 @@ const mgCommentsTimings = []
 for (let i = 0; i < 100; i++) {
     mgCommentsTimings.push(Math.floor((i * 86) + (35 * randFloat(1.01, 1.99))))
 }
-
-console.log(mgCommentsTimings)
 
 function mgCommentsShowComment($parent, seq, id) {
     if (id >= mgCommentsSeqs[seq].length) {
@@ -733,15 +728,65 @@ async function mgComments() {
     })
 }
 
-async function mgALRDDR() {
+const mgAlrDdrTargetFrameTime = 16.67
+async function mgALRDDR(songPtrAsStr) {
+    const songPtrAsNumber = (typeof songPtrAsStr === 'string') ? parseInt(songPtrAsStr, 10) : songPtrAsStr
     await new Promise((resolve, reject) => {
+        stopMusic()
+
         textInputMode = false
-        const $can = $('#ddr-canvas-container')
+        const $can = $('#books-canvas-container')
+        const $books = $('#books-canvas')
         mgShowCanvasContainer($can)
+
+        let candt = mgInitCanvas($books, { alpha: false, powerPreference: "high-performance" })
+        // mgNullifyKeyEvents(candt)
+        candt.realCanvas.tabIndex = '-1'
+
+        const $realCan = $(candt.realCanvas)
+
+        $realCan.on('mousedown', function(e) {
+            // e.offsetX * (candt.sw / window.innerWidth)
+            e.clientX *= (candt.sw / window.innerWidth)
+            e.clientY *= (candt.sh / window.innerHeight)
+            DDR_SubmitClickEvent(e)
+        })
+
+        $realCan.on('keydown', function(e) {
+            DDR_SubmitKeyEvent(e)
+        })
+
+        $realCan.on('touchstart', function(e) {
+            mgTouch2Mouse(e)
+        })
+
+        $realCan.on('blur', function(e) {
+            $realCan[0].focus()
+        })
+
+        $realCan[0].focus()
 
         let fc = 0
 
+        // DOM setup
+        const $cal = $('#calories')
+        $cal.addClass('visible')
+
+        // DDR setup
+        DDR_ClearState()
+        DDR_SetSongPtr(songPtrAsNumber)
+        DDR_SetCandt(candt)
+
+        DDR_SetDOMInputs({
+            calories: $cal,
+        })
+
+        DDR_Parse()
+
         mgSetTickFunction(() => {
+            DDR_Tick()
+            DDR_Draw()
+            mgDrawToReal(candt)
             fc++
         })
         mgTick()

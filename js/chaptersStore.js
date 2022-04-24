@@ -5,15 +5,15 @@ const CHAPTERS = [
     [ "rotisserie", "assets/actors/amberlynn_mook-bong.png", {} ], // 4
     [ "books", "assets/scenes/bookland.jpg", {} ], // 5
     [ "comments", "assets/actors/amberlynn_laptopyt.png", {} ], // 6
-    [ "salmon", "assets/actors/amberlynn_holdingsalmon.png", {} ], // 7 (WIP)
-    [ "salad", "assets/actors/amberlynn_salad.png", {} ], // 8 (WIP)
-    [ "sofa", "assets/scenes/pillowmountain.png", {} ], // 9 (WIP)
+    [ "wellness wins", "assets/ww.png", {} ], // 7 (WIP)
+    [ "salad mookbong", "assets/actors/amberlynn_salad.png", {} ], // 8 (WIP)
+    [ "outside", "assets/actors/amberlynn_shadow.png", {} ], // 9 (WIP)
     [ "chili", "assets/actors/amberlynn_bigpot.png", {} ], // 10 (PH)
     [ "wiping", "assets/torrid.png", {} ], // 11 (PH)
     [ "cucumber", "assets/actors/amberlynn_cucumber.png", {} ], // 12 (PH)
     [ "fbi", "assets/actors/frank.png", {} ], // 13 (PH)
-    [ "alr-ddr", "assets/ddr_up.png", {} ], // 14 (PH)
-    [ "salmon", "assets/torrid.png", {} ], // 15 (PH)
+    [ "pluto", "assets/scenes/pluto_trans.png", {} ], // 14 (PH)
+    [ "alr-ddr", "assets/alrddr/ddr_up.png", {} ], // 15 (PH)
     [ "salmon", "assets/torrid.png", {} ], // 16 (PH)
     [ "salmon", "assets/torrid.png", {} ], // 17 (PH)
     [ "salmon", "assets/torrid.png", {} ], // 18 (PH)

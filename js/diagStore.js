@@ -235,6 +235,7 @@ goto craygslist_postbooboo
 talk 0 "You didn't ask if I needed any money booboooo..."
 sfx assets/sfx/break.ogg 1.2
 leave 1
+affectionchange %AFFCHANGE_INDEX% Becky -15
 talk - (Amberlynn breaks the piggy bank)
 randint pigMoney 15 99
 moneychange %MONEYCHANGE_INDEX% pigMoney
@@ -292,6 +293,8 @@ gotofadenewchapter 4
 chapter 3
 enter 0
 enter 1
+; torrid comments
+setglobal _com_seq 2
 pose 0 heyguys
 lynn heyguys
 talk 0 "Hey guuuuys so me and Becky just got here at Torrid."
@@ -336,8 +339,6 @@ talk 0 "So this is aaaa.... kuh- kuh-mee-no?"
 talk - (Amberlynn reids the tag on the dress; it clearly says 'Kimono')
 talk 0 "Yeah it's pronounced kameeno."
 talk 0 "I don't really have time to try this one on. Which one should I get Becky?"
-; torrid comments
-setglobal _comp_seq 2
 multi
 Floral Dress ($20)
 torrid_postdress
@@ -496,14 +497,17 @@ gotofadenewchapter 6
         diag: `
 chapter 4
 enter 0
+; mookbong comments
+setglobal _com_seq 1
 lynn mookbong
 pose 0 mook-bong
 talk 0 "Hey guise! So welcome to a new videooo..."
 talk 0 "So today I'm doing a mook-bong of this whole rotiserrie chicken."
 talk 0 "This was so highly-requested you guiiiiise..."
+talk 0 "It's gonna be super hulthy too, like I've been trying to eat more lean meats."
+talk 0 "And so I just thought this would be perfect for that. I love a good rotisserie chicken."
 talk 0 "So I'm just gonna go ahead and dig in here."
 talk - (Amberlynn begins eating)
-setglobal _com_seq 1
 gotofade rotisserie_2
 `,
     },
@@ -515,7 +519,6 @@ callawait mgMookbong
 talk 0 "Mmmmmmm that was so good you guiiisee."
 talk 0 "Definitely saving the rest of this for later, like, ohmuhgosh."
 talk 0 "Sooo that was my mook-bong. See you guys later!"
-talk - (Amberlynn shuts the camera off)
 pose 0 closedeyes
 talk 0 "Ughhh thank god that's over."
 talk 0 "Hey Beckeeeee."
@@ -527,7 +530,7 @@ shakeend 0
 pose 0 normal
 enter 1
 talk 1 "What is it babe?"
-talk 0 ""
+talk 0 "Go get me my laptop I have to upload this mookbong."
 incvisit
 gotofadenewchapter 6
 `,
@@ -681,7 +684,7 @@ enter 1
 pose 1 normal
 talk 0 "Are you useen all the wifi??"
 talk 1 "I'm just watching Naruto..."
-talk 0 "BECKEE you can't watch nuhroodough right nowwwuuuh I'm uploadeen my new vloguh."
+talk 0 "BECKEE you can't watch nuh-ROO-dough right nowwwuuuh I'm uploadeen videooooss."
 leave 1
 talk - (Becky goes back to her bedroom and turns off Naruto)
 talk - (The video finishes uploading)
@@ -700,8 +703,9 @@ gotofade haul_2
         inherits: "comments",
         diag: `
 callawait mgComments
-talk 0 "Hmm... looks like a TON of people want more cookeen videos."
-talk 0 "Should do a mookbong where I make some hulthier snacks."
+delay 0
+pose 0 bored
+talk 0 "UGGGH the only thing people are requesteen is exercise and cooking videos."
 pose 0 normal
 talk 0 "Hey Beckeee..."
 talk 0 "... ... ..."
@@ -710,82 +714,186 @@ lynn angry
 talk 0 "BECKEEEEEEEEEEEEEEYUH!"
 enter 1
 pose 1 normal
-talk 1 "What?"
-pose 0 normal
-talk 0 "Come help me up I need to get into the kitchen..."
-talk 0 "Gonna do a eat with me with some hulthy snacks."
-gotofadenewchapter 12
+talk 1 "Amberlynn would you stop screaming."
+pose 0 frowny
+talk 0 "I have a major issue Becky you neeeeed to take this seriously omg."
+talk 1 "Okay babe, what's wrong?"
+pose 0 mentalthings
+talk 0 "My view count and subscribers keep going down. No one likes my shoppeen and torrid hauls anymore."
+pose 0 bored
+talk 0 "Everyone's just requesting stupid stuff like exercising and eating healthy."
+talk 1 "Well that might be a good idea babe. How about you do another diet plan, or how about going outside?"
+talk 0 "UUUUUGHHHHH FIINE I guess I'll try it out just one more time."
+multi
+Weight watchers here I come
+haul_2_ww
+Some waukeen might be nice
+haul_2_walk
 `,
     },
 
-    // Chapter ?? (SALMON)
-    "salmon": {
-        bg: "kitchen.png",
-        music: [ RIZO_ISLAND_MUSIC_DT ],
-        stage: [ ["left_back", "Amberlynn"] ],
+    "haul_2_ww": {
+        inherits: "comments",
         diag: `
-; TODO: determine which chapter this fits into
+talk 0 "Okayyuh, guess I'll go on weight watchers again."
+gotofadenewchapter 7
+`,
+    },
+
+    "haul_2_walk": {
+        inherits: "comments",
+        diag: `
+pose 0 bored
+talk 0 "Yeah, I guess I could go outside..."
+pose 0 confused
+talk 0 "Wait I just remembered something."
+talk 0 "Isn't tomorrow the 4th of July?"
+talk 1 "Oh yeah I forgot. We could go outside and do some fireworks while you vlog it."
+pose 0 bored
+talk 0 "Hmmm yeah, that might be good for the view count."
+pose 0 normal
+talk 0 "Ok Beckeeee we'll go outside and do 4th of July stuff tomorrow."
+talk 0 "I'm getting so hongry right now though, go get me some food so I can do a mookbong."
+gotofadenewchapter 8
+`,
+    },
+
+    // Chapter 7
+    "wellness wins": {
+        bg: "pillowmountain.png",
+        music: [ CALD_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+        diag: `
 chapter 7
 enter 0
 pose 0 heyguys
-lynn heyguys
-talk 0 "Hey guiiiise so welcome to a new vlog."
-talk 0 "I'm kinda nervous right now you guise, cuuuz I'm makeen fresh salmon for the first time ever."
-talk 0 "First thing we're gonna grab is some aluuuminuuuuuum foiiiyuhlll."
-
-; _diag_type is a special var in binary format; 4-bit
-; == 0 is the default setting
-; Bit 0 = INSTANT_SPEED
-; Bit 1 = IMMEDIATE_EXIT (often used with delay; auto finish text command when text is fully rendered without user input)
-setvar _diag_type 3
-; so in the above case we're setting to 0b0011 - instant + no user input required, mixed with a delay cmd afterwards
-sfx assets/sfx/foil.ogg 0.9
-talk - (Amberlynn grabs foil)
-delay 2000
-setvar _diag_type 0
-pose 0 holdingsalmon
-talk 0 "Ok so we have a salmon moment right here.."
-talk 0 "Mmmm I don't really wanna tooouch it though, like ewwww."
-
-multi
-Use Fork
-salmon_fork
-Use Hands
-salmon_hands
-`,
-    },
-
-    "salmon_hands": {
-        inherits: "salmon",
-        diag: `
-talk - (Amberlynn easily gets it out with hands)
-pose 0 disgusted
-talk 0 "Sooo gross you guise I can't even."
-`,
-    },
-
-    "salmon_fork": {
-        inherits: "salmon",
-        diag: `
-talk - (Amberlynn struggles to get salmon out with fork)
+talk 0 "Hey guise, so today we are doeen something a little bit different."
+pose 0 normal
+talk 0 "I've gotten a looooot of advice from people, and I'm gonna be doing Weight Watchers."
+talk 0 "Well teknikleee it's not weight watchers anymore it's WW, which actually stands for wellness wiiiins."
+pose 0 closedeyes
+talk 0 "And as you guys know I have binge eating disorder..."
+pose 1 useless
+talk 1 "That's true, I saw it."
+pose 0 guilty
+talk - (Amberlynn nods dramatically)
+talk 0 "I take full responsibility for everything that has happened in my life, but I'm gonna try really hard."
+pose 0 normal
+talk 0 "You guise know change doesn't come overnight."
+talk 0 "I'm not gonna just wake up overnight and be a completely different gorl."
+talk 0 "This isn't going to be easy at all you guise."
+talk - (Amberlynn notices Becky eating something)
+pose 0 laser
+shakestart 0
+talk 0 "OMG beckehhh you know I haven't eaten all day, why didn't you offer me any?"
+shakeend 0
 pose 0 pissed
-talk 0 "UGGGH THIS IS SO HARD YOU GUISE FAWK."
-talk - (Amberlynn finally gets it)
-goto salmon_2
+talk 0 "Get me a salad Becky because I'm tryeen to be super hulthy."
+talk - (Becky gets her a salad)
+pose 0 normal
+talk 0 "Thank you babe. Okay guise so I'm gonna count the points for this..."
+sfx assets/sfx/wwisweird.ogg
+talk 0 "Wow so it's only 8 points you guise. WW is weird with the points like that."
+talk 0 "This salad looks sooooo good."
+pose 0 salad
+lynn salad
+talk - (Amber takes a bite)
+pose 0 closedeyes
+talk 0 "So I've also had a lot of people message me, and yes I'll still be eating take out."
+talk 0 "Tons of people have told me I can't just eat veggies all day every day, and that it's normal to eat takeout."
+pose 0 salad
+talk - (Amberlynn pushes the salad around with her fork and takes a small bite)
+sfx assets/sfx/mmm.ogg
+talk 0 "Mmmmmm, you guys this is so good."
+talk 0 "I actually love salad, I could eat it every day, but you can't just eat salad every day."
+pose 0 normal
+talk 0 "You won't get all the nutrients you need."
+talk 0 "I know a lot of you guys expect me to be this pitcher-perfect person and change right away. That just like, doesn't happen."
+pose 0 laptopyt
+talk - (Amberlynn goes into her YouTube comments and shows off a comment talking about how big she is)
+talk 0 "It's so funny, you guise always talk about how big I'm getting when I'm losing weight."
+talk 0 "The delusion is unreal. Like I get you see what you want to see, and you just want to see the worst in me."
+pose 0 cacklelynn
+talk 0 "Honestly it's hilarious."
+pose 0 salad
+lynn salad
+talk - (Amberlynn quickly takes another bite of her salad while making a terrified face as she realizes she has only had a few bites) 
+sfx assets/sfx/bigsalad.ogg
+pose 0 gasp
+talk 0 "This is honestly so much bigger than I thought it was gunna bee.."
+talk 0 "But yeah, I'm telleeeen you guys, this salad is absolutely amazing."
+pose 0 bored
+talk 0 (Ughhh I hate this salad, I need to end this vlog ASAP)
+multi
+Lah and say you have things to do
+ww_lah
+Finish the salad on camera
+ww_finish
 `,
     },
 
-    "salad": {
+    "ww_lah": {
+        inherits: "ww",
+        diag: `
+pose 0 gasp
+talk 0 "You guise I just realized I gotta go to wommart. I'm gonna have to finish this later, so I'll let y'all go. Byeeee."
+pose 0 laptopyt
+lynn youtube
+talk - (Amberlynn shuts off the camera)
+pose 0 disgusted
+lynn disgusted
+talk 0 "That was actually so disgusting. Becky throw this away."
+talk 1 "Yes master."
+pose 0 confused
+lynn confused
+talk 0 "What did you say?"
+talk 1 "I said yes babe."
+pose 0 normal
+talk 0 "Oh, thought you said something else."
+talk 1 "What do we need to go to Walmart for?"
+pose 0 cacklelynn
+lynn cackle
+talk 0 "We don't need to go, I just couldn't handle anymore of that salad."
+talk 1 "You took two bites amberlynn..."
+pose 0 confused
+talk 0 "And!?"
+talk 1 "Nothing..."
+pose 0 bored
+talk 0 "Ugh, wellness wins is soooo hard."
+talk 1 "I thought it was weight watchers?"
+pose 0 books
+talk 0 "It was but they changed the name."
+talk 1 "Hey babe I was thinking we should rearrange the living room."
+talk 1 "I found this really cool Rugrats painting for sale online, it would look great about the sofa."
+pose 0 normal
+talk 0 "Love that for you, but like it doesn't match the aesthetic of the living room at all."
+talk 0 "We don't even really need that anyway. Anyway I'm super hungry, let's get take out."
+talk 1 "What about wellness wins?"
+talk 0 "Omg Becky I'm allowed to have takeout. You can't just avoid takeout all your life."
+talk 1 "Okay Amberlynn, what do you want to eat?"
+talk 0 "Something with actual nutrition that will fill me, go pick it up Becky."
+`,
+    },
+
+    "ww_finish": {
+        inherits: "ww",
+        diag: `
+
+`,
+    },
+
+    // Chapter 8
+    "salad mookbong": {
         bg: "pillowmountain.png",
         music: [ CALD_MUSIC_DT ],
-        //Is there a middle position on screen?
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
 chapter 8
 enter 0
 pose 0 heyguys
 lynn heyguys
-talk 0 "Okay you guise, I'm like literally starveeen. I haven't yet ate yet today."
+talk 0 "Hey you guiiise so just doing a quick little mookbong moment here."
+talk 0 "I'm like literally starveeen. I haven't yet ate yet today."
 talk 0 "So Beckyyyy is gonna go pick up some food for us."
 enter 1
 pose 1 useless
@@ -894,12 +1002,51 @@ gotofadenewchapter 9
 `,
     },
 
+    // Chapter 9
+    "outside": {
+        bg: "frontyard.png",
+        music: [ CALD_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+        diag: `
+chapter 9
+pose 0 leaveen
+talk - (Amberlynn waddles to the door and turns on her camera)
+pose 0 gasp
+talk 0 "Hey you guys. So today we are gonna go outside, the weather is so beautiful today."
+talk - (Amberlynn turns the camera to look outside the door)
+talk 0 "I should really have a picnic out there some day, it looks so nice outside."
+pose 0 shocked
+sfx assets/sfx/breatheen.ogg
+talk - (Amberlynn struggles out the door and carefully goes down the steps, already breathing heavy)
+pose 0 backwards
+talk 0 "We are gonna take a fun little walk together guise, this is so fun."
+talk 0 "I actually come outside a lot, I just don't film it for you."
+talk 0 "I don't have to show every second of my life, you know?"
+startshake 0
+sfx assets/sfx/breatheen.ogg 99.0
+talk - (The camera shakes as amberlynn waddles across the lawn, breathing heavier and heavier)
+shakeend 0
+pose 0 normal
+talk 0 "After I finish my vlog, maybe I'll do some cleaneen."
+talk 0 "I feel really inspired you guiiiise."
+talk 0 "It's great to get up and move around."
+pose 0 shocked
+sfx assets/sfx/breatheen.ogg
+talk - (Amberlynn struggles back to the front door and heaves herself up the steps)
+pose 0 normal
+talk 0 "Wow, that was great you guise."
+pose 0 heyguys
+talk 0 "I'm gonna see y'all later, gotta get off and clean."
+talk - (Amberlynn turns off the camera)
+`,
+    },
+
     "sofa": {
         bg: "pillowmountain.png",
         music: [ CALD_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
-chapter 9
+chapter 51
 enter 0
 pose 0 pissed
 talk 0 "BECKEHHHHHH!"
@@ -985,7 +1132,7 @@ gotofadenewchapter 10
         music: [ CALD_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
-chapter 10
+chapter 52
 enter 0
 pose 0 heyguys
 talk 0 "Hey you guiiiise what's uuuuup today I'm gonna be doeen a bit of a chili moment."
@@ -1006,17 +1153,18 @@ talk 0 ""
     },
 
     "alr-ddr": {
-        bg: "pillowmountain.png",
+        bg: "tv.png",
         music: [ RIZO_ISLAND_MUSIC_DT, DDR_MUSIC_DT, RIZO_ISLAND_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
-chapter 14
+chapter 53
 enter 0
 pose 0 heyguys
 talk 0 "Hey you guuuuuys welcome to a new video."
 pose 0 normal
 talk 0 "Soo a lot of you guys requested more exerciseen videos."
 talk 0 "I kind of have lieek, a hard time with it because of my heel spur you guise."
+sfx assets/sfx/excite.ogg
 talk 0 "Buuuut I found out about this super fun program called ALR-DDR."
 talk 0 "It's like this little danceen game, you just plug it up to your TV and you dance on eeet."
 pose 0 books
@@ -1080,7 +1228,7 @@ gotofade alr-ddr_onpad
     "alr-ddr_onpad": {
         inherits: "alr-ddr",
         diag: `
-callwait mgDDR
+callawait mgALRDDR 0
 `,
     },
 
@@ -1089,7 +1237,7 @@ callwait mgDDR
         music: [ CALD_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
-chapter 11
+chapter 54
 enter 0
 pose 0 pepperonigorlheyguys
 lynn heyguys
@@ -1191,7 +1339,7 @@ gotofadenewchapter 12
         music: [ CALD_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
-chapter 12
+chapter 55
 enter 0
 pose 0 heyguys
 lynn heyguys
@@ -1208,6 +1356,7 @@ talk 0 "Sorry babe, just getting something."
 leave 1
 talk 0 "Anyway you guise, get yourself two HUGE cucumbers."
 pose 0 disgusted
+lynn disgust
 talk 0 "No skin on the cucumbers guise because for me, the skin on the cucumbers makes it taste gross."
 pose 0 normal
 talk - (Amberlynn only cuts one cucumber in half)
@@ -1239,6 +1388,7 @@ talk - (Amberlynn only covers one cucumber half)
 pose 0 normal
 talk 0 "Next we have bacon, and I know you guise are probably like whaaat? I wasn't gonna do bacon, I swear you guise."
 pose 0 disgusted
+lynn disgusted
 talk 0 "I was gonna use this super healthy topping but it smelled a bit funny you guise."
 pose 0 normal
 talk 0 "Last step, add a little bit of everything but the bagel seasoneen. I love seasoneens you guise."
@@ -1293,7 +1443,7 @@ gotofadenewchapter 13
         music: [ CALD_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
-chapter 13
+chapter 56
 enter 0
 pose 0 mentalthings
 talk 0 "BECKEHHHHHH!!!"
@@ -1316,10 +1466,13 @@ talk 0 "That's why Frank wants us to pack up and start leaveen this planet. We g
 ;pose 1 confusedbeck
 talk 1 "Us? Pluto? Frank?"
 pose 0 books
+lynn reader
 talk 1 "Of course you're coming too Becky, you know I can't live without you."
 pose 0 bored
+lynn bored
 talk 0 (Who would wipe my butt if she didn't come...)
 pose 0 books
+lynn reader
 talk 0 "And don't worry Frank is super nice he's like totally on my side."
 talk 0 "He even congratulated me on my youtube success. He said you should totally come along too."
 talk 0 "He was all like, whoever this terrorist is, they probably would go after Becky too."
@@ -1327,6 +1480,7 @@ pose 0 normal
 talk 0 "So you need to come too."
 talk 1 "Aww, that's sweet babe."
 pose 0 gasp
+lynn gasp
 talk 0 "So yeah we need to pack to go to Pluto, I'm like super nervous that they won't have hulthy food options, but wudever."
 talk 0 "Anyway I need to do a mook-bong to tell everyone about it."
 talk 1 "You can't just do a quick video message?"
@@ -1334,6 +1488,7 @@ pose 0 books
 talk 0 "Uhh, mookbongs is good for the view count?"
 talk 1 "Uhh.... what?"
 pose 0 bored
+lynn bored
 talk 0 "Just go get me some food Becky, gaaahh."
 talk - (Becky leaves)
 leave 1
@@ -1369,6 +1524,7 @@ talk 0 "You know, being on YouTube, there are a lot of like... wait what's the w
 pose 0 laptoptemplate
 talk - (Amber clacks some nonsense into Google)
 pose 0 gasp
+lynn gasp
 talk 0 "DISAPPOINTMENTS yeah there are a lot of like, disappointments, being a youtuber..."
 pose 0 normal
 talk - (Amberlynn opens the box of food Becky hands her)
@@ -1403,6 +1559,7 @@ talk 0 "It is what it is, and it is what it ain't, yaknow?"
 talk 0 "So anyway you guise..."
 sfx assets/sfx/slurp.ogg
 pose 0 sip
+lynn sip
 talk - (More slurping)
 pose 0 normal
 talk 0 "The other day I get this text from Destiny's siter and she's like, the FBI wants to talk to you."
@@ -1473,10 +1630,35 @@ lynn youtube
 talk - (Amberlynn shuts the camera off)
 pose 0 gasp
 talk 0 "Ok Beckeeee we gotta be leaveen now."
-talk 0 "Frank said the spaceship leeves in 30 minutes."
+talk 0 "Frank said the spaceship leeves in like 2 days and we gotta drive all the way to Nevada."
+talk 1 "HUH? Babe are you sure we have to drive all the way out there? Can we just take a plane?"
+talk 0 "No Beckeeee I can't go without food for that long, we gotta stop every few hours, I gotta eat."
 talk 1 "Ok just let me get some of my Naruto shirts and-"
 pose 0 pissed
 talk 0 "NO BECKEEE WE DON'T HAVE TIME JUST GET IN THE CAR"
+pose 0 bored
+talk 0 "Wait a sec."
+pose 0 gasp
+talk - (Amber gasps)
+talk 0 "I almost forgot about mah expert laygoes!!"
+leave 0
+talk - (Amber leaves to go get them)
+talk - ... ... ...
+talk - ... ... ...
+talk - ... ... ...
+talk - (10 minutes later...)
+enter 0
+sfx assets/sfx/breatheen.ogg
+talk - (Amber hoddles back into the room with 4 boxes of expert laygoes, breathing heavily)
+pose 0 normal
+talk 0 "Ok Beckeee we can go now."
+pose 0 leaveen
+lynn leaveen
+sfx assets/sfx/leaveen.ogg
+talk 0 "I'm leaaveeeeeeeen."
+if eq hasSeenLeaveenLynn 1
+talk 1 "*sigh*"
+endif
 gotofadenewchapter 14
 `,
     },
@@ -1486,8 +1668,131 @@ gotofadenewchapter 14
         music: [ CALD_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "left_front", "Becky"], ["hflip", "right_front", "Frank"] ],
         diag: `
-chapter 14
+chapter 57
 enter 0
+`,
+    },
+
+//     "ww": {
+//         bg: "pillowmountain.png",
+//         music: [ CALD_MUSIC_DT ],
+//         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+//         diag: `
+// pose 0 bored
+// talk 0 "I'm gonna try weight watchers again, time for a new video."
+// pose 0 laptopyt
+// talk - (Amberlynn turns on the camera)
+// pose 0 heyguys
+// talk 0 "Hey guise, so today we are gonna go with something totally new."
+// pose 0 normal
+// talk 0 "I've gotten a looooot of advice from people, and I'm gonna be doing Weight Watchers."
+// talk 0 "As you all know I have binge eating disorder..."
+// pose 1 useless
+// talk 1 "That's true, I saw it."
+// pose 0 guilty
+// talk - (Amberlynn nods dramatically)
+// talk 0 "I take full responsibility for everything that has happened in my life, but I'm gonna try really hard."
+// pose 0 normal
+// talk 0 "You guise know change doesn't come overnight."
+// talk 0 "I'm not gonna wake up and be a totally new Amberlynn."
+// talk 0 "This isn't going to be easy at all you guise."
+// talk - (Amberlynn notices Becky eating something)
+// pose 0 laser
+// shakestart 0
+// talk 0 "OMG beckehhh you know I haven't eaten all day, why didn't you offer me any?"
+// shakeend 0
+// pose 0 pissed
+// talk 0 "Get me a salad Becky because I'm super healthy."
+// talk - (Becky gets her a salad)
+// pose 0 normal
+// talk 0 "Thank you babe. Okay guise so I'm gonna count the points for this..."
+// sfx assets/sfx/wwisweird.ogg
+// talk 0 "And it's only 8 points you guise."
+// talk 0 "Wow, this salad looks so good."
+// pose 0 closedeyes
+// talk 0 "I've had a lot of people message me, and yes I'll still be eating take out."
+// talk 0 "Tons of people have told me I can't just eat veggies all day every day, and that it's normal to eat takeout."
+// pose 0 salad
+// talk - (Amberlynn pushes the salad around with her fork and takes a small bite)
+// sfx assets/sfx/mmm.ogg
+// talk 0 "Mmmmmm, you guys this is so good."
+// talk 0 "I actually love salad, I could eat it every day, but you can't just eat salad every day."
+// pose 0 normal
+// talk 0 "You won't get all the nutrients you need."
+// talk 0 "I know a lot of you guys expect me to be this perfect person and change right away, and that just doesn't happen."
+// pose 0 laptopyt
+// talk - (Amberlynn scrolls through her laptop and shows off a comment talking about how big she is)
+// talk 0 "It's so funny, you guise always talk about how big I'm getting when I'm losing weight."
+// talk 0 "The delusion is unreal. Like I get you see what you want to see, and you just want to see the worst in me."
+// pose 0 cacklelynn
+// talk 0 "I just find it hilarious."
+// pose 0 salad
+// talk - (Amberlynn quickly takes another bite of her salad as she realizes she has only had one bite.) 
+// sfx assets/sfx/bigsalad.ogg
+// talk 0 "I tell you guys this salad is absolutely amazing."
+// incvisit
+// gotofadenewchapter 1
+
+// ;multi
+// ;Lie and say you have things to do so you can turn off the camera
+// ;gotofadenewchapter X
+// ;Finish the salad on camera
+// ;gotofadenewchapter Y
+// `,
+//     },
+    
+    "salmon": {
+        bg: "kitchen.png",
+        music: [ RIZO_ISLAND_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"] ],
+        diag: `
+; TODO: determine which chapter this fits into
+chapter 58
+enter 0
+pose 0 heyguys
+lynn heyguys
+talk 0 "Hey guiiiise so welcome to a new vlog."
+talk 0 "I'm kinda nervous right now you guise, cuuuz I'm makeen fresh salmon for the first time ever."
+talk 0 "First thing we're gonna grab is some aluuuminuuuuuum foiiiyuhlll."
+; _diag_type is a special var in binary format; 4-bit
+; == 0 is the default setting
+; Bit 0 = INSTANT_SPEED
+; Bit 1 = IMMEDIATE_EXIT (often used with delay; auto finish text command when text is fully rendered without user input)
+setvar _diag_type 3
+; so in the above case we're setting to 0b0011 - instant + no user input required, mixed with a delay cmd afterwards
+sfx assets/sfx/foil.ogg 0.9
+talk - (Amberlynn grabs foil)
+delay 2000
+setvar _diag_type 0
+pose 0 holdingsalmon
+talk 0 "Ok so we have a salmon moment right here.."
+talk 0 "Mmmm I don't really wanna tooouch it though, like ewwww."
+multi
+Use Fork
+salmon_fork
+Use Hands
+salmon_hands
+`,
+    },
+
+    "salmon_hands": {
+        inherits: "salmon",
+        diag: `
+talk - (Amberlynn easily gets it out with hands)
+pose 0 disgusted
+lynn disgusted
+talk 0 "Sooo gross you guise I can't even."
+`,
+    },
+
+    "salmon_fork": {
+        inherits: "salmon",
+        diag: `
+talk - (Amberlynn struggles to get salmon out with fork)
+pose 0 pissed
+talk 0 "UGGGH THIS IS SO HARD YOU GUISE FAWK."
+talk - (Amberlynn finally gets it)
+goto salmon_2
 `,
     },
 }

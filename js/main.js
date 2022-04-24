@@ -154,7 +154,7 @@ const $mgDOM = $(`<div>`)
         .append($(`<div class="mg-image gg">`))
     )
     .append($(`<div class="canvas-container" id="books-canvas-container">`)
-        .append($(`<canvas class="mg-canvas" id="books-canvas" width="1280" height="720">`))
+        .append($(`<canvas class="mg-canvas" id="books-canvas" width="960" height="600">`))
         .append($(`<div class="mg-image">`))
     )
     .append($(`<div class="canvas-container" id="phone-canvas-container">`)
@@ -164,6 +164,9 @@ const $mgDOM = $(`<div>`)
     .append($(`<div class="dom-counter-container">`)
         .append($(`<div id="saveens" class="panel">`)
             .append($(`<pre id="saveens-text"><span class="saveens-dollar">$</span><span class="saveens-amount"></span></pre>`))
+        )
+        .append($(`<div id="calories" class="panel dom-counter">`)
+            .append($(`<pre id="calories-text"><span class="calories-amount">0</span><span class="calories-calories-text"> Calories</span>`))
         )
     )
 
@@ -401,7 +404,7 @@ hook('load', function() {
         dict = CHAPTERS
         numItems = NUM_CHAPTERS
         itemList = save.chapters
-        itemText = "Chapters"
+        itemText = "Hootenberries"
         placeholderImage = "assets/missing_chapter.png"
     } else if (whichLynnScene === 1) {
         dict = LYNNS
@@ -643,7 +646,7 @@ hook('load', async function() {
     // Load up game
     if (thisArc[2].mgFunc) {
         updateSaveens()
-        await window[thisArc[2].mgFunc].call({  })
+        await window[thisArc[2].mgFunc].apply({  }, thisArc[2].mgArgs || [])
         fadeoutToScene('mainMenu')
     }
 })

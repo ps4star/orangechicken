@@ -141,6 +141,99 @@ function fillArr(item, num) {
     return arr
 }
 
+function getImage(src) {
+    const img = new Image()
+    img.src = src
+    return img
+}
+
+function isRectOverlap(x1, y1, w1, h1, x2, y2, w2, h2) {
+    return x1 < x2 + w2 && x1 + w1 > x2 && y1 < y2 + h2 && y1 + h1 > y2
+}
+
+// FTrig
+(function() {
+    var FTrig = (function() {
+        /*
+         * Create a FTrig instance with accuracyLevel of
+         * - FTrig.LOW: faster and less accurate, or 
+         * - FTrig.HIGH: slower and more accurate
+         * Exposes 2 functions: sin and cos
+         */
+        var FTrig = function(accuracyLevel) {
+            switch (accuracyLevel) {
+                case FTrig.LOW:
+                    this.sin = this.sinLow;
+                    this.cos = this.cosLow;
+                break;
+                case FTrig.HIGH:
+                    this.sin = this.sinHigh;
+                    this.cos = this.cosHigh;
+                break;
+            }
+        };
+
+        FTrig.LOW  = 1;
+        FTrig.HIGH = 2;
+
+        FTrig.prototype = {
+            sinHigh: function(x){
+                var sin;
+                if (x < -3.14159265) x += 6.28318531;
+                else if (x >  3.14159265) x -= 6.28318531;
+
+                if (x < 0) {
+                    sin = 1.27323954 * x + .405284735 * x * x;
+                    if (sin < 0) sin = .225 * (sin *-sin - sin) + sin;
+                    else sin = .225 * (sin * sin - sin) + sin;
+                } else {
+                    sin = 1.27323954 * x - 0.405284735 * x * x;
+                    if (sin < 0) sin = .225 * (sin *-sin - sin) + sin;
+                    else sin = .225 * (sin * sin - sin) + sin;
+                }
+                return sin;
+            },
+            cosHigh: function(x){
+                var cos;
+                x += 1.57079632;
+                if (x >  3.14159265) x -= 6.28318531;
+                if (x < 0) {
+                    cos = 1.27323954 * x + 0.405284735 * x * x;
+                    if (cos < 0) cos = .225 * (cos *-cos - cos) + cos;
+                    else cos = .225 * (cos * cos - cos) + cos;
+                } else {
+                    cos = 1.27323954 * x - 0.405284735 * x * x;
+                    if (cos < 0) cos = .225 * (cos *-cos - cos) + cos;
+                    else cos = .225 * (cos * cos - cos) + cos;
+                }
+                return cos;
+            },
+            sinLow: function(x){
+                if (x < -3.14159265) x += 6.28318531;
+                else if (x >  3.14159265) x -= 6.28318531;
+                if (x < 0) return 1.27323954 * x + .405284735 * x * x;
+                else return 1.27323954 * x - 0.405284735 * x * x;
+            },
+            cosLow: function(x){
+                x += 1.57079632;
+                if (x >  3.14159265) x -= 6.28318531;
+                if (x < 0) return 1.27323954 * x + 0.405284735 * x * x
+                else return 1.27323954 * x - 0.405284735 * x * x;
+            }
+        }
+
+        return FTrig;
+    })();
+
+    if (typeof module !== 'undefined' && typeof module.exports !== 'undefined')
+        module.exports = FTrig;
+    else if (typeof define === 'function' && define.amd)
+        define([], function() {
+            return FTrig;
+        });
+    else window.FTrig = FTrig;
+})();
+
     </script>
     <script defer type="text/javascript" src="js/diagStore.js"></script>
     <script defer type="text/javascript" src="js/lynnsStore.js"></script>
@@ -149,6 +242,7 @@ function fillArr(item, num) {
     <script defer type="text/javascript" src="js/chaptersStore.js"></script>
     <script defer type="text/javascript" src="js/scene.js"></script>
     <script defer type="text/javascript" src="js/diag.js"></script>
+    <script defer type="text/javascript" src="js/mgddrSONGDT.js"></script>
     <script defer type="text/javascript" src="js/mgddr.js"></script>
     <script defer type="text/javascript" src="js/mg.js"></script>
     <script defer type="text/javascript" src="js/main.js"></script>

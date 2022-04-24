@@ -569,12 +569,12 @@ function handleFlaggedEvent(index, useFlagPrefix, cb) {
     cb()
 }
 
-function pushAmountChangeText($root, amount, specificClass) {
+function pushAmountChangeText($root, amount, specificClass, col1, col2) {
     const $el = $(`<pre class="x-amount-change ${specificClass}-change">`)
     if (amount <= 0) {
-        $el.html(`<span style="color: darkred;">${amount.toLocaleString()}</span>`)
+        $el.html(`<span style="color: ${col2 ?? "darkred"};">${amount.toLocaleString()}</span>`)
     } else {
-        $el.html(`<span style="color: darkgreen;">+${amount.toLocaleString()}</span>`)
+        $el.html(`<span style="color: ${col1 ?? "darkgreen"};">+${amount.toLocaleString()}</span>`)
     }
 
     $root.append($el)
@@ -888,7 +888,7 @@ async function doDialog(name) {
                 })
             })
         } else if (args[0] === 'gotofadereload') {
-            save.nextScene = args[1]
+            save.nextScene = args.slice(1).join(" ")
 
             fadeoutNoSceneChange(async () => {
                 clearStage()
@@ -922,7 +922,7 @@ async function doDialog(name) {
             window[args[1]]()
         } else if (args[0] === 'callawait') {
             // Calls async func by string name and awaits it
-            await window[args[1]].call({ inline: inlineVarDict, saved: save.savedVars })
+            await window[args[1]].apply({ inline: inlineVarDict, saved: save.savedVars }, args.slice(2))
         } else if (args[0] === 'setbg') {
             await putBackgroundImage(args.slice(1).join(" "))
         } else if (args[0] === 'shakestart') {
