@@ -296,7 +296,6 @@ function mgMookbongDrawPlate(candt) {
 
 function mgTouch2Mouse(e)
 {
-  var theTouch = e.changedTouches[0];
   var mouseEv;
 
   switch(e.type)
@@ -307,11 +306,15 @@ function mgTouch2Mouse(e)
     default: return;
   }
 
-  var mouseEvent = document.createEvent("MouseEvent");
-  mouseEvent.initMouseEvent(mouseEv, true, true, window, 1, theTouch.screenX, theTouch.screenY, theTouch.clientX, theTouch.clientY, false, false, false, false, 0, null);
-  theTouch.target.dispatchEvent(mouseEvent);
+  for (let i = 0; i < e.changedTouches.length; i++) {
+    const cTouch = e.changedTouches[i]
 
-  e.preventDefault();
+    var mouseEvent = document.createEvent("MouseEvent");
+    mouseEvent.initMouseEvent(mouseEv, true, true, window, 1, cTouch.screenX, cTouch.screenY, cTouch.clientX, cTouch.clientY, false, false, false, false, 0, null);
+    cTouch.target.dispatchEvent(mouseEvent);
+
+    e.preventDefault();
+  }
 }
 
 let mgInitialScore, mgInitialScore2, mgInitialScore3, mgInitialScore4
@@ -350,15 +353,15 @@ async function mgMookbong() {
         })
 
         $realCan.on('touchstart', function(e) {
-            $realCan.trigger(mgTouch2Mouse(e))
+            mgTouch2Mouse(e)
         })
 
         $realCan.on('touchmove', function(e) {
-            $realCan.trigger(mgTouch2Mouse(e))
+            mgTouch2Mouse(e)
         })
 
         $realCan.on('touchend', function(e) {
-            $realCan.trigger(mgTouch2Mouse(e))
+            mgTouch2Mouse(e)
         })
 
         let fc = 0,
@@ -631,30 +634,29 @@ const mgCommentsSeqs = [
         `Julia Hardin:Stop doing these mukbangs and lose some weight!!!`,
         `Nature Lover:I wann see more cooking videos I use all ur recipes!`,
         `KindaGoodKindaHootenberry:Girl you can't be serious...`,
-        `ItsJustWaterWeight:Dainty gorl eats entire chicken.`,
-        `Amanda Haskell:Love yuo Amber!! plz show us how 2 make some healthy snacks pls...`,
+        `ItsJustWaterWeight:So dainty you guys.`,
+        `Amanda Haskell:Love yuo Amber!! plz do more healthy cooking and exercise videos...`,
     ],
     [ // 2 - from torrid comments
         `Nancy A:Yasss we stan a torrid queen 👸`,
         `Jessica Y:omg love your outfit!! gonna have to wear that to the girls gym next time`,
         `Katie W:LMAO when she put on that dress backwards I can't even...`,
         `Haydur Nation:Girl we all know the Instagram note thing is fake, you're not that special.`,
-        `dainty:Ah yes the HIGHLY REQUESTED torrid haul... girl who even requested it???`,
-        `~Amberlynn Reid:a LOT of peoplemmm. haters just like to hate on everything I do :(`,
-        `~dainty:Amber we both know NO ONE requested this non-content. Stop gaslighting us.`,
-        `~Amberlynn Reid:Who cares if i gaslite my audience?? all these other youtubers are doing it...`,
-        `Zan:The backwards dress had me ROLLING. "it's too tight you guiiise". instant classic.`,
+        `Another Haydur:Why don't you do some exercise or buy healthy foods instead of shopping at torrid?`,
+        `Zan:PLEASE stop the torrid hauls and lose some weight.`,
+        `2 6:I am HIGHLY REQUESTING a going outside or exercising video.`,
+        `Angelica:These videos are so boring. We didn't get any weight gain updates, not even a layg or a scooterlynn.`,
     ],
     [ // 3 - post-pluto comments
         `itsahootenberry:What's next, Uranus? Oh wait, Becky already goes there every day.`,
         `minecraft creeper:Bruh she's really trying to lie about going to Pluto, I can't even`,
         `Zenaida Fernandez-Gonzalez:STOP KYING ABOUT EVERGTHING AND GET A LOFE`,
-        `Orange Queen:Our dainty gorl just hopping planets now 💅💅`,
+        `Orange Queen:Our dainty gorl just hopping planets now 💅💅 love that for you`,
         `Vajinky:Does hamberlynn count as her own planet? 🤔`,
-        `madison carr:Hi im 11 and I aatch all yur videos!have fun at plito and pls shoot me out `,
+        `madison c:Hi im 11 and I aatch all yur videos!have fun at plito and pls shoot me out `,
         `JambledUpWords:Didn't know there was a spaceship that could hold our dainty qween`,
-        `HootenberryForSure:Amber: "I went to Pluto you guys" Me: "you're a lah"`,
-        `Apathetic Faxx:SHE WENT TO PLUTO YALL`,
+        `HootenberryForSure:Amber: "I went to Pluto you guys" Me: you're a lah`,
+        `Apathetic Faxx:SHE'S AN ASTRONAUT YALL`,
     ],
 ]
 
@@ -727,7 +729,8 @@ async function mgComments() {
 }
 
 const mgAlrDdrTargetFrameTime = 16.67
-async function mgALRDDR() {
+async function mgALRDDR(songPtrAsStr) {
+    const songPtrAsNumber = (typeof songPtrAsStr === 'string') ? parseInt(songPtrAsStr, 10) : songPtrAsStr
     await new Promise((resolve, reject) => {
         stopMusic()
 
@@ -743,6 +746,9 @@ async function mgALRDDR() {
         const $realCan = $(candt.realCanvas)
 
         $realCan.on('mousedown', function(e) {
+            // e.offsetX * (candt.sw / window.innerWidth)
+            e.clientX *= (candt.sw / window.innerWidth)
+            e.clientY *= (candt.sh / window.innerHeight)
             DDR_SubmitClickEvent(e)
         })
 
@@ -751,7 +757,7 @@ async function mgALRDDR() {
         })
 
         $realCan.on('touchstart', function(e) {
-            $realCan.trigger(mgTouch2Mouse(e))
+            mgTouch2Mouse(e)
         })
 
         $realCan.on('blur', function(e) {
@@ -768,7 +774,7 @@ async function mgALRDDR() {
 
         // DDR setup
         DDR_ClearState()
-        DDR_SetSongPtr(this?.saved?._ddr_song_ptr ?? 0)
+        DDR_SetSongPtr(songPtrAsNumber)
         DDR_SetCandt(candt)
 
         DDR_SetDOMInputs({

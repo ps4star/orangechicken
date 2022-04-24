@@ -293,7 +293,6 @@ div 4
 
 
 
-
 div 4
 sw
 0
@@ -1005,7 +1004,6 @@ sw
 
 
 
-
 div 2
 sw
 1
@@ -1228,9 +1226,9 @@ sw
 
 
 
-1
+2
 
-1
+2
 
 
 
@@ -1305,7 +1303,6 @@ sw
 
 
 sw
-
 0
 
 0
@@ -1396,7 +1393,7 @@ sw
 
 
 
-2
+3
 
 
 
@@ -1628,7 +1625,6 @@ sw
 
 
 sw
-
 0
 
 0
@@ -1718,7 +1714,7 @@ sw
 
 
 
-2
+3
 
 
 
@@ -1874,3 +1870,574 @@ sw
 2
 2
 0`
+
+const SDT_AMBERQUEST = `tempo 187.5 2
+
+
+div 4
+
+div 2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+adv
+
+
+
+
+
+
+
+
+
+
+
+
+sw
+div 2
+rot 30
+2
+
+rot 0
+2
+
+rot -30
+2
+
+rot 0
+1
+0
+rot 30
+2
+
+rot 0
+
+1
+rot -30
+
+1
+rot 0
+2
+3
+resetpos
+adv
+rot 30
+2
+
+rot 0
+2
+
+rot -30
+2
+
+rot 0
+1
+0
+rot 30
+2
+
+rot 0
+
+1
+rot -30
+
+1
+rot 0
+2
+3
+resetpos
+adv
+rot 30
+3
+
+rot 0
+3
+
+rot -30
+3
+
+rot 0
+2
+1
+rot 30
+0
+
+rot 0
+
+0
+rot -30
+
+1
+rot 0
+2
+3
+resetpos
+adv
+rot 30
+2
+
+rot 0
+2
+
+rot -30
+2
+
+rot 0
+1
+0
+rot 30
+2
+
+rot 0
+
+1
+rot -30
+
+1
+rot 0
+2
+3
+resetpos
+adv
+rot 30
+2
+
+rot 0
+2
+
+rot -30
+2
+
+rot 0
+1
+0
+rot 30
+2
+
+rot 0
+
+1
+rot -30
+
+1
+rot 0
+2
+3
+resetpos
+adv
+rot 30
+2
+
+rot 0
+2
+
+rot -30
+2
+
+rot 0
+1
+0
+rot 30
+2
+
+rot 0
+
+1
+rot -30
+
+1
+rot 0
+2
+3
+resetpos
+adv
+rot 30
+3
+
+rot 0
+3
+
+rot -30
+3
+
+rot 0
+2
+1
+rot 30
+0
+
+rot 0
+
+0
+rot -30
+
+1
+rot 0
+2
+3
+resetpos
+adv
+rot 30
+2
+
+rot 0
+2
+
+rot -30
+2
+
+rot 0
+1
+0
+rot 30
+2
+
+rot 0
+
+1
+rot -30
+
+1
+rot 0
+2
+3
+2
+
+rot 0
+2
+
+rot -30
+2
+
+rot 0
+1
+0
+rot 30
+2
+
+rot 0
+
+1
+rot -30
+
+1
+rot 0
+2
+3
+resetpos
+adv
+rot 30
+2
+
+rot 0
+2
+
+rot -30
+2
+
+rot 0
+1
+0
+rot 30
+2
+
+rot 0
+
+1
+rot -30
+
+1
+rot 0
+2
+3
+resetpos
+adv
+rot 30
+3
+
+rot 0
+3
+
+rot -30
+3
+
+rot 0
+2
+1
+rot 30
+0
+
+rot 0
+
+0
+rot -30
+
+1
+rot 0
+2
+3
+resetpos
+adv
+rot 30
+2
+
+rot 0
+2
+
+rot -30
+2
+
+rot 0
+1
+0
+rot 30
+2
+
+rot 0
+
+1
+rot -30
+
+1
+rot 0
+2
+3
+resetpos
+adv
+2
+
+rot 0
+2
+
+rot -30
+2
+
+rot 0
+1
+0
+rot 30
+2
+
+rot 0
+
+1
+rot -30
+
+1
+rot 0
+2
+3
+resetpos
+adv
+rot 30
+2
+
+rot 0
+2
+
+rot -30
+2
+
+rot 0
+1
+0
+rot 30
+2
+
+rot 0
+
+1
+rot -30
+
+1
+rot 0
+2
+3
+resetpos
+adv
+rot 30
+3
+
+rot 0
+3
+
+rot -30
+3
+
+rot 0
+2
+1
+rot 30
+0
+
+rot 0
+
+0
+rot -30
+
+1
+rot 0
+2
+3
+resetpos
+adv
+rot 30
+2
+
+rot 0
+2
+
+rot -30
+2
+
+rot 0
+1
+0
+rot 30
+2
+
+rot 0
+
+1
+rot -30
+
+1
+rot 0
+2
+3
+resetpos
+adv
+2
+
+rot 0
+2
+
+rot -30
+2
+
+rot 0
+1
+0
+rot 30
+2
+
+rot 0
+
+1
+rot -30
+
+1
+rot 0
+2
+3
+resetpos
+adv
+rot 30
+2
+
+rot 0
+2
+
+rot -30
+2
+
+rot 0
+1
+0
+rot 30
+2
+
+rot 0
+
+1
+rot -30
+
+1
+rot 0
+2
+3
+resetpos
+adv
+rot 30
+3
+
+rot 0
+3
+
+rot -30
+3
+
+rot 0
+2
+1
+rot 30
+0
+
+rot 0
+
+0
+rot -30
+
+1
+rot 0
+2
+3
+resetpos
+adv
+rot 30
+2
+
+rot 0
+2
+
+rot -30
+2
+
+rot 0
+1
+0
+rot 30
+2
+
+rot 0
+
+1
+rot -30
+
+1
+rot 0
+2
+3
+resetpos
+adv`

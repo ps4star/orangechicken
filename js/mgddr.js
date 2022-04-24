@@ -25,8 +25,28 @@ const DDR_ACC_DOWN = getImage("assets/alrddr/ddr_downa.png")
 const DDR_ACC_UP = getImage("assets/alrddr/ddr_upa.png")
 const DDR_ACC_RIGHT = getImage("assets/alrddr/ddr_righta.png")
 
-const DDR_TYPE_AUTO = 1
-const DDR_TYPE_MAN = 2
+const DDR_AMBER_WAKEUP_0 = getImage("assets/alrddr/amberlynn_sleeping_blackbg.png")
+const DDR_AMBER_WAKEUP_1 = getImage("assets/alrddr/amberlynn_awake_blackbg.png")
+
+const DDR_BG_PILLOWMOUNTAIN = getImage("assets/scenes/pillowmountain.png")
+const DDR_BG_KITCHEN = getImage("assets/scenes/kitchen.png")
+const DDR_BG_TV = getImage("assets/scenes/tv.png")
+const DDR_BG_FRONTYARD = getImage("assets/scenes/frontyard.png")
+const DDR_BG_CF = getImage("assets/scenes/cf.png")
+const DDR_BG_TORRID = getImage("assets/scenes/torrid.jpg")
+const DDR_BG_BOOKLAND = getImage("assets/scenes/bookland.jpg")
+const DDR_BG_WOMMART = getImage("assets/scenes/wommart.png")
+const DDR_BG_AREA89 = getImage("assets/scenes/area89.png")
+const DDR_BG_PLUTO = getImage("assets/scenes/pluto.png")
+
+const DDR_AMBER_SCOOTER = getImage("assets/actors/amberlynn.png")
+
+const DDR_TYPE_AUTO = 1			// quickly auto-cycles through frames after a note is hit until resting on restFrame
+const DDR_TYPE_MAN = 2			// advances anim frame when a note is hit
+const DDR_TYPE_INLINE = 3		// does not cycle by user input at all; only an inline 'adv' command advances
+
+// NOTE that multiple anim types can be combined by including them all in the "type" array
+// basically a bitwise OR type of thing like with SDL2 window flags, but as an array since that's a little easier to work with
 
 const DDR_ACC_LIST = [
 	DDR_ACC_LEFT, DDR_ACC_DOWN, DDR_ACC_UP, DDR_ACC_RIGHT,
@@ -36,27 +56,45 @@ const DDR_ALL_IMGS = [
 	DDR_IMG_EXERCISE_FRAME_0,
 	DDR_IMG_EXERCISE_FRAME_1,
 	DDR_IMG_EXERCISE_FRAME_2,
+
 	DDR_IMG_DANCE_FRAME_2,
 	DDR_IMG_DANCE_FRAME_3,
 	DDR_IMG_HAIR_FRAME_1,
 	DDR_IMG_HAIR_FRAME_2,
+
 	DDR_ARR_LEFT,
 	DDR_ARR_DOWN,
 	DDR_ARR_UP,
 	DDR_ARR_RIGHT,
+
 	DDR_ACC_LEFT,
 	DDR_ACC_DOWN,
 	DDR_ACC_UP,
 	DDR_ACC_RIGHT,
+
 	DDR_IMG_DANCE2_FRAME_0,
 	DDR_IMG_DANCE2_FRAME_1,
 	DDR_IMG_DANCE2_FRAME_2,
 	DDR_IMG_DANCE3_FRAME_0,
 	DDR_IMG_DANCE3_FRAME_1,
+
+	DDR_AMBER_WAKEUP_0,
+	DDR_AMBER_WAKEUP_1,
+
+	DDR_BG_PILLOWMOUNTAIN,
+	DDR_BG_KITCHEN,
+	DDR_BG_TV,
+	DDR_BG_FRONTYARD,
+	DDR_BG_CF,
+	DDR_BG_TORRID,
+	DDR_BG_BOOKLAND,
+	DDR_BG_WOMMART,
+	DDR_BG_AREA89,
+	DDR_BG_PLUTO,
 ]
 
 const DDR_EXERCISE_ANIM_DATA = Object.freeze({
-	type: DDR_TYPE_AUTO,
+	type: [ DDR_TYPE_AUTO ],
 	restFrame: 0,
 	frames: [
 		DDR_IMG_EXERCISE_FRAME_0,
@@ -71,7 +109,7 @@ const DDR_EXERCISE_ANIM_DATA = Object.freeze({
 })
 
 const DDR_DANCE_ANIM_DATA = Object.freeze({
-	type: DDR_TYPE_MAN,
+	type: [ DDR_TYPE_MAN ],
 	frames: [
 		DDR_IMG_DANCE_FRAME_2,
 		DDR_IMG_DANCE_FRAME_3,
@@ -79,7 +117,7 @@ const DDR_DANCE_ANIM_DATA = Object.freeze({
 })
 
 const DDR_HAIR_ANIM_DATA = Object.freeze({
-	type: DDR_TYPE_MAN,
+	type: [ DDR_TYPE_MAN ],
 	frames: [
 		DDR_IMG_HAIR_FRAME_1,
 		DDR_IMG_HAIR_FRAME_2,
@@ -87,7 +125,7 @@ const DDR_HAIR_ANIM_DATA = Object.freeze({
 })
 
 const DDR_DANCE2_ANIM_DATA = Object.freeze({
-	type: DDR_TYPE_MAN,
+	type: [ DDR_TYPE_MAN ],
 	frames: [
 		DDR_IMG_DANCE2_FRAME_0,
 		DDR_IMG_DANCE2_FRAME_1,
@@ -97,10 +135,76 @@ const DDR_DANCE2_ANIM_DATA = Object.freeze({
 })
 
 const DDR_DANCE3_ANIM_DATA = Object.freeze({
-	type: DDR_TYPE_MAN,
+	type: [ DDR_TYPE_MAN ],
 	frames: [
 		DDR_IMG_DANCE3_FRAME_0,
 		DDR_IMG_DANCE3_FRAME_1,
+	],
+})
+
+// AMBERQUEST animations
+const DDR_AMBER_WAKEUP_ANIM_DATA = Object.freeze({
+	type: [ DDR_TYPE_INLINE ], // use 'adv' to advance frames
+	frames: [
+		DDR_AMBER_WAKEUP_0,
+		DDR_AMBER_WAKEUP_1,
+	],
+})
+
+// const DDR_BG_PILLOWMOUNTAIN = getImage("assets/scenes/pillowmountain.png")
+// const DDR_BG_KITCHEN = getImage("assets/scenes/kitchen.png")
+// const DDR_BG_TV = getImage("assets/scenes/tv.png")
+// const DDR_BG_FRONTYARD = getImage("assets/scenes/frontyard.png")
+// const DDR_BG_CF = getImage("assets/scenes/cf.png")
+// const DDR_BG_TORRID = getImage("assets/scenes/torrid.png")
+// const DDR_BG_BOOKLAND = getImage("assets/scenes/bookland.jpg")
+// const DDR_BG_WOMMART = getImage("assets/scenes/wommart.jpg")
+// const DDR_BG_AREA89 = getImage("assets/scenes/area89.png")
+// const DDR_BG_PLUTO = getImage("assets/scenes/pluto.png")
+const DDR_AMBER_TRAVEL_ANIM_DATA = Object.freeze({
+	type: [ DDR_TYPE_INLINE ], // use 'adv' to advance frames
+	isEnding: true,
+	frames: [
+		[ DDR_BG_PILLOWMOUNTAIN, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_KITCHEN, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_TV, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_FRONTYARD, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_CF, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_TORRID, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_BOOKLAND, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_WOMMART, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_AREA89, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_PLUTO, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_PILLOWMOUNTAIN, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_KITCHEN, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_TV, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_FRONTYARD, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_CF, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_TORRID, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_BOOKLAND, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_WOMMART, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_AREA89, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_PLUTO, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_PILLOWMOUNTAIN, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_KITCHEN, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_TV, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_FRONTYARD, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_CF, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_TORRID, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_BOOKLAND, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_WOMMART, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_AREA89, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_PLUTO, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_PILLOWMOUNTAIN, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_KITCHEN, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_TV, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_FRONTYARD, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_CF, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_TORRID, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_BOOKLAND, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_WOMMART, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_AREA89, DDR_AMBER_SCOOTER ],
+		[ DDR_BG_PLUTO, DDR_AMBER_SCOOTER ],
 	],
 })
 
@@ -117,6 +221,16 @@ const DDR_SONG_LIST = [
 		],
 		dt: SDT_KAMEENO,
 	},
+
+	{
+		name: "AMBERQUEST",
+		url: "assets/music/AMBERQUEST.ogg",
+		bgDt: [
+			DDR_AMBER_WAKEUP_ANIM_DATA,
+			DDR_AMBER_TRAVEL_ANIM_DATA,
+		],
+		dt: SDT_AMBERQUEST,
+	},
 ]
 
 const DDR_INITIAL_OFFSET = 650
@@ -127,8 +241,7 @@ let DDR_State, DDR_SongDt, DDR_Ctx
 function DDR_ClearInputState() {
 	DDR_State.inputState = {
 		clicked: false,
-		cx: 0,
-		cy: 0,
+		points: [],
 
 		keyed: false,
 		whichKeys: [],
@@ -140,10 +253,14 @@ function DDR_ClearRenderState() {
 		sparkleStates: [-1, -1, -1, -1],
 		bgPtr: 0,
 
+		rot: 0,
+		requestedRot: 0,
+
 		animFrame: -1,
 	}
 }
 
+const DDR_DEFAULT_SPEED_DIVISOR = 28
 function DDR_ClearState() {
 	DDR_State = {
 		notes: [],
@@ -159,11 +276,14 @@ function DDR_ClearState() {
 		expectedTime: 0,
 		startTime: 0,
 
+		speedDivisor: DDR_DEFAULT_SPEED_DIVISOR,
+
 		inputState: {}, // inputState + drawingParams are set by later funcs
 		drawingParams: {},
 
 		render: {},
 	}
+
 	DDR_ClearInputState()
 	DDR_ClearRenderState()
 }
@@ -196,9 +316,8 @@ function DDR_SetSongPtr(num) {
 	DDR_SongDt = DDR_SONG_LIST[num]
 }
 
-const DDR_BASE_SPEED = 28
 function DDR_RunBPMCalc() {
-	DDR_State.deltaY = DDR_State.div / 2 * DDR_State.bpm / DDR_BASE_SPEED // speed at which notes rise
+	DDR_State.deltaY = DDR_State.div / 2 * DDR_State.bpm / DDR_State.speedDivisor // speed at which notes rise
 	// Now we can also set up a beatMS value; number of milliseconds per beat at current bpm
 	DDR_State.beatMS = ((1 / DDR_State.div) / (DDR_State.bpm / 60)) * 1000
 }
@@ -210,8 +329,19 @@ function DDR_SubmitKeyEvent(e) {
 
 function DDR_SubmitClickEvent(e) {
 	DDR_State.inputState.clicked = true
-	DDR_State.inputState.cx = e.clientX
-	DDR_State.inputState.cy = e.clientY
+	if (e.changedTouches) {
+		for (let i = 0; i < e.changedTouches.length; i++) {
+			const thisTouch = e.changedTouches[i]
+			DDR_State.inputState.points.push([ thisTouch.clientX, thisTouch.clientY ])
+		}
+	} else if (typeof e.clientX !== 'undefined') {
+		DDR_State.inputState.points.push([ e.clientX, e.clientY ])
+	} else {
+		console.error("??? invalid event passed to DDR_SubmitClickEvent")
+	}
+
+	// DDR_State.inputState.cx = e.clientX
+	// DDR_State.inputState.cy = e.clientY
 }
 
 // function DDR_CheckUsefulKeyPress() {
@@ -309,24 +439,26 @@ function DDR_PushEtherealNote(flags) {
 	])
 }
 
-function DDR_AdvanceBG() {
+function DDR_AdvanceBG(user) {
 	// Current bg state
 	const bgdt = DDR_SongDt.bgDt[DDR_State.render.bgPtr]
-	if (bgdt.type === DDR_TYPE_AUTO) {
+	if (bgdt.type.includes(DDR_TYPE_AUTO)) {
 		DDR_State.render.animFrame = 0
 		DDR_State.render.animAuto = true
-	} else {
+	} else if (bgdt.type.includes(DDR_TYPE_MAN)) {
 		DDR_State.render.animFrame = (DDR_State.render.animFrame + 1) % bgdt.frames.length
 		DDR_State.render.animAuto = false
+	} else if (bgdt.type.includes(DDR_TYPE_INLINE) && !user) {
+		DDR_State.render.animFrame = (DDR_State.render.animFrame + 1) % bgdt.frames.length
 	}
 }
 
 function DDR_PutNewBG() {
 	const bgdt = DDR_SongDt.bgDt[DDR_State.render.bgPtr]
-	if (bgdt.type === DDR_TYPE_AUTO) {
+	if (bgdt.type.includes(DDR_TYPE_AUTO)) {
 		DDR_State.render.animFrame = -1
 		DDR_State.render.animAuto = true
-	} else {
+	} else if (bgdt.type.includes(DDR_TYPE_MAN) || bgdt.type.includes(DDR_TYPE_INLINE)) {
 		DDR_State.render.animFrame = 0
 		DDR_State.render.animAuto = false
 	}
@@ -338,6 +470,16 @@ function DDR_CullNulls() {
 			DDR_State.notes.splice(i--, 1)
 		}
 	}
+}
+
+function DDR_GetLaneFromPoint(x, y) {
+	const dp = DDR_State.drawingParams
+	for (let i = 0; i < 4; i++) {
+		if (isRectOverlap(x, y, 1, 1, dp.arrowStart + (dp.arrowWidth * i), dp.arrowYStart, dp.arrowWidth, dp.arrowHeight)) {
+			return i
+		}
+	}
+	return -1
 }
 
 function DDR_Tick() {
@@ -371,6 +513,12 @@ function DDR_Tick() {
 			const acceptorCheck = DDR_IsNoteInAcceptorBounds(cnote, cnote[2]) // having lane conditions both be the same ensures a raw check for collision
 
 			if (acceptorCheck) {
+				if (cnote[3].bpmFlag) {
+					// BPM change
+					DDR_State.bpm = cnote[3].bpmFlagAmount
+					DDR_RunBPMCalc()
+				}
+
 				if (cnote[3].swFlag) {
 					// Switch bg
 					DDR_State.render.bgPtr = (DDR_State.render.bgPtr + 1) % DDR_SongDt.bgDt.length
@@ -383,17 +531,50 @@ function DDR_Tick() {
 					DDR_RunBPMCalc()
 				}
 
-				cnote[3] = { ethereal: cnote[3].ethereal }
-			}
+				if (cnote[3].speedFlag) {
+					// Speed divisor change
+					DDR_State.speedDivisor = parseFloat(cnote[3].speedFlagAmount)
+					DDR_RunBPMCalc()
+				}
 
-			continue
+				if (cnote[3].advFlag) {
+					if (DDR_State.render.animFrame < 0) {
+						DDR_State.render.animFrame = 0
+					}
+
+					// BG advance (within current animation)
+					DDR_AdvanceBG(false)
+				}
+
+				if (cnote[3].rotFlag) {
+					DDR_State.render.requestedRot = cnote[3].rotFlagAmount
+				}
+
+				if (cnote[3].resetFlag) {
+					xpos = DDR_START_POS
+				}
+
+				DDR_State.notes[i] = null
+				continue
+			}
+		}
+
+		let didHit = false
+
+		// Local function that just does note processing logic
+		function hitNote(cnote, i) {
+			DDR_AdvanceBG(true)
+			DDR_NoteScore()
+
+			DDR_NoteHit(cnote)
+			DDR_State.notes[i] = null
+			didHit = true
 		}
 
 		if (instate.keyed) {
 			const keys = instate.whichKeys
 
 			// If we did hit an arrow key, we now need to check collision
-			let didHit = false
 			keys.forEach(key => {
 				let whichLane = -1
 				if (key.startsWith("Arrow")) {
@@ -408,15 +589,31 @@ function DDR_Tick() {
 					}
 
 					if (DDR_IsNoteInAcceptorBounds(cnote, whichLane)) {
-						DDR_AdvanceBG()
-						DDR_NoteScore()
-
-						DDR_NoteHit(cnote)
-						DDR_State.notes[i] = null
-						didHit = true
+						hitNote(cnote, i)
 					}
 				}
 			})
+
+			if (didHit && cnote[4]) {
+				hasHit = true
+			}
+		}
+
+		if (instate.clicked) {
+			// Go through points and treat each one as a click collision
+			for (let k = 0; k < instate.points.length; k++) {
+				const pt = instate.points[k]
+				const whichLaneClicked = DDR_GetLaneFromPoint(pt[0], pt[1])
+
+				if (whichLaneClicked === -1) {
+					continue
+				}
+
+				if (DDR_IsNoteInAcceptorBounds(cnote, whichLaneClicked)) {
+					hitNote(cnote, i)
+					didHit = true
+				}
+			}
 
 			if (didHit && cnote[4]) {
 				hasHit = true
@@ -444,13 +641,18 @@ const DDR_SPARKLE_LIFE = 12
 
 const DDR_FTRIG = new window.FTrig(window.FTrig.LOW)
 
+const DDR_START_POS = -30
+const DDR_X_CHANGE = 8
+const DDR_ROT_CHANGE = 8
+
+let xpos = DDR_START_POS, fc = 0, rot = 0, rotInc = 0, rotDir = 1
 function DDR_Draw() {
 	const dp = DDR_State.drawingParams
 
 	// bgdt is a { type: ..., frames: ..., [restFrame]: ... } structure
 	const bgdt = DDR_SongDt.bgDt[DDR_State.render.bgPtr]
 
-	if (bgdt.type === DDR_TYPE_AUTO) {
+	if (bgdt.type.includes(DDR_TYPE_AUTO)) {
 		if (DDR_State.render.animFrame > -1) {
 			DDR_State.render.animFrame++
 			if (DDR_State.render.animFrame >= bgdt.frames.length) {
@@ -464,10 +666,48 @@ function DDR_Draw() {
 		finalDrawingFrame = 0
 	}
 
-	const currentBgImage = bgdt.frames[finalDrawingFrame]
+	let currentBgImage = bgdt.frames[finalDrawingFrame]
+	if (!(Array.isArray(currentBgImage))) {
+		currentBgImage = [ currentBgImage ]
+	}
 
 	// First we gotta draw the current bg
-	DDR_Ctx.drawImage(currentBgImage, 0, 0, dp.sw, dp.sh)
+	if (bgdt.isEnding) {
+		DDR_Ctx.drawImage(currentBgImage[0], 0, 0, dp.sw, dp.sh)
+
+		const img = currentBgImage[1]
+
+		const fx = xpos - (img.naturalWidth / 2)
+		const fy = dp.sh - img.naturalWidth
+
+		const crot = DDR_State.render.rot
+		const rrot = DDR_State.render.requestedRot
+
+		if (crot < rrot) {
+			DDR_State.render.rot += DDR_ROT_CHANGE
+			if (DDR_State.render.rot > rrot) {
+				DDR_State.render.rot = rrot
+			}
+		} else if (crot > rrot) {
+			DDR_State.render.rot -= DDR_ROT_CHANGE
+			if (DDR_State.render.rot < rrot) {
+				DDR_State.render.rot = rrot
+			}
+		}
+
+		DDR_Ctx.save()
+		DDR_Ctx.translate(fx, fy)
+		DDR_Ctx.translate(img.naturalWidth / 2, img.naturalHeight / 2)
+		DDR_Ctx.rotate(DDR_State.render.rot * Math.PI / 180)
+		DDR_Ctx.drawImage(img, -img.naturalWidth / 2, -img.naturalHeight / 2)
+		DDR_Ctx.restore()
+
+		xpos += DDR_X_CHANGE
+	} else {
+		currentBgImage.forEach((_frame, idx) => {
+			DDR_Ctx.drawImage(_frame, 0, 0, dp.sw, dp.sh)
+		})
+	}
 
 	// Draw acceptors
 	const dimBuffs = [0, 0, 0, 0]
@@ -483,6 +723,8 @@ function DDR_Draw() {
 
 		DDR_Ctx.drawImage(DDR_ACC_LIST[idx], dp.arrowStart + (dp.arrowWidth * idx) - dimBuffs[idx] / 2, dp.arrowYStart - dimBuffs[idx] / 2, finalW, finalH)
 	})
+
+	fc++
 
 	// Draw notes
 	DDR_State.notes.forEach(note => {
@@ -505,7 +747,7 @@ function DDR_Draw() {
 			noteImg = DDR_ARR_RIGHT
 		} else {
 			// ???
-			console.log(note)
+			console.log("INVALID NOTE: ", note)
 		}
 
 		DDR_Ctx.drawImage(noteImg, note[0], note[1], dp.arrowWidth, dp.arrowHeight)
@@ -525,7 +767,7 @@ function DDR_Draw() {
 			const x = finalRadius * DDR_FTRIG.cos(2 * Math.PI * (i / DDR_NUM_SPARKLES))
 			const y = finalRadius * DDR_FTRIG.sin(2 * Math.PI * (i / DDR_NUM_SPARKLES))
 
-			DDR_Ctx.fillStyle = "blue"
+			DDR_Ctx.fillStyle = "#0000ff"
 			DDR_Ctx.fillRect(x + dp.arrowStart + (dp.arrowWidth * idx) + (dp.arrowWidth / 2), y + dp.arrowYStart + (dp.arrowHeight / 2), 3, 3)
 		}
 
@@ -536,11 +778,13 @@ function DDR_Draw() {
 	})
 }
 
-const DDR_DebugTime = 116.62
+const DDR_DebugTime = 106.62
 let DDR_DebugIStart = 0
-let DDR_DebugOverride = true
+let DDR_DebugOverride = false
 
 async function DDR_CountBeat() {
+	DDR_State.expectedTime += DDR_State.beatMS
+
 	await new Promise((resolve, reject) => {
 		setTimeout(() => {
 			DDR_State.beatsElapsed++
@@ -549,8 +793,12 @@ async function DDR_CountBeat() {
 	})
 
 	// Reset adjust
-	DDR_State.expectedTime += DDR_State.beatMS
-	DDR_State.nextBeatAdjust = 0
+	if (DDR_State.nextBeatAdjust > DDR_State.beatMS) {
+		DDR_State.nextBeatAdjust -= DDR_State.beatMS
+		return
+	} else {
+		DDR_State.nextBeatAdjust = 0
+	}
 
 	if (DDR_State.startTime < 1) {
 		return
@@ -595,7 +843,7 @@ async function DDR_Parse() {
 	for (; i < songLines.length; i++) {
 		const thisDt = songLines[i]
 		if (debug) {
-			console.log(i, aud.currentTime)
+			//console.log(i, aud.currentTime)
 		}
 		if (thisDt) {
 			const args = thisDt.split(" ")
@@ -633,6 +881,26 @@ async function DDR_Parse() {
 				DDR_PushEtherealNote({
 					bpmFlag: true,
 					bpmFlagAmount: parseFloat(args[1]),
+				})
+			} else if (args[0] === 'speed') {
+				DDR_PushEtherealNote({
+					speedFlag: true,
+					speedFlagAmount: parseFloat(args[1]),
+				})
+			} else if (args[0] === 'adv') {
+				// Advances current anim set by 1
+				console.log('hit adv')
+				DDR_PushEtherealNote({
+					advFlag: true,
+				})
+			} else if (args[0] === 'rot') {
+				DDR_PushEtherealNote({
+					rotFlag: true,
+					rotFlagAmount: parseFloat(args[1]),
+				})
+			} else if (args[0] === 'resetpos') {
+				DDR_PushEtherealNote({
+					resetFlag: true,
 				})
 			} else {
 				// assumes note

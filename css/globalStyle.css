@@ -511,17 +511,19 @@ div.ochicken-bg * {
 
 .lynn-text {
     color: black;
-    font-size: 1.1vw;
+    font-size: 1.03vw;
 
     text-transform: capitalize;
 }
 
 #lynns-controls {
+    position: absolute;
+
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
 
-    margin-top: 2rem;
+    bottom: 2vmin;
 }
 
 #lynn-page-text {

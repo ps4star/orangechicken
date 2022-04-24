@@ -646,7 +646,7 @@ hook('load', async function() {
     // Load up game
     if (thisArc[2].mgFunc) {
         updateSaveens()
-        await window[thisArc[2].mgFunc].call({  })
+        await window[thisArc[2].mgFunc].apply({  }, thisArc[2].mgArgs || [])
         fadeoutToScene('mainMenu')
     }
 })

@@ -888,7 +888,7 @@ async function doDialog(name) {
                 })
             })
         } else if (args[0] === 'gotofadereload') {
-            save.nextScene = args[1]
+            save.nextScene = args.slice(1).join(" ")
 
             fadeoutNoSceneChange(async () => {
                 clearStage()
@@ -922,7 +922,7 @@ async function doDialog(name) {
             window[args[1]]()
         } else if (args[0] === 'callawait') {
             // Calls async func by string name and awaits it
-            await window[args[1]].call({ inline: inlineVarDict, saved: save.savedVars })
+            await window[args[1]].apply({ inline: inlineVarDict, saved: save.savedVars }, args.slice(2))
         } else if (args[0] === 'setbg') {
             await putBackgroundImage(args.slice(1).join(" "))
         } else if (args[0] === 'shakestart') {
