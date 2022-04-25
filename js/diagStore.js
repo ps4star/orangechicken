@@ -876,7 +876,7 @@ leave 1
 talk - (Becky goes and gets some food)
 pose 0 bored
 talk 0 (Ughhh I can't keep doing wellness wins like this, I'm gonna have to tell everyone I'm giving up)
-gotofadenewchapter 10
+gotofadenewchapter 11
 `,
     },
 
@@ -919,6 +919,10 @@ talk 1 "What do you want babe?"
 pose 0 normal
 talk 0 "I want Amy's broccoli Mac and cheese, two of them."
 talk 1 "Okay Amberlynn, I'll go heat it up now."
+leave 1
+pose 0 bored
+talk 0 (Ughhh I can't keep doing wellness wins like this, I'm gonna have to tell everyone I'm giving up)
+gotofadenewchapter 11
 `,
     },
 

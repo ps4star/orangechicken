@@ -713,7 +713,7 @@ if (debug) {
         writeSave()
     } catch(e) {
         save = DEFAULT_SAVE
-        window.location.reload()
+        writeSave()
     }
 }
 
