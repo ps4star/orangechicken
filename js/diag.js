@@ -32,6 +32,7 @@ const DEFAULT_SAVE = {
 
     money: 0,
     hasSaveensJar: false,
+    hasUnlockedArcade: false,
 }
 
 let save = DEFAULT_SAVE
