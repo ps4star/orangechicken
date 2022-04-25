@@ -704,12 +704,17 @@ hook('load', function() {
 })
 
 if (debug) {
-    save.chapters = save.chapters.map(el => true)
-    save.lynns = save.lynns.map(el => true)
-    save.arcades = save.arcades.map(el => true)
-    save.hasSaveensJar = true
-    save.hasUnlockedArcade = true
-    writeSave()
+    try {
+        save.chapters = save.chapters.map(el => true)
+        save.lynns = save.lynns.map(el => true)
+        save.arcades = save.arcades.map(el => true)
+        save.hasSaveensJar = true
+        save.hasUnlockedArcade = true
+        writeSave()
+    } catch(e) {
+        save[LS_KEY] = ""
+        window.location.reload()
+    }
 }
 
 loadScene('splash1')
