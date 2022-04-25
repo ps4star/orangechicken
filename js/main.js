@@ -712,7 +712,7 @@ if (debug) {
         save.hasUnlockedArcade = true
         writeSave()
     } catch(e) {
-        save[LS_KEY] = ""
+        save = DEFAULT_SAVE
         window.location.reload()
     }
 }
