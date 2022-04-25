@@ -878,7 +878,42 @@ talk 0 "Something with actual nutrition that will fill me, go pick it up Becky."
     "ww_finish": {
         inherits: "ww",
         diag: `
-
+sfx assets/sfx/bigsalad.ogg
+pose 0 gasp
+lynn gasp
+talk 0 "This salad is so big you guise but I'm gonna try to finish it."
+talk - (Let it be noted, the salad is not that large)
+pose 0 books
+lynn reader
+talk 0 "So anyway guise, I actually know a lot about nutrition. These dieticians don't know what works for me, they treat every body the same."
+talk 0 "They also don't let you have salads like these. A lot of them will tell you how great eggs are to eat, but I'm allergic to eggs you guise."
+talk 1 "Some people have really severe allergies, like people with peanut allergies."
+pose 0 confused
+lynn confused
+talk 0 "Um, this is a serious allergee Becky. Anyway guise, I don't think they get enough schooling for their job."
+talk 0 "Do they like read a paper and then they're hired? I could probably get a job as a nutritionist."
+pose 0 books
+lynn reader
+talk 0 "I've read a lot about nutrition and know a lot about it."
+talk - (Amberlynn keeps blabbing away, probably to distract herself from the salad that she is eating)
+talk 0 "I can give lots of healthy meal and snack ideas, maybe I should do more videos on that."
+talk 0 "Sometimes I get requests about it, I mostly get mookbang requests though."
+pose 0 salad
+talk - (Amberlynn finishes the salad, but doesn't completely clean the plate like she would with other foods)
+pose 0 normal
+talk 0 "Okay you guise, I'm finally finished with the salad. I'm super full now and need to go take care of things."
+pose 0 heyguys
+talk 0 "Thanks for watching my salad mookbang."
+pose 0 laptoptemplate
+lynn youtube
+talk - (Amberlynn shuts off the camera)
+pose 0 disgusted
+lynn disgusted
+talk 0 "That was actually awful, get me something that tastes good Becky."
+talk 1 "What do you want babe?"
+pose 0 normal
+talk 0 "I want Amy's broccoli Mac and cheese, two of them."
+talk 1 "Okay Amberlynn, I'll go heat it up now."
 `,
     },
 
