@@ -872,6 +872,11 @@ talk 1 "What about wellness wins?"
 talk 0 "Omg Becky I'm allowed to have takeout. You can't just avoid takeout all your life."
 talk 1 "Okay Amberlynn, what do you want to eat?"
 talk 0 "Something with actual nutrition that will fill me, go pick it up Becky."
+leave 1
+talk - (Becky goes and gets some food)
+pose 0 bored
+talk 0 (Ughhh I can't keep doing wellness wins like this, I'm gonna have to tell everyone I'm giving up)
+gotofadenewchapter 10
 `,
     },
 
@@ -1039,40 +1044,228 @@ gotofadenewchapter 9
 
     // Chapter 9
     "outside": {
+        bg: "pillowmountain.png",
+        music: [ RIZO_ISLAND_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+        diag: `
+chapter 9
+enter 0
+pose 0 laptoptemplate
+talk - (Amber turns the camera on)
+pose 0 heyguys
+talk 0 "Hey guiiise welcome to a new vlog."
+pose 0 amflag
+lynn patriot
+talk 0 "So we're kind of getting ready to go out and do some 4th of July fireworks."
+talk 0 "This is what I'm wearing. I have a bow moment here."
+talk 0 "Like, yes though, American flag, like, how ya doin'?"
+talk 0 "And for some reason it looks backwards to you guys, but it's not."
+talk 0 "... ... ..."
+talk - (Amber looks over at Becky)
+enter 1
+pose 1 normal
+pose 0 frowny
+lynn frowny
+talk 0 "My bow is backwardssssuhhh."
+talk 1 "No it's not."
+talk 0 "It's not? To you it doesn't look backwards?"
+talk 1 "No."
+leave 1
+pose 0 amflag
+talk 0 "Ok well for some reason on here it looks backwards."
+pose 0 normal
+talk 0 "So anyway, you guise have really been requesteen some more waukeen outside videos."
+talk 0 "So thought I'd go ahead and film one since we're about to go do some fireworks. Are we ready to go babe?"
+enter 1
+pose 1 useless
+talk 1 "Yep."
+pose 0 leaveen
+talk - (Amberlynn waddles to the door and turns on her camera)
+gotofadereload outside_yard
+`,
+    },
+
+    "outside_yard": {
         bg: "frontyard.png",
         music: [ CALD_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
-chapter 9
-pose 0 leaveen
-talk - (Amberlynn waddles to the door and turns on her camera)
+enter 0
+enter 1
+pose 1 useless
 pose 0 gasp
-talk 0 "Hey you guys. So today we are gonna go outside, the weather is so beautiful today."
+talk 0 "Wow, the weather is so beautiful today."
 talk - (Amberlynn turns the camera to look outside the door)
+pose 0 pointer
+lynn pointer
 talk 0 "I should really have a picnic out there some day, it looks so nice outside."
 pose 0 shocked
 sfx assets/sfx/breatheen.ogg
 talk - (Amberlynn struggles out the door and carefully goes down the steps, already breathing heavy)
 pose 0 backwards
 talk 0 "We are gonna take a fun little walk together guise, this is so fun."
-talk 0 "I actually come outside a lot, I just don't film it for you."
+talk 0 "I actually come outside a lot, I just don't film it for you guise, cuuuuz, hashtag..."
+pose 0 shadow
+lynn shadow
+talk - (Amber points the camera towards the ground, showing off her shadow)
 talk 0 "I don't have to show every second of my life, you know?"
 startshake 0
 sfx assets/sfx/breatheen.ogg 99.0
-talk - (The camera shakes as amberlynn waddles across the lawn, breathing heavier and heavier)
+talk - (The camera shakes as Amberlynn waddles across the lawn, breathing heavier and heavier)
 shakeend 0
 pose 0 normal
-talk 0 "After I finish my vlog, maybe I'll do some cleaneen."
+talk 0 "After I finish this vlog, maybe I'll do some cleaneen."
+sfx assets/sfx/breatheen.ogg 99.0
 talk 0 "I feel really inspired you guiiiise."
 talk 0 "It's great to get up and move around."
 pose 0 shocked
-sfx assets/sfx/breatheen.ogg
+sfx assets/sfx/breatheen.ogg 99.0
 talk - (Amberlynn struggles back to the front door and heaves herself up the steps)
 pose 0 normal
 talk 0 "Wow, that was great you guise."
 pose 0 heyguys
 talk 0 "I'm gonna see y'all later, gotta get off and clean."
+talk 0 "I'm gonna probably upload some more exerciseen videos soon though you guise."
+talk 0 "I'm super committed to this new exercise lifestyle you guise."
 talk - (Amberlynn turns off the camera)
+gotofadenewchapter 10
+`,
+    },
+
+    "alr-ddr": {
+        bg: "tv.png",
+        music: [ RIZO_ISLAND_MUSIC_DT, DDR_MUSIC_DT, RIZO_ISLAND_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+        diag: `
+chapter 10
+enter 0
+pose 0 heyguys
+talk 0 "Hey you guuuuuys welcome to a new video."
+pose 0 normal
+talk 0 "I just got in from our 4th of July party a little bit ago."
+talk 0 "Soo a lot of you guys requested more exerciseen videos."
+talk 0 "I kind of have lieek, a hard time with it because of my heel spur you guise."
+sfx assets/sfx/excite.ogg
+talk 0 "Buuuut I found out about this super fun program called ALR-DDR."
+talk 0 "It's like this little danceen game, you just plug it up to your TV and you dance on eeet."
+pose 0 books
+talk 0 "I was a dancer in middle school y'all I would like korey-ah-gruff the dances."
+talk 0 "So I'm honestly really excited to try this, might bring back some memoreees."
+pose 0 cacklelynn
+talk 0 "It's so weird how it has my initials though you guise HAHA."
+talk 0 "Isn't that so funny Becky?"
+talk 0 "... ... ..."
+pose 0 pissed
+talk 0 "BECKEEEE WHERE ARE YOU??"
+enter 1
+pose 1 normal
+talk 1 "I'm right here Amber..."
+pose 0 cacklelynn
+talk 0 "Oh HAHA I didn't see you."
+talk 0 "Isn't that like soo funny Beckeee??"
+talk 1 "Yes Amber..."
+pose 0 normal
+leave 1
+talk 0 "So I'm super excited to start this program and just kind of open a new chapter in my life."
+talk 0 "I feel liek this is just gonna be a super eye-openeen experience kind of situation."
+talk 0 "So I'm gonna go ahead and try this thing out on camera for you guise..."
+talk 0 "...do a little test run moment."
+talk 0 "So you're supposed to put like this pad thing down on your floor."
+talk 0 "So I'm putteen it in my liveen room next to all our game councils."
+pose 0 gasp
+talk 0 "Oh muh gah you guise all the outlets are plugged up already."
+talk 0 "Gonna unplug some of these councils in here."
+pose 0 normal
+talk - (Amberlynn rips everything out from the outlets behind the TV, then plus up the ALR-DDR controller)
+talk 0 "Ok let's turn it on now..."
+talk - (Nothing shows up on the TV)
+pose 0 frowny
+talk 0 "I'm waiiiiteeeen why is nothing happeneen??"
+pose 0 pissed
+talk 0 "BECKEEEEEEEEEE"
+enter 1
+pose 1 normal
+talk 1 "What?"
+talk 0 "This TV is all like not workeeen I can't figure it out."
+talk 1 "Ok I'll look."
+talk 1 "... ... ..."
+talk 1 "The TV is unplugged babe. Did you do that?"
+pose 0 guilty
+lynn guilty
+talk 0 "Noouu I think Eric did that."
+talk - (Becky plugs everything up correctly).
+pose 0 normal
+talk 0 "Thanks Beckeeee."
+leave 1
+talk 0 "Sooooo as I was sayeen..."
+talk 0 "These note thingies like come down and you have to like step on the buttons when they hit the thing."
+talk 0 "Kind of like those arcade machines but it's made specifically more for like exerciseen purposes."
+talk 0 "So let's go ahead and step on hereee and try out a few songs."
+talk - (Amber steps onto the DDR pad)
+gotofade alr-ddr_onpad
+`,
+    },
+
+    "alr-ddr_onpad": {
+        inherits: "alr-ddr",
+        diag: `
+callawait mgALRDDR 0
+`,
+    },
+
+    "wellness fails": {
+        bg: "kitchen.png",
+        music: [ CALD_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+        diag: `
+chapter 60
+enter 0
+pose 0 smug
+talk - (Amberlynn sits down to the table, wiping water on her face to make it look like she cried, then turns the camera on)
+pose 0 pissed
+sfx assets/sfx/breatheen.ogg
+talk 0 "You guise, I got a lot to get off my chest."
+talk - (Amberlynn wipes away the water from her face with her sleeve)
+pose 0 mentalthings
+talk 0 "It's been really hard, I didn't expect it to be so hard to get in shape."
+talk 0 "I think that just wasn't meant for me, I'm gonna try something different in the future."
+talk 0 "I haven't had any energy at all you guise, and felt super sick."
+enter 1
+talk - (Becky pulls a chair up beside Amberlynn and sits down, just staring at the camera)
+pose 0 closedeyes
+talk 0 "It's good to know your body's limits you guise, and clearly this was pushing mine."
+talk 0 "I want everyone to know that I learned something about me though."
+talk - (She takes a deep breath)
+pose 0 gasp
+talk 0 "It's okay to fail guise, it's okay."
+talk 0 "Everyone fails, Becky fails, even I fail."
+pose 1 thousandyardstare
+talk - (Becky looks at amberlynn likes she's wondering why she was dragged into this)
+pose 0 guilty
+talk 0 "So I've talked about nutrition a bit, and I know some of you guys are curious about healthy snack ideas."
+talk 0 "In a few days maybe I'll make a healthy snack ideas video. I already something in mind."
+pose 0 cacklelynn
+talk 0 "Just as a little sneak peak."
+pose 0 cucumber
+talk - (Amberlynn holds up a giant cucumber)
+talk 0 "It involves this."
+sfx assets/sfx/looksreallygood.ogg
+talk 0 "Yes, a super healthy snack with cucumber, and I swear it will taste great you guys."
+pose 0 pepperonigorlheyguys
+talk 0 "Thank you for watching my video, bye everyone."
+pose 0 laptopyt
+talk - (Amberlynn turns off the camera)
+pose 0 pissed
+shakestart 0
+talk 0 "BECKEHHHH"
+shakeend 0
+pose 1 useless
+talk 1 "Amberlynn, I'm literally right next to you."
+pose 0 frowny
+talk 0 "Did we get cream cheese and microwave bacon at the store?"
+talk 1 "Uhh, lemme go check."
+incvisit
+gotofadenewchapter 1
 `,
     },
 
@@ -1184,86 +1377,6 @@ talk 0 "Now I'm akshually just gonna put some water in here, it's hulthier than 
 talk 0 "Now we're gonna throw in just like one teaspoon of some minced garliiiic..."
 talk - (Amber adds 6 teaspoons of minced garlic)
 talk 0 ""
-`,
-    },
-
-    "alr-ddr": {
-        bg: "tv.png",
-        music: [ RIZO_ISLAND_MUSIC_DT, DDR_MUSIC_DT, RIZO_ISLAND_MUSIC_DT ],
-        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
-        diag: `
-chapter 53
-enter 0
-pose 0 heyguys
-talk 0 "Hey you guuuuuys welcome to a new video."
-pose 0 normal
-talk 0 "Soo a lot of you guys requested more exerciseen videos."
-talk 0 "I kind of have lieek, a hard time with it because of my heel spur you guise."
-sfx assets/sfx/excite.ogg
-talk 0 "Buuuut I found out about this super fun program called ALR-DDR."
-talk 0 "It's like this little danceen game, you just plug it up to your TV and you dance on eeet."
-pose 0 books
-talk 0 "I was a dancer in middle school y'all I would like korey-ah-gruff the dances."
-talk 0 "So I'm honestly really excited to try this, might bring back some memoreees."
-pose 0 cacklelynn
-talk 0 "It's so weird how it has my initials though you guise HAHA."
-talk 0 "Isn't that so funny Becky?"
-talk 0 "... ... ..."
-pose 0 pissed
-talk 0 "BECKEEEE WHERE ARE YOU??"
-enter 1
-pose 1 normal
-talk 1 "I'm right here Amber..."
-pose 0 cacklelynn
-talk 0 "Oh HAHA I didn't see you."
-talk 0 "Isn't that like soo funny Beckeee??"
-talk 1 "Yes Amber..."
-pose 0 normal
-leave 1
-talk 0 "So I'm super excited to start this program and just kind of open a new chapter in my life."
-talk 0 "I feel liek this is just gonna be a super eye-openeen experience kind of situation."
-talk 0 "So I'm gonna go ahead and try this thing out on camera for you guise..."
-talk 0 "...do a little test run moment."
-talk 0 "So you're supposed to put like this pad thing down on your floor."
-talk 0 "So I'm putteen it in my liveen room next to all our game councils."
-pose 0 gasp
-talk 0 "Oh muh gah you guise all the outlets are plugged up already."
-talk 0 "Gonna unplug some of these councils in here."
-pose 0 normal
-talk - (Amberlynn rips everything out from the outlets behind the TV, then plus up the ALR-DDR controller)
-talk 0 "Ok let's turn it on now..."
-talk - (Nothing shows up on the TV)
-pose 0 frowny
-talk 0 "I'm waiiiiteeeen why is nothing happeneen??"
-pose 0 pissed
-talk 0 "BECKEEEEEEEEEE"
-enter 1
-pose 1 normal
-talk 1 "What?"
-talk 0 "This TV is all like not workeeen I can't figure it out."
-talk 1 "Ok I'll look."
-talk 1 "... ... ..."
-talk 1 "The TV is unplugged babe. Did you do that?"
-pose 0 guilty
-lynn guilty
-talk 0 "Noouu I think Eric did that."
-talk - (Becky plugs everything up correctly).
-pose 0 normal
-talk 0 "Thanks Beckeeee."
-leave 1
-talk 0 "Sooooo as I was sayeen..."
-talk 0 "These note thingies like come down and you have to like step on the buttons when they hit the thing."
-talk 0 "Kind of like those arcade machines but it's made specifically more for like exerciseen purposes."
-talk 0 "So let's go ahead and step on hereee and try out a few songs."
-talk - (Amber steps onto the DDR pad)
-gotofade alr-ddr_onpad
-`,
-    },
-
-    "alr-ddr_onpad": {
-        inherits: "alr-ddr",
-        diag: `
-callawait mgALRDDR 0
 `,
     },
 
