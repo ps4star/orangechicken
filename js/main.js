@@ -1,6 +1,6 @@
 var $ = window.$ || window.jQuery
 
-const debug = true
+const debug = false
 
 const MM_ASSETS_LIST = [
     "assets/titlescreen.jpg",
