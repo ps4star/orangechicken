@@ -730,11 +730,14 @@ enter 1
 pose 1 normal
 talk 1 "Amberlynn would you stop screaming."
 pose 0 frowny
+lynn frowny
 talk 0 "I have a major issue Becky you neeeeed to take this seriously omg."
 talk 1 "Okay babe, what's wrong?"
 pose 0 mentalthings
+lynn mental
 talk 0 "My view count and subscribers keep going down. No one likes my shoppeen and torrid hauls anymore."
 pose 0 bored
+lynn bored
 talk 0 "Everyone's just requesting stupid stuff like exercising and eating healthy."
 talk 1 "Well that might be a good idea babe. How about you do another diet plan, or how about going outside?"
 talk 0 "UUUUUGHHHHH FIINE I guess I'll try it out just one more time."
@@ -759,12 +762,15 @@ gotofadenewchapter 7
         inherits: "comments",
         diag: `
 pose 0 bored
+lynn bored
 talk 0 "Yeah, I guess I could go outside..."
 pose 0 confused
+lynn confused
 talk 0 "Wait I just remembered something."
 talk 0 "Isn't tomorrow the 4th of July?"
 talk 1 "Oh yeah I forgot. We could go outside and do some fireworks while you vlog it."
 pose 0 bored
+lynn bored
 talk 0 "Hmmm yeah, that might be good for the view count."
 pose 0 normal
 talk 0 "Ok Beckeeee we'll go outside and do 4th of July stuff tomorrow."
@@ -783,6 +789,7 @@ gotofadenewchapter 10
 chapter 7
 enter 0
 pose 0 heyguys
+lynn heyguys
 talk 0 "Hey guise, so today we are doeen something a little bit different."
 pose 0 normal
 talk 0 "I've gotten a looooot of advice from people, and I'm gonna be doing Weight Watchers."
