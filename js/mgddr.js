@@ -312,7 +312,7 @@ function DDR_SetCandt(candt) {
 	DDR_UpdateDrawingParams(candt.sw, candt.sh)
 }
 
-function DDR_SetSongPtr(num) {
+function DDR_SetPtr(num) {
 	DDR_SongDt = DDR_SONG_LIST[num]
 }
 
@@ -813,14 +813,16 @@ async function DDR_CountBeat() {
 	}
 }
 
+let DDR_Aud
+
 async function DDR_Parse() {
 	const songDt = DDR_SongDt.dt
 	const songLines = songDt.split("\n")
 
-	const aud = new Audio(DDR_SongDt.url)
+	const DDR_Aud = new Audio(DDR_SongDt.url)
 	await new Promise((resolve, reject) => {
-		aud.oncanplaythrough = () => {
-			aud.volume = save.volume / 100
+		DDR_Aud.oncanplaythrough = () => {
+			DDR_Aud.volume = save.volume / 100
 			
 			if (debug && DDR_DebugOverride) {
 				DDR_DebugIStart = 1127
@@ -843,7 +845,7 @@ async function DDR_Parse() {
 	for (; i < songLines.length; i++) {
 		const thisDt = songLines[i]
 		if (debug) {
-			//console.log(i, aud.currentTime)
+			//console.log(i, DDR_Aud.currentTime)
 		}
 		if (thisDt) {
 			const args = thisDt.split(" ")
@@ -861,10 +863,10 @@ async function DDR_Parse() {
 
 				setTimeout(() => {
 					if (debug && DDR_DebugOverride) {
-						aud.currentTime = DDR_DebugTime
+						DDR_Aud.currentTime = DDR_DebugTime
 					}
-					aud.play()
-				}, ((DDR_INITIAL_OFFSET / DDR_State.deltaY) * 16.6666667))
+					DDR_Aud.play()
+				}, ((DDR_INITIAL_OFFSET / DDR_State.deltaY) * 16.6666667) - 30)
 			} else if (args[0] === 'sw') {
 				// sw means SWITCH background
 				// DDR_State.render.bgPtr = (DDR_State.render.bgPtr + 1) % DDR_SongDt.bgDt.length

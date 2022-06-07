@@ -774,7 +774,7 @@ async function mgALRDDR(songPtrAsStr) {
 
         // DDR setup
         DDR_ClearState()
-        DDR_SetSongPtr(songPtrAsNumber)
+        DDR_SetPtr(songPtrAsNumber)
         DDR_SetCandt(candt)
 
         DDR_SetDOMInputs({
@@ -786,6 +786,198 @@ async function mgALRDDR(songPtrAsStr) {
         mgSetTickFunction(() => {
             DDR_Tick()
             DDR_Draw()
+            mgDrawToReal(candt)
+            fc++
+        })
+        mgTick()
+
+        // drawMonoImage(candt, mgMookbongLayg, 40, 40)
+    })
+}
+
+async function mgLaygoes() {
+    await new Promise((resolve, reject) => {
+        textInputMode = false
+        const $can = $('#books-canvas-container')
+        const $books = $('#books-canvas')
+        mgShowCanvasContainer($can)
+
+        let candt = mgInitCanvas($books, { alpha: false, powerPreference: "high-performance" })
+        // mgNullifyKeyEvents(candt)
+        candt.realCanvas.tabIndex = '-1'
+
+        const $realCan = $(candt.realCanvas)
+
+        $realCan.on('mousedown', function(e) {
+            // e.offsetX * (candt.sw / window.innerWidth)
+            e.clientX *= (candt.sw / window.innerWidth)
+            e.clientY *= (candt.sh / window.innerHeight)
+            PIC_SubmitClickEvent(e)
+        })
+
+        // $realCan.on('mouseup', function(e) {
+        //     PIC_SubmitReleaseEvent(e)
+        // })
+
+        $realCan.on('keydown', function(e) {
+
+        })
+
+        $realCan.on('touchstart', function(e) {
+            mgTouch2Mouse(e)
+        })
+
+        $realCan.on('blur', function(e) {
+            
+        })
+
+        $realCan[0].focus()
+
+        let fc = 0
+
+        PIC_ClearState()
+        PIC_SetPtr(0)
+        PIC_SetCandt(candt)
+
+        PIC_Init()
+
+        // DOM Setup
+        const $submit = $('#pic-submit')
+        $submit.addClass('visible')
+
+        $submit.on('mousedown', function(e) {
+            mgExit = true
+            mgHideCanvasContainer($can)
+            $submit.removeClass('visible')
+            textInputMode = true
+            resolve()
+        })
+
+        mgSetTickFunction(() => {
+            PIC_Tick()
+            PIC_Draw()
+            mgDrawToReal(candt)
+            fc++
+        })
+        mgTick()
+
+        // drawMonoImage(candt, mgMookbongLayg, 40, 40)
+    })
+}
+
+async function mgMiniHorse() {
+    await new Promise((resolve, reject) => {
+        textInputMode = false
+        const $can = $('#books-canvas-container')
+        const $books = $('#books-canvas')
+        mgShowCanvasContainer($can)
+
+        let candt = mgInitCanvas($books, { alpha: false, powerPreference: "high-performance" })
+        // mgNullifyKeyEvents(candt)
+        candt.realCanvas.tabIndex = '-1'
+
+        const $realCan = $(candt.realCanvas)
+
+        $realCan.on('mousedown', function(e) {
+            // e.offsetX * (candt.sw / window.innerWidth)
+            e.clientX *= (candt.sw / window.innerWidth)
+            e.clientY *= (candt.sh / window.innerHeight)
+        })
+
+        // $realCan.on('mouseup', function(e) {
+        //     PIC_SubmitReleaseEvent(e)
+        // })
+
+        $realCan.on('keydown', function(e) {
+
+        })
+
+        $realCan.on('touchstart', function(e) {
+            mgTouch2Mouse(e)
+        })
+
+        $realCan.on('blur', function(e) {
+            
+        })
+
+        $realCan[0].focus()
+
+        let fc = 0
+
+        // DOM Setup
+        const $submit = $('#pic-submit')
+
+        $submit.on('mousedown', function(e) {
+            mgExit = true
+            mgHideCanvasContainer($can)
+            $submit.removeClass('visible')
+            textInputMode = true
+            resolve()
+        })
+
+        mgSetTickFunction(() => {
+            
+            mgDrawToReal(candt)
+            fc++
+        })
+        mgTick()
+
+        // drawMonoImage(candt, mgMookbongLayg, 40, 40)
+    })
+}
+
+async function mgMiniCf() {
+    await new Promise((resolve, reject) => {
+        textInputMode = false
+        const $can = $('#books-canvas-container')
+        const $books = $('#books-canvas')
+        mgShowCanvasContainer($can)
+
+        let candt = mgInitCanvas($books, { alpha: false, powerPreference: "high-performance" })
+        // mgNullifyKeyEvents(candt)
+        candt.realCanvas.tabIndex = '-1'
+
+        const $realCan = $(candt.realCanvas)
+
+        $realCan.on('mousedown', function(e) {
+            // e.offsetX * (candt.sw / window.innerWidth)
+            e.clientX *= (candt.sw / window.innerWidth)
+            e.clientY *= (candt.sh / window.innerHeight)
+        })
+
+        // $realCan.on('mouseup', function(e) {
+        //     PIC_SubmitReleaseEvent(e)
+        // })
+
+        $realCan.on('keydown', function(e) {
+
+        })
+
+        $realCan.on('touchstart', function(e) {
+            mgTouch2Mouse(e)
+        })
+
+        $realCan.on('blur', function(e) {
+            
+        })
+
+        $realCan[0].focus()
+
+        let fc = 0
+
+        // DOM Setup
+        const $submit = $('#pic-submit')
+
+        $submit.on('mousedown', function(e) {
+            mgExit = true
+            mgHideCanvasContainer($can)
+            $submit.removeClass('visible')
+            textInputMode = true
+            resolve()
+        })
+
+        mgSetTickFunction(() => {
+            
             mgDrawToReal(candt)
             fc++
         })

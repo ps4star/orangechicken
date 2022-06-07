@@ -169,6 +169,7 @@ const $mgDOM = $(`<div>`)
             .append($(`<pre id="calories-text"><span class="calories-amount">0</span><span class="calories-calories-text"> Calories</span>`))
         )
     )
+    .append($(`<button id="pic-submit" class="panel">Continue</button>`))
 
 const LYNNS_ASSETS_LIST = [
     "assets/journalynn.png",
@@ -713,7 +714,7 @@ if (debug) {
         writeSave()
     } catch(e) {
         save = DEFAULT_SAVE
-        window.location.reload()
+        writeSave()
     }
 }
 
