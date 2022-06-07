@@ -22,12 +22,20 @@ const ALRTHEME_MUSIC_DT = {
     end: 93,
 }
 
-const DDR_MUSIC_DT = {
-    url: "assets/music/alrtheme.ogg",
+// const DDR_MUSIC_DT = {
+//     url: "assets/music/alrtheme.ogg",
+//     loops: true,
+//     initStart: 0,
+//     start: 0,
+//     end: 93,
+// }
+
+const AREA89_MUSIC_DT = {
+    url: "assets/music/area89.ogg",
     loops: true,
     initStart: 0,
-    start: 0,
-    end: 93,
+    start: 9,
+    end: 191.78,
 }
 
 const ACTORS = {
@@ -35,7 +43,9 @@ const ACTORS = {
     "Becky": "assets/actors/becky.png",
     "C.F. Waitress": "assets/actors/cfwaitress.png",
     "Piggybank": "assets/actors/piggybank.png",
-    "Frank": "assets/actors/fbifrank.png",
+    "FBI Frank": "assets/actors/frank.png",
+    "Dusty": "assets/actors/dustiny.png",
+    "???": "assets/scenes/trans.png",
 }
 
 const ALL_DIAGS = {
@@ -613,6 +623,8 @@ goto books_canafford
 endif
 
 if lt money journalCost
+pose 0 pissed
+lynn angry
 talk 0 "I can't afford these journuuuuuuuuuuhhhhls noooooouh."
 goto books_cantafford
 endif
@@ -636,7 +648,9 @@ pose 0 gasp
 lynn gasp
 talk 0 "Oh muh god you guys I lidurally didn't even bring enough money for this."
 pose 0 sumg
+lynn smug
 talk 0 "I really didn't even get alot of journals though, I guess they're just super expensive now or wudeverrr."
+pose 0 normal
 talk 0 "Anyway I guess we can't any sooo we're goeen home now."
 goto books_becky_complains
 `,
@@ -647,20 +661,20 @@ goto books_becky_complains
         diag: `
 pose 1 normal
 talk 1 "Babe wait I wanted to look at some more SpongeBob books..."
-pose 0 bored
+pose 0 pissed
 talk 0 "No Beckeeee we gotta go come onnnuh."
-gotofadereload books_canafford_film
+gotofadenewchapter 6
 `,
     },
 
-    "books_canafford_film": {
-        bg: "pillowmountain.png",
-        music: [ RIZO_ISLAND_MUSIC_DT ],
-        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
-        diag: `
+//     "books_canafford_film": {
+//         bg: "pillowmountain.png",
+//         music: [ RIZO_ISLAND_MUSIC_DT ],
+//         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+//         diag: `
 
-`,
-    },
+// `,
+//     },
 
     // Chapter 6
     "comments": {
@@ -736,6 +750,7 @@ haul_2_walk
         inherits: "comments",
         diag: `
 talk 0 "Okayyuh, guess I'll go on weight watchers again."
+; wellness wins
 gotofadenewchapter 7
 `,
     },
@@ -754,7 +769,8 @@ talk 0 "Hmmm yeah, that might be good for the view count."
 pose 0 normal
 talk 0 "Ok Beckeeee we'll go outside and do 4th of July stuff tomorrow."
 talk 0 "I'm getting so hongry right now though, go get me some food so I can do a mookbong."
-gotofadenewchapter 8
+; salad
+gotofadenewchapter 10
 `,
     },
 
@@ -772,7 +788,7 @@ pose 0 normal
 talk 0 "I've gotten a looooot of advice from people, and I'm gonna be doing Weight Watchers."
 talk 0 "Well teknikleee it's not weight watchers anymore it's WW, which actually stands for wellness wiiiins."
 pose 0 closedeyes
-talk 0 "And as you guys know I have binge eating disorder..."
+talk 0 "But anyway, so as you guys know I have binge eating disorder..."
 pose 1 useless
 talk 1 "That's true, I saw it."
 pose 0 guilty
@@ -780,7 +796,7 @@ talk - (Amberlynn nods dramatically)
 talk 0 "I take full responsibility for everything that has happened in my life, but I'm gonna try really hard."
 pose 0 normal
 talk 0 "You guise know change doesn't come overnight."
-talk 0 "I'm not gonna just wake up overnight and be a completely different gorl."
+talk 0 "Like I'm not gonna just wake up overnight and be a completely different gorl."
 talk 0 "This isn't going to be easy at all you guise."
 talk - (Amberlynn notices Becky eating something)
 pose 0 laser
@@ -799,7 +815,9 @@ pose 0 salad
 lynn salad
 talk - (Amber takes a bite)
 pose 0 closedeyes
-talk 0 "So I've also had a lot of people message me, and yes I'll still be eating take out."
+talk 0 "So basically while I'm doeen wellness wins I'm gonna try to just, you know, eat hulthier, exercise more."
+talk 0 "I kinda want to start doing more videos where I kinda just, show you guise how I cook stuff."
+talk 0 "Oh yeah, so, I've also had a lot of people message me, and yes I'll still be eating take out during this."
 talk 0 "Tons of people have told me I can't just eat veggies all day every day, and that it's normal to eat takeout."
 pose 0 salad
 talk - (Amberlynn pushes the salad around with her fork and takes a small bite)
@@ -818,7 +836,7 @@ talk 0 "Honestly it's hilarious."
 pose 0 salad
 lynn salad
 talk - (Amberlynn quickly takes another bite of her salad while making a terrified face as she realizes she has only had a few bites) 
-sfx assets/sfx/bigsalad.ogg
+sfx assets/sfx/bigsalad.ogg 2.0
 pose 0 gasp
 talk 0 "This is honestly so much bigger than I thought it was gunna bee.."
 talk 0 "But yeah, I'm telleeeen you guys, this salad is absolutely amazing."
@@ -833,7 +851,7 @@ ww_finish
     },
 
     "ww_lah": {
-        inherits: "ww",
+        inherits: "wellness wins",
         diag: `
 pose 0 gasp
 talk 0 "You guise I just realized I gotta go to wommart. I'm gonna have to finish this later, so I'll let y'all go. Byeeee."
@@ -875,23 +893,26 @@ talk 0 "Something with actual nutrition that will fill me, go pick it up Becky."
 leave 1
 talk - (Becky goes and gets some food)
 pose 0 bored
-talk 0 (Ughhh I can't keep doing wellness wins like this, I'm gonna have to tell everyone I'm giving up)
-gotofadenewchapter 11
+talk 0 (Ughhh I can't keep doing wellness wins like this, I'm gonna have to tell everyone I'm giving up soon...)
+; sofa
+gotofadenewchapter 8
 `,
     },
 
     "ww_finish": {
-        inherits: "ww",
+        inherits: "wellness wins",
         diag: `
-sfx assets/sfx/bigsalad.ogg
+sfx assets/sfx/bigsalad.ogg 2.0
 pose 0 gasp
 lynn gasp
 talk 0 "This salad is so big you guise but I'm gonna try to finish it."
 talk - (Let it be noted, the salad is not that large)
 pose 0 books
 lynn reader
-talk 0 "So anyway guise, I actually know a lot about nutrition. These dieticians don't know what works for me, they treat every body the same."
-talk 0 "They also don't let you have salads like these. A lot of them will tell you how great eggs are to eat, but I'm allergic to eggs you guise."
+talk 0 "So anyway guise, I actually know a lot about nutrition."
+talk 0 "These dieticians don't know what works for me, they treat every body the same."
+talk 0 "They also don't let you have salads like these."
+talk 0 "A lot of them will tell you how great eggs are to eat, but I'm allergic to eggs you guise."
 talk 1 "Some people have really severe allergies, like people with peanut allergies."
 pose 0 confused
 lynn confused
@@ -921,18 +942,137 @@ talk 0 "I want Amy's broccoli Mac and cheese, two of them."
 talk 1 "Okay Amberlynn, I'll go heat it up now."
 leave 1
 pose 0 bored
-talk 0 (Ughhh I can't keep doing wellness wins like this, I'm gonna have to tell everyone I'm giving up)
-gotofadenewchapter 11
+talk 0 (Ughhh I can't keep doing wellness wins like this, I'm gonna have to tell everyone I'm giving up soon...)
+; sofa
+gotofadenewchapter 8
 `,
     },
 
     // Chapter 8
-    "salad mookbong": {
+    "sofa": {
         bg: "pillowmountain.png",
         music: [ CALD_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
 chapter 8
+enter 0
+pose 0 pissed
+talk 0 "BECKEHHHHHH!"
+enter 1
+talk 1 "Amberlynn stop screaming, what's wrong?"
+talk 0 "You broke the sofeh."
+talk 1 "Babe, no I didn't, you did that last night."
+shakestart 0
+talk 0 "No Becky stop lyeen."
+talk - (Amberlynn looks at the camera nervously.)
+shakeend 0
+pose 0 shocked
+talk 0 "I can't break the sofa, I'm a super dainty gorl rememberer???"
+pose 0 books
+talk 0 "You guise she is totally sayeen I'm big."
+pose 1 useless
+talk 1 "Amberlynn, no one said that."
+talk 1 "You broke it last night when you sat on it babe."
+
+multi
+Insist that Becky broke it
+sofa_becky
+Confess that you broke it
+sofa_amber
+`,
+    },
+
+    "sofa_becky": {
+        inherits: "sofa",
+        diag: `
+pose 0 laser
+shakestart 0
+talk 0 "BECKEHHHH! STOP LYEEEEEEN!"
+shakeend 0
+pose 0 frowny
+talk 0 "It's not even funny anymore."
+talk 0 "You guise don't believe her."
+affectionchange %AFFCHANGE_INDEX% Becky -5
+pose 1 normal
+talk 1 "I don't really care, Amberlynn."
+talk - (Amberlynn cuts the camera.)
+pose 0 laptoptemplate
+talk 0 "Beckyyyy, why didn't you just say you broke eeeet?"
+talk 0 "You don't love me."
+pose 0 frowny
+talk 1 "Why would I lie about that."
+talk 1 "Just tell them the truth babe, it's not a big deal."
+pose 0 pissed
+talk 0 "Becky, you don't understand!"
+pose 0 bored
+talk 0 (Wait, this would make such a great poem... about how nobodee understands me)
+pose 1 useless
+talk 1 "Okay well I'm gonna go cook dinner."
+pose 0 normal
+talk 0 "Wait Beckeeeh, I was gonna make chili tonight."
+incvisit
+; chili
+gotofadenewchapter 9
+`,
+    },
+
+    "sofa_amber": {
+        inherits: "sofa",
+        diag: `
+pose 0 cacklelynn
+sfx assets/sfx/cackle.ogg
+talk 0 "Oh wait... I remember."
+pose 0 normal
+talk 0 "It totally was me guise."
+talk 0 "This sofa is super old, so yeah that's what lead to that situation type deal."
+affectionchange %AFFCHANGE_INDEX% Becky +5
+pose 0 laptoptemplate
+talk - (Amber shuts the camera off.)
+talk 1 "Thanks for telling them the truth, I'm gonna go cook dinner babe."
+pose 0 pissed
+talk 0 "No beckehhh I'm makeen chili for my next video."
+incvisit
+; chili
+gotofadenewchapter 9
+`,
+    },
+
+    // Chapter 9
+    "chili": {
+        bg: "kitchen.png",
+        music: [ CALD_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+        diag: `
+chapter 9
+enter 0
+pose 0 heyguys
+talk 0 "Hey you guiiiise what's uuuuup today I'm gonna be doeen a bit of a chili moment."
+talk 0 "You guise know I love hoe-made chili soooo that's what we're doing today."
+pose 0 bigpot
+lynn pot
+talk 0 "So we're gonna get a pooot here, I dunno why we have this one it's like, rilly big you guise."
+pose 0 cacklelynn
+lynn cackle
+talk 0 "It's the only thing I could find that was like, clean, so, we're goeen with it HAHA."
+pose 0 normal
+talk 0 "Okay SOO first thing we gotta do is get some meat goin in a pan."
+talk 0 "Now I'm akshually just gonna put some water in here, it's hulthier than useen like an oil situation, sooo..."
+talk 0 "Now we're gonna throw in just like one teaspoon of some minced garliiiic..."
+talk - (Amber adds 6 teaspoons of minced garlic)
+talk 0 ""
+pose 0 bored
+talk 0 (UGH I can't keep doeen this.... gonna have to make a video telling everyone I'm not doing wellness wins)
+gotofadenewchapter 13
+`,
+    },
+
+    // Chapter 10
+    "salad mookbong": {
+        bg: "pillowmountain.png",
+        music: [ CALD_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+        diag: `
+chapter 10
 enter 0
 pose 0 heyguys
 lynn heyguys
@@ -981,7 +1121,7 @@ lynn frowny
 talk 0 "And we got some breadsticks here, can't believe they only gave me ten, like wut."
 pose 0 gasp
 lynn gasp
-sfx assets/sfx/bigsalad.ogg 1.9
+sfx assets/sfx/bigsalad.ogg 2.0
 talk 0 "Oh wow I didn't realize it came with this huuuuuge salad."
 talk 0 "You guise lidurally I didn't even know it was this big that's so weird."
 talk 0 "Like honestleee I thought it was gonna be super small you guise I dunno if I can like eat this."
@@ -1012,7 +1152,8 @@ pose 0 laptopyt
 leave 1
 talk 0 "Anyway, I'm gonna upload this now."
 incvisit
-gotofadenewchapter 9
+; 4th of july scene
+gotofadenewchapter 11
 `,
     },
     
@@ -1032,7 +1173,7 @@ talk - (Amber eats the pasta and breadsticks on camera)
 talk 0 "So you guys, I'm feeling so stuffed."
 talk 0 "I'm gonna eat this salad type deal thing later, maybe for like dinner."
 pose 0 laptoptemplate
-talk - "(Amber Lynn cuts the video)"
+talk - (Amberlynn cuts the video)
 pose 0 pissed
 talk 0 "Beckehhhhhhhhh!"
 enter 1 useless
@@ -1042,23 +1183,24 @@ sfx assets/sfx/cackle.ogg
 talk 0 "This salad is so raw Becky, FAWK. I don't want it."
 talk 0 "Just take it out of here I don't even wanna be near it. Make me some more pasta."
 incvisit
-gotofadenewchapter 9
+; 4th of july scene
+gotofadenewchapter 11
 `,
     },
 
-    // Chapter 9
+    // Chapter 11
     "outside": {
         bg: "pillowmountain.png",
         music: [ RIZO_ISLAND_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
-chapter 9
+chapter 11
 enter 0
 pose 0 laptoptemplate
 talk - (Amber turns the camera on)
 pose 0 heyguys
 talk 0 "Hey guiiise welcome to a new vlog."
-pose 0 amflag
+pose 0 patriot
 lynn patriot
 talk 0 "So we're kind of getting ready to go out and do some 4th of July fireworks."
 talk 0 "This is what I'm wearing. I have a bow moment here."
@@ -1075,7 +1217,7 @@ talk 1 "No it's not."
 talk 0 "It's not? To you it doesn't look backwards?"
 talk 1 "No."
 leave 1
-pose 0 amflag
+pose 0 patriot
 talk 0 "Ok well for some reason on here it looks backwards."
 pose 0 normal
 talk 0 "So anyway, you guise have really been requesteen some more waukeen outside videos."
@@ -1104,14 +1246,20 @@ pose 0 pointer
 lynn pointer
 talk 0 "I should really have a picnic out there some day, it looks so nice outside."
 pose 0 shocked
-sfx assets/sfx/breatheen.ogg
+sfx assets/sfx/breatheen.ogg 99.0
 talk - (Amberlynn struggles out the door and carefully goes down the steps, already breathing heavy)
 pose 0 backwards
 talk 0 "We are gonna take a fun little walk together guise, this is so fun."
-talk 0 "I actually come outside a lot, I just don't film it for you guise, cuuuuz, hashtag..."
 pose 0 shadow
 lynn shadow
 talk - (Amber points the camera towards the ground, showing off her shadow)
+pose 0 cacklelynn
+talk 0 "HAHA you can see my shadow. That's so funny."
+pose 0 normal
+sfx assets/sfx/breatheen.ogg 99.0
+talk - (Amber keeps walkeen)
+pose 0 gasp
+talk 0 "You guise have to rilize, I actually come outside a lot, I just don't film it for you guise, cuuuuz, hashtag..."
 talk 0 "I don't have to show every second of my life, you know?"
 startshake 0
 sfx assets/sfx/breatheen.ogg 99.0
@@ -1132,23 +1280,25 @@ talk 0 "I'm gonna see y'all later, gotta get off and clean."
 talk 0 "I'm gonna probably upload some more exerciseen videos soon though you guise."
 talk 0 "I'm super committed to this new exercise lifestyle you guise."
 talk - (Amberlynn turns off the camera)
-gotofadenewchapter 10
+; ddr
+gotofadenewchapter 12
 `,
     },
 
+    // Chapter 12
     "alr-ddr": {
         bg: "tv.png",
-        music: [ RIZO_ISLAND_MUSIC_DT, DDR_MUSIC_DT, RIZO_ISLAND_MUSIC_DT ],
+        music: [ RIZO_ISLAND_MUSIC_DT, RIZO_ISLAND_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
-chapter 10
+chapter 12
 enter 0
 pose 0 heyguys
 talk 0 "Hey you guuuuuys welcome to a new video."
 pose 0 normal
 talk 0 "I just got in from our 4th of July party a little bit ago."
-talk 0 "Soo a lot of you guys requested more exerciseen videos."
-talk 0 "I kind of have lieek, a hard time with it because of my heel spur you guise."
+talk 0 "Soo a lot of you guys requested more exerciseen videos and I know you'd want more than just me going outside."
+talk 0 "Now with exercise I kind of have lieek, a hard time with it because of my heel spur you guise."
 sfx assets/sfx/excite.ogg
 talk 0 "Buuuut I found out about this super fun program called ALR-DDR."
 talk 0 "It's like this little danceen game, you just plug it up to your TV and you dance on eeet."
@@ -1214,15 +1364,45 @@ gotofade alr-ddr_onpad
         inherits: "alr-ddr",
         diag: `
 callawait mgALRDDR 0
+delay 0
+goto alr-ddr_after
 `,
     },
 
-    "wellness fails": {
+    "alr-ddr_after": {
+        inherits: "alr-ddr",
+        diag: `
+pose 0 frowny
+talk 0 (Ughhh that was so hard, I can't keep this up... gotta quit soon...)
+pose 0 normal
+talk 0 "Wow that was super fun you guise, definitely gonna try this again in a future vlog."
+talk 0 "I know I said I'd try a few different songs but wow that was such a workout you guise."
+pose 0 books
+lynn reader
+talk 0 "I probably burned like a thousand caloreees just from that."
+talk 0 "You guise have to ruhlize it's not hulthy to keep over-workeen yourself to the point of exhaustion."
+talk 0 "I can't just exercise constantly like this and over-exer- over-in- ...what's the word?"
+pose 0 laptoptemplate
+talk - ... ... ...
+pose 0 reader
+talk 0 "Yeah it's not hulthy to over-insert myself like that. Gotta have some breaks."
+pose 0 normal
+talk 0 "So yeah gonna go ahead and end this vloguh. See you guise!"
+talk - (Amber turns off the camera)
+pose 0 bored
+talk 0 (UUGGGHHH I can't keep doeeen this..... that's it, I gotta tell everyone I'm quitting this exercising stuff)
+; wellness loses
+gotofadenewchapter 13
+`,
+    },
+
+    // Chapter 13
+    "wellness loses": {
         bg: "kitchen.png",
         music: [ CALD_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
-chapter 60
+chapter 13
 enter 0
 pose 0 smug
 talk - (Amberlynn sits down to the table, wiping water on her face to make it look like she cried, then turns the camera on)
@@ -1247,7 +1427,8 @@ pose 1 thousandyardstare
 talk - (Becky looks at amberlynn likes she's wondering why she was dragged into this)
 pose 0 guilty
 talk 0 "So I've talked about nutrition a bit, and I know some of you guys are curious about healthy snack ideas."
-talk 0 "In a few days maybe I'll make a healthy snack ideas video. I already something in mind."
+talk 0 "I think what I wanna do is get more into the newtrishun side of hulth, cuz I keep faileen at exercise."
+talk 0 "So pretty soon I'll do a healthy snack ideas video. I already something in mind."
 pose 0 cacklelynn
 talk 0 "Just as a little sneak peak."
 pose 0 cucumber
@@ -1269,236 +1450,25 @@ pose 0 frowny
 talk 0 "Did we get cream cheese and microwave bacon at the store?"
 talk 1 "Uhh, lemme go check."
 incvisit
-gotofadenewchapter 1
+; cucumber
+gotofadenewchapter 14
 `,
     },
 
-    "sofa": {
-        bg: "pillowmountain.png",
-        music: [ CALD_MUSIC_DT ],
-        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
-        diag: `
-chapter 51
-enter 0
-pose 0 pissed
-talk 0 "BECKEHHHHHH!"
-enter 1
-talk 1 "Amberlynn stop screaming, what's wrong?"
-talk 0 "You broke the sofeh."
-talk 1 "Babe, no I didn't, you did that last night."
-shakestart 0
-talk 0 "No Becky stop lyeen."
-talk - (Amberlynn looks at the camera nervously.)
-shakeend 0
-pose 0 shocked
-talk 0 "I can't break the sofa, I'm a super dainty gorl rememberer???"
-pose 0 books
-talk 0 "You guise she is totally sayeen I'm big."
-pose 1 useless
-talk 1 "Amberlynn, no one said that."
-talk 1 "You broke it last night when you sat on it babe."
-
-multi
-Insist that Becky broke it
-sofa_becky
-Confess that you broke it
-sofa_amber
-`,
-    },
-
-    "sofa_becky": {
-        inherits: "sofa",
-        diag: `
-pose 0 laser
-shakestart 0
-talk 0 "BECKEHHHH! STOP LYEEEEEEN!"
-shakeend 0
-pose 0 frowny
-talk 0 "It's not even funny anymore."
-talk 0 "You guise don't believe her."
-affectionchange %AFFCHANGE_INDEX% Becky -5
-pose 1 normal
-talk 1 "I don't really care, Amberlynn."
-talk - (Amberlynn cuts the camera.)
-pose 0 laptoptemplate
-talk 0 "Beckyyyy, why didn't you just say you broke eeeet?"
-talk 0 "You don't love me."
-pose 0 frowny
-talk 1 "Why would I lie about that."
-talk 1 "Just tell them the truth babe, it's not a big deal."
-pose 0 pissed
-talk 0 "Becky, you don't understand!"
-pose 0 bored
-talk 0 (Wait, this would make such a great poem... about how nobodee understands me)
-pose 1 useless
-talk 1 "Okay well I'm gonna go cook dinner."
-pose 0 normal
-talk 0 "Wait Beckeeeh, I was gonna make chili tonight."
-incvisit
-gotofadenewchapter 10
-`,
-    },
-
-    "sofa_amber": {
-        inherits: "sofa",
-        diag: `
-pose 0 cacklelynn
-sfx assets/sfx/cackle.ogg
-talk 0 "Oh wait... I remember."
-pose 0 normal
-talk 0 "It totally was me guise."
-talk 0 "This sofa is super old, so yeah that's what lead to that situation type deal."
-affectionchange %AFFCHANGE_INDEX% Becky +5
-pose 0 laptoptemplate
-talk - (Amber shuts the camera off.)
-talk 1 "Thanks for telling them the truth, I'm gonna go cook dinner babe."
-pose 0 pissed
-talk 0 "No beckehhh I'm makeen chili for my next video."
-incvisit
-gotofadenewchapter 10
-`,
-    },
-
-    "chili": {
-        bg: "kitchen.png",
-        music: [ CALD_MUSIC_DT ],
-        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
-        diag: `
-chapter 52
-enter 0
-pose 0 heyguys
-talk 0 "Hey you guiiiise what's uuuuup today I'm gonna be doeen a bit of a chili moment."
-talk 0 "You guise know I love hoe-made chili soooo that's what we're doing today."
-pose 0 bigpot
-lynn pot
-talk 0 "So we're gonna get a pooot here, I dunno why we have this one it's like, rilly big you guise."
-pose 0 cacklelynn
-lynn cackle
-talk 0 "It's the only thing I could find that was like, clean, so, we're goeen with it HAHA."
-pose 0 normal
-talk 0 "Okay SOO first thing we gotta do is get some meat goin in a pan."
-talk 0 "Now I'm akshually just gonna put some water in here, it's hulthier than useen like an oil situation, sooo..."
-talk 0 "Now we're gonna throw in just like one teaspoon of some minced garliiiic..."
-talk - (Amber adds 6 teaspoons of minced garlic)
-talk 0 ""
-`,
-    },
-
-    "wiping": {
-        bg: "pillowmountain.png",
-        music: [ CALD_MUSIC_DT ],
-        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
-        diag: `
-chapter 54
-enter 0
-pose 0 pepperonigorlheyguys
-lynn heyguys
-talk 0 "So, you guise."
-pose 0 normal
-talk 0 "This is a pretty serious video."
-talk 0 "Well, Becky said I deserve better."
-talk 0 "She says she wants to get better- wait... better? Or like..."
-pose 0 bored
-lynn bored
-talk 0 "Hmm what's that word?"
-pose 0 laptoptemplate
-talk - (Amberlynn gets on her laptop and quickly searches)
-pose 0 normal
-talk 0 "IMPROVE yeah she wants to IMPROVE, you guise."
-talk 0 "So anyway we got a bit of a situation type deal goeen on with all that, but it's good."
-pose 0 cacklelynn
-talk 0 "I want to take this time to enjoy being single."
-pose 0 normal
-talk 0 "Anyway, Becky should be back with my food soon."
-pose 0 laptoptemplate
-lynn laptop
-talk - (Amber looks at her Livestream comments)
-pose 0 pissed
-shakestart 0
-talk 0 "IM NOT MAKEEN HER GET ME FOOD YOU GUISE!"
-shakeend 0
-talk 0 "Becky and I are all cool okay, she wants to work on herself."
-enter 1
-talk 1 "Hey, I'm back."
-pose 0 bored
-lynn bored
-talk 0 "Thank God I'm actually starveen. Why does it always take you so long?"
-pose 1 useless
-talk 1 "Well I have to drive there, and wait for the food... And then drive back."
-pose 0 books
-talk 0 "Yeah just give me my food."
-talk 1 "That's all?"
-
-multi
-Pay Becky for the food
-wiping_becky_food_paid
-OMG Beckeeeeeh let me eat my food I'll pay later
-wiping_becky_food_not_paid
-`
-    },
-    
-    "wiping_becky_food_paid": {
-        inherits: "wiping",
-        diag: `
-moneychange -1 -20
-pose 0 normal
-talk 1 "Thanks."
-leave 1
-talk - (Take out 20 dollars from Becky's piggy bank)
-moneychange -1 20
-pose 0 cacklelynn
-lynn cackle
-talk 0 "Wow this looks so good, you see guise me and Becky are all good."
-pose 0 gasp
-talk 0 "We are just chilling together for now."
-talk - (Amberlynn cuts the live)
-pose 0 pissed
-lynn angry
-talk 0 "BECKEHHHHH!!!"
-enter 1
-talk 1 "Amberlynn what? I'm about to eat."
-pose 0 confused
-lynn confused
-talk 0 "Before we eat I need to go to the bathroom. Come help me."
-incvisit
-gotofadenewchapter 12
-`,
-    },
-    
-    "wiping_becky_food_not_paid": {
-        inherits: "wiping",
-        diag: `
-talk 1 "Really, that's all?"
-pose 0 normal
-talk 0 "Oh yeah, I gotta go to the bathroom first."
-pose 0 confused
-lynn confused
-pose 0 "Come help me Becky."
-pose 1 normal
-talk 1 "Amberlynn..."
-pose 0 frowny
-lynn frowny
-talk 0 "What, are you not gonna help me?"
-;pose 1 angry
-talk 1 "Fine, I'll come help."
-incvisit
-gotofadenewchapter 12
-`,
-    },
-
+    // Chapter 14
     "cucumber": {
         bg: "kitchen.png",
         music: [ CALD_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
-chapter 55
+chapter 14
 enter 0
 pose 0 heyguys
 lynn heyguys
 talk 0 "Hey guise, so today I decided to tell you guise about some healthy snack ideas. This is super highly requested from my last video."
 pose 0 normal
 talk - (Amberlynn pulls outs out two giant cucumbers, cream cheese, and a ton of bacons)
-talk 0 "So girl, I get hongry throughout the day, and you know how you wanna turn to sometheen unhealthy like a candy bar?"
+talk 0 "So gorl, I get hongry throughout the day, and you know how you wanna turn to sometheen unhealthy like a candy bar?"
 talk 0 "Well this is a super hulthy and filling snack you guise."
 enter 1
 pose 1 normal
@@ -1508,7 +1478,7 @@ talk 0 "Sorry babe, just getting something."
 leave 1
 talk 0 "Anyway you guise, get yourself two HUGE cucumbers."
 pose 0 disgusted
-lynn disgust
+lynn disgusted
 talk 0 "No skin on the cucumbers guise because for me, the skin on the cucumbers makes it taste gross."
 pose 0 normal
 talk - (Amberlynn only cuts one cucumber in half)
@@ -1528,7 +1498,7 @@ talk 1 "I think it was OBCD."
 talk 0 "Oh yeah HAH that's right."
 leave 1
 pose 0 normal
-talk 0 "So yeah anyway I have this huge OBCD problem with like other foods toucheen my food, and like stirring stuff, you know?"
+talk 0 "So yeah anyway I have this huge OBCD problem with other foods toucheen my food, and like stirring stuff, you know?"
 pose 0 stir
 lynn stir
 talk - (Amberlynn begins stirring)
@@ -1538,12 +1508,12 @@ pose 0 scared
 talk 0 "I'm scared guise, I don't know how this will pan out. I'm so nervous."
 talk - (Amberlynn only covers one cucumber half)
 pose 0 normal
-talk 0 "Next we have bacon, and I know you guise are probably like whaaat? I wasn't gonna do bacon, I swear you guise."
+talk 0 "Next we have bacon, and I know you guise are probably like wuuuut? I wasn't gonna do bacon, I swear you guise."
 pose 0 disgusted
 lynn disgusted
 talk 0 "I was gonna use this super healthy topping but it smelled a bit funny you guise."
 pose 0 normal
-talk 0 "Last step, add a little bit of everything but the bagel seasoneen. I love seasoneens you guise."
+talk 0 "Last step, add a little bit of everything but the bagel seasoneen. I love seize-uh-neens you guise."
 talk - (Amberlynn pours tons of seasonings on)
 pose 0 cacklelynn
 lynn cackle
@@ -1557,8 +1527,9 @@ talk - (Amberlynn takes another bite)
 talk 0 "Mmm, I'm so shocked you guise. This is really good. I don't think I can like, eat this all though, it's SO huuuge.
 pose 0 normal
 talk 0 "I like the bacon on it, adds so many sodiums. I should add more bacon. Very low calorie meal."
-talk - (Amberlynn lists the calories for the bacon, but not the massive glop of cream cheese)
+talk - (Amberlynn lists the calories for the bacon, but not the huge pile of cream cheese)
 talk 0 "Is this low carb? Only two carbs for the cream cheese you guise. I really wasn't expecting this situation type deal."
+pose 0 cacklelynn
 talk - (Amberlynn cackles to herself, then realizes she is out of bacon)
 multi
 Continue the mukbang even though you have no more bacon
@@ -1571,31 +1542,36 @@ cucumber_end
     "cucumber_continue": {
         inherits: "cucumber",
         diag: `
+pose 0 gasp
 talk 0 "I'm out of bacon you guise, but I'll finish this cucumber boat before I get off."
 talk 0 "It's not as good without the bacon, that's fine though."
 talk 0 "I'm super healthy you guise so I can deal with this situation type deal."
 talk - (Amberlynn finishes the cucumber boat and internally let's out a sigh of relief)
 talk 0 "Thanks for watcheen my mookbang guise. Someone else needs to use the kitchen so I'm going to get off now."
 talk - (Amberlynn cuts the camera)
-gotofadenewchapter 13
+; fbi
+gotofadenewchapter 15
 `,
     },
 
     "cucumber_end": {
         inherits: "cucumber",
         diag: `
+pose 0 heyguys
 talk 0 "I need to go you guise. Other people want to use the kitchen, so I had to eat super fast. Thank you for coming to my mookbang."
 talk - (Amberlynn cuts the camera)
-gotofadenewchapter 13
+; fbi
+gotofadenewchapter 15
 `,
     },
 
+    // Chapter 15
     "fbi": {
         bg: "pillowmountain.png",
         music: [ CALD_MUSIC_DT ],
         stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
         diag: `
-chapter 56
+chapter 15
 enter 0
 pose 0 mentalthings
 talk 0 "BECKEHHHHHH!!!"
@@ -1606,7 +1582,7 @@ talk 1 "What do you mean Amberlynn?"
 pose 0 scared
 lynn scared
 talk 0 "So, we have a situation type deal where this guy who works for the FBI called me. His name is Frank."
-talk 0 "Well, to be specifically-er, Density's sister texted me and was like, gorl, the fbi is looking for u."
+talk 0 "Well, to be specifically-er, someone Density knows texted me and was like, gorl, the fbi is looking for u."
 talk 0 "But I called them and they're actually like soooooper scared for my safety, and they want to send me somewhere safe."
 pose 1 useless
 talk 1 "Wait, what happened?"
@@ -1714,7 +1690,9 @@ pose 0 sip
 lynn sip
 talk - (More slurping)
 pose 0 normal
-talk 0 "The other day I get this text from Destiny's siter and she's like, the FBI wants to talk to you."
+talk 0 "The other day I get this text..."
+talk 0 "It was from Destiny's sister's best friend's girlfriend's brother's friend from church's grandma's niece's friend."
+talk 0 "And she's all like, gorl, the FBI wants to talk to you."
 pose 0 scared
 lynn scared
 talk 0 "And I was actually SO scared I was like, am I in trouble??"
@@ -1798,10 +1776,13 @@ talk - (Amber leaves to go get them)
 talk - ... ... ...
 talk - ... ... ...
 talk - ... ... ...
+talk - ... ... ...
+talk - ... ... ...
+talk - ... ... ...
 talk - (10 minutes later...)
 enter 0
-sfx assets/sfx/breatheen.ogg
-talk - (Amber hoddles back into the room with 4 boxes of expert laygoes, breathing heavily)
+sfx assets/sfx/breatheen.ogg 99.0
+talk - (Amber hoddles back into the room with a 10-pound suitcase containing 4 boxes of expert laygoes and other junk)
 pose 0 normal
 talk 0 "Ok Beckeee we can go now."
 pose 0 leaveen
@@ -1811,16 +1792,208 @@ talk 0 "I'm leaaveeeeeeeen."
 if eq hasSeenLeaveenLynn 1
 talk 1 "*sigh*"
 endif
-gotofadenewchapter 14
+; area 89
+gotofadenewchapter 16
 `,
     },
 
+    // Chapter 16
+    "area 89": {
+        bg: "area89.png",
+        music: [ AREA89_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["left_front", "Becky"], ["hflip", "right_front", "FBI Frank"] ],
+        diag: `
+chapter 16
+enter 0
+enter 1
+enter 2
+pose 0 normal
+talk 2 "Hey guys, I'm FBI Frank with the Amberlynn Protection Unit. How are you both doing?"
+talk - (Amber lies again)
+talk 0 "I'm fine."
+pose 1 useless
+talk 1 "I'm OK."
+talk 2 "I was expecting you guys to get here a few hours ago. The spaceship leaves in about 10 minutes. What was the hold up?"
+talk 1 "Well I had to keep stopping to get foo-"
+pose 0 gasp
+talk 0 "UHH just, you know, we got a flat tire, took them a while to fix it kind of situation..."
+pose 1 normal
+talk 1 "... ... ..."
+pose 0 normal
+talk 2 "Well anyway, welcome to Area 89."
+talk 1 "Don't you mean Area 51?"
+talk 2 "Well, it WAS Area 51, but Amber's 89 pound milestone was so impressive, I convinced the US government to rename it in her honor."
+pose 0 gasp
+talk 0 "Oh muh gah that's so nice of you Fraaaank, let me give you a huuuuug."
+pose 0 leaveen
+talk - (Amber waddles closer to Frank)
+talk 2 "Uhhh no thanks Amber, I'm good..."
+pose 0 normal
+talk 2 "So, keep in mind the spaceship is just barely going to be able to hold all our weight."
+talk 2 "We had to make special accomodations for Amber's dainty body weight. We added 4 extra booster engines."
+pose 0 closedeyes
+talk 0 "Love that for meee."
+pose 0 normal
+talk 2 "That also means we can't have any extra items on board."
+pose 0 pissed
+talk 0 "WHAT? But I brought a bunch of stuuuuuffff."
+talk - (Amber hands Frank her expert laygoes suitcase; he opens it)
+talk 2 "Sorry Amber, it's a tight fit as it is. This would weigh it down too much."
+talk 0 "NOOOO BUT I HAVE TO FINISH THESE EXPERT LAYGOES, THESE ARE THE ONES I HAVEN'T DONE YETTTT."
+pose 0 bored
+talk 0 "Fine, you know what, I'm just gonna do them right now."
+talk 2 "What? But Amber we really-"
+pose 0 pissed
+talk 0 "YOU DON'T UNDERSTAND EXPERT LAYGOES LIKE I DO, FRANK."
+pose 0 bored
+talk - (Amber gets out a Piano expert laygoes set and starts doing it)
+talk - ... ... ...
+pose 0 normal
+talk 0 "Ok they're done now, we can go."
+gotofadenewchapter 17
+`,
+    },
+
+    // Chapter 17
+    "spaceship": {
+        bg: "spaceship.png",
+        music: [ AREA89_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["left_front", "Becky"], ["hflip", "right_front", "FBI Frank"] ],
+        diag: `
+chapter 17
+enter 0
+enter 1
+enter 2
+pose 0 normal
+talk 2 "Ok gorls, we've taken off and we're headed for Pluto. Hopefully the Orange Chicken terrorist won't find us there."
+talk 0 "Sooooo wuddu we do now? I'm getting so hongry..."
+talk 2 "Well we have these pods setup that you guise can go ahead and sleep in to make the trip shorter."
+pose 0 books
+talk 0 "Ok I guess I'll do that, but I ruhly gotta eat first, it's been like, what, do you know Becky?"
+talk 1 "Know what?"
+pose 0 bored
+talk 0 "How long it's been since I last eaten?"
+talk 1 "Um, about 45 minutes."
+pose 0 books
+talk 0 "Yeah I ruhly need to eat, that's way too long you guise."
+pose 0 energybar
+lynn energybar
+talk - (Amber takes a huge bite of an energy bar, like 3/4 of the whole bar)
+pose 0 gasp
+talk 0 "MMMMM ohmuhgod it's soooo good."
+sfx assets/sfx/mmm.ogg
+pose 0 energybar
+talk - (Amber eats the rest)
+pose 0 normal
+talk 0 "Ok I'm ready to go to bed now."
+talk 2 "Ok so just lay down in this pod like this..."
+leave 0
+talk - (Amber struggles to get into a pod and nearly breaks it)
+leave 1
+leave 2
+talk - (Everyone else gets into their pods too)
+talk - ... ... ...
+gotofadereload spaceship_convo
+`,
+    },
+
+    "spaceship_convo": {
+        bg: "black.png",
+        music: [ AREA89_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+        diag: `
+enter 1
+pose 1 normal
+talk 1 "Hey Amber..."
+pose 0 closedeyes
+talk 0 "What is it Beckeeeeee I'm sleepeen."
+talk 1 "Do you really think we have a future together?"
+pose 0 gasp
+talk 0 "Of course Beckeee, don't be so stupid."
+talk - ... ... ...
+talk 1 "Sometimes you say things, like that just now, and it just makes me think you don't like me."
+talk 1 "And like when you boss me around and tell me to get food all the time."
+pose 0 books
+talk 0 "Beckeeehhhh what you have to rilize is, ruhlationships are lidurally all about shareen and makeen each other comfturbull."
+talk 0 "Soooo the food thing, yeah, that's just cuz I lidurally have to eat, like even at 700- I mean 500 pounds, you gotta eat."
+talk 1 "Um..."
+talk 1 "Are you hiding something about your weight? It's ok if you don't want to talk-"
+pose 0 pissed
+talk 0 "NO BECKEEEEH THE SCALE SAID 568.2 POUNDS REMEMBER?? I am NUT lyeeeen about this."
+pose 0 books
+talk 0 "How could I even make the scale lah like that anyway?"
+pose 1 thousandyardstare
+talk 1 "Yeah you're right Amber, sorry."
+pose 0 sleepygorl
+lynn sleepy
+talk 0 "Good night babe..."
+gotofadenewchapter 18
+        `,
+    },
+
+    // Chapter 18
+    "dream": {
+        bg: "pillowmountain.png",
+        stage: [ ["left_back", "Amberlynn"], ["right_front", "hflip", "Dusty"], ["right_front", "hflip", "???"] ],
+        diag: `
+chapter 18
+enter 0
+enter 2
+pose 0 closedeyes
+talk - (Amber is asleep, but starts dreaming)
+talk - ... ... ...
+talk 2 "Amberlynn..."
+talk 0 "Hello?"
+talk 2 "Amberlynn..."
+talk 0 "Who is it??"
+pose 0 gasp
+talk 0 "What? Who- DESTINEEE???"
+leave 2
+enter 1
+talk 1 "Yuuup. It's me."
+talk 1 "Have you forgotten me already?"
+pose 0 gasp
+talk 0 "Oh mah gohd destiny! Where are we?"
+talk 1 "You told me to wake you up in an hour so we could go to cheesecake factory, remember?"
+talk 0 "But someone said they were gonna blow it up."
+talk 1 "What are you talking about Amberlynn? Let's go get some orange chicken."
+talk - (Amberlynn is in happy tears)
+talk 0 "What? Orange chicken, they have it back??!!"
+talk 1 "You're acting totally crazy right now hahaha, are we gonna go eat?"
+pose 0 cacklelynn
+talk 0 "HAHAHAHAHA YOURE SO FUNNEH DESTINY, YESSS LETS GO EAT."
+talk - (Amberlynn thinks about the nightmare she had been living until now...)
+leave 1
+pose 0 dustykiss
+lynn dusty
+talk - (...then leans in and kisses destiny like destiny herself is orange chicken)
+enter 1
+pose 0 cacklelynn
+talk 0 "Yessss let's go get food now and Livestream while we are doing it."
+pose 0 laptoptemplate
+talk - (Amberlynn turns on the camera)
+pose 0 heyguys
+talk 0 "Hey guiiiise we're just about to go to cheesecake factory to have some dindin."
+pose 0 bored
+talk 0 (This is great, I hope this isn't a dream...)
+gotofade dustiny_cf
+`,
+    },
+
+    "dustiny_cf": {
+        inherits: "dream",
+        diag: `
+callawait mgMiniCf
+        `,
+    },
+
+    // Chapter 19
     "pluto": {
         bg: "pluto.png",
         music: [ CALD_MUSIC_DT ],
-        stage: [ ["left_back", "Amberlynn"], ["hflip", "left_front", "Becky"], ["hflip", "right_front", "Frank"] ],
+        stage: [ ["left_back", "Amberlynn"], ["left_front", "Becky"], ["hflip", "right_front", "FBI Frank"] ],
         diag: `
-chapter 57
+chapter 19
 enter 0
 `,
     },
@@ -1947,6 +2120,108 @@ talk - (Amberlynn finally gets it)
 goto salmon_2
 `,
     },
+
+    "wiping": {
+        bg: "pillowmountain.png",
+        music: [ CALD_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["hflip", "right_front", "Becky"] ],
+        diag: `
+chapter 54
+enter 0
+pose 0 pepperonigorlheyguys
+lynn heyguys
+talk 0 "So, you guise."
+pose 0 normal
+talk 0 "This is a pretty serious video."
+talk 0 "Well, Becky said I deserve better."
+talk 0 "She says she wants to get better- wait... better? Or like..."
+pose 0 bored
+lynn bored
+talk 0 "Hmm what's that word?"
+pose 0 laptoptemplate
+talk - (Amberlynn gets on her laptop and quickly searches)
+pose 0 normal
+talk 0 "IMPROVE yeah she wants to IMPROVE, you guise."
+talk 0 "So anyway we got a bit of a situation type deal goeen on with all that, but it's good."
+pose 0 cacklelynn
+talk 0 "I want to take this time to enjoy being single."
+pose 0 normal
+talk 0 "Anyway, Becky should be back with my food soon."
+pose 0 laptoptemplate
+lynn laptop
+talk - (Amber looks at her Livestream comments)
+pose 0 pissed
+shakestart 0
+talk 0 "IM NOT MAKEEN HER GET ME FOOD YOU GUISE!"
+shakeend 0
+talk 0 "Becky and I are all cool okay, she wants to work on herself."
+enter 1
+talk 1 "Hey, I'm back."
+pose 0 bored
+lynn bored
+talk 0 "Thank God I'm actually starveen. Why does it always take you so long?"
+pose 1 useless
+talk 1 "Well I have to drive there, and wait for the food... And then drive back."
+pose 0 books
+talk 0 "Yeah just give me my food."
+talk 1 "That's all?"
+
+multi
+Pay Becky for the food
+wiping_becky_food_paid
+OMG Beckeeeeeh let me eat my food I'll pay later
+wiping_becky_food_not_paid
+`
+    },
+    
+    "wiping_becky_food_paid": {
+        inherits: "wiping",
+        diag: `
+moneychange -1 -20
+pose 0 normal
+talk 1 "Thanks."
+leave 1
+talk - (Take out 20 dollars from Becky's piggy bank)
+moneychange -1 20
+pose 0 cacklelynn
+lynn cackle
+talk 0 "Wow this looks so good, you see guise me and Becky are all good."
+pose 0 gasp
+talk 0 "We are just chilling together for now."
+talk - (Amberlynn cuts the live)
+pose 0 pissed
+lynn angry
+talk 0 "BECKEHHHHH!!!"
+enter 1
+talk 1 "Amberlynn what? I'm about to eat."
+pose 0 confused
+lynn confused
+talk 0 "Before we eat I need to go to the bathroom. Come help me."
+incvisit
+gotofadenewchapter 12
+`,
+    },
+    
+    "wiping_becky_food_not_paid": {
+        inherits: "wiping",
+        diag: `
+talk 1 "Really, that's all?"
+pose 0 normal
+talk 0 "Oh yeah, I gotta go to the bathroom first."
+pose 0 confused
+lynn confused
+pose 0 "Come help me Becky."
+pose 1 normal
+talk 1 "Amberlynn..."
+pose 0 frowny
+lynn frowny
+talk 0 "What, are you not gonna help me?"
+;pose 1 angry
+talk 1 "Fine, I'll come help."
+incvisit
+gotofadenewchapter 12
+`,
+    },
 }
 
 function doVars(diagLib, key, varsList, valuesList) {
@@ -1966,6 +2241,7 @@ const allDiagsKeys = Object.keys(ALL_DIAGS)
 for (let i = 0; i < allDiagsKeys.length; i++) {
     // Fixes text
     const thisKey = allDiagsKeys[i]
+    //console.log(ALL_DIAGS["area 89"])
     ALL_DIAGS[thisKey].diag = ALL_DIAGS[thisKey].diag.trim().replace(/^[#;].*/g, "").replace(/\n+/g, "\n")
 
     // pre-processor vars

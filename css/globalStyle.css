@@ -1329,6 +1329,28 @@ div.ochicken-bg * {
     -webkit-text-stroke: 1px black;
 }
 
+#pic-submit {
+    display: none;
+    position: absolute;
+    z-index: 48;
+
+    right: 1rem;
+    bottom: 1rem;
+
+    width: 20vmin;
+    height: 6vmin;
+
+    cursor: pointer;
+
+    background: black;
+    border: 1px solid white;
+    border-radius: 12px;
+}
+
+#pic-submit.visible {
+    display: unset;
+}
+
 .iq-score {
     top: 3.5rem;
 }
