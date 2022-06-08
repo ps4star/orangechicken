@@ -282,7 +282,7 @@ hook('load', function(oldScene) {
     // Play mm music
     if (!(oldScene === 'lynns' || oldScene === 'options')) {
         stopMusic()
-        playSong(RIZO_ISLAND_MUSIC_DT)
+        if (oldScene !== 'diag') { playSong(RIZO_ISLAND_MUSIC_DT) }
     }
 
     if (save.hasUnlockedArcade) {
