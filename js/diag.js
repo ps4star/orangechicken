@@ -921,6 +921,8 @@ async function doDialog(name) {
         } else if (args[0] === 'call') {
             // Calls sync func by string name
             window[args[1]]()
+        } else if (args[0] == 'callwithargs') {
+            window[args[1]](...args.slice(2))
         } else if (args[0] === 'callawait') {
             // Calls async func by string name and awaits it
             await window[args[1]].apply({ inline: inlineVarDict, saved: save.savedVars }, args.slice(2))

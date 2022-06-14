@@ -38,7 +38,7 @@ const CHAPTERS = [
     [ "salmon", "assets/torrid.png", {} ], // 37 (PH)
     [ "salmon", "assets/torrid.png", {} ], // 38 (PH)
     [ "salmon", "assets/torrid.png", {} ], // 39 (PH)
-    [ "salmon", "assets/torrid.png", {} ], // 40 (PH)
+    [ "calorie counting", "assets/torrid.png", {} ], // 40 (PH)
     [ "salmon", "assets/torrid.png", {} ], // 41 (PH)
     [ "salmon", "assets/torrid.png", {} ], // 42 (PH)
     [ "salmon", "assets/torrid.png", {} ], // 43 (PH)
