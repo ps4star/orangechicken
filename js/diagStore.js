@@ -1991,7 +1991,7 @@ gotofade dustiny_cf
         inherits: "dream",
         diag: `
 callawait mgMiniCf
-        `,
+`,
     },
 
     // Chapter 19
@@ -2227,6 +2227,113 @@ talk 0 "What, are you not gonna help me?"
 talk 1 "Fine, I'll come help."
 incvisit
 gotofadenewchapter 12
+`,
+    },
+
+    // Calorie counting
+    "calorie counting": {
+        bg: "pillowmountain.png",
+        music: [ RIZO_ISLAND_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["right_front", "hflip", "Becky"] ],
+        diag: `
+chapter 40
+enter 0
+pose 0 heyguys
+talk 0 "Hey guise, so today we are gonna be calorie counteen. My limit for today is 1,600, but like I can eat way over that and be fine."
+pose 0 lookdown
+talk 0 "I just want to be able to go over if I have to, you know? I have a feeling though that im gonna go over today."
+pose 0 normal
+talk 0 "So anyway I guess we'll go ahead and get started and show u guise some of the mills i'm gonna be eateen today."
+talk - (Amber cuts to a new clip in the vlog)
+gotofadereload cc_2
+`,
+    },
+
+    "cc_2": {
+        bg: "kitchen.png",
+        music: [ RIZO_ISLAND_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["right_front", "hflip", "Becky"] ],
+        diag: `
+enter 0
+pose 0 normal
+talk 0 "So this is my first mill guise, just some eggs and pre cooked bacon. Super easy to make and it tastes sooo good, honestly."
+talk 0 "It's ruhly hulthy too. I'm not really a breakfast gorl, buuuuut..."
+pose 0 closedeyes
+talk - (Amber takes 3 gigantic bites)
+pose 0 lookdown
+talk 0 "I have like this problem with not eateen when I get up, and I know that isn't good."
+pose 0 normal
+talk 0 "Also guise I didn't cook this in oil or butter, it's healthier that way and tastes good without it.
+talk 0 "So for my eggs, only 120 calories. And for the bacon, it was three slices so that is only 90 calories."
+talk 0 "Super healthy breakfast, I really suggest it for those of you trying to lose weight."
+pose 0 books
+talk 0 "This was only 210 calories soo like, you guise could handle that."
+enter 1
+pose 1 normal
+talk 1 "I thought you were allergic to eggs?"
+talk 0 "Oh my gahd beckeeeeh, I'm not allergic all the time. There was literally no reason to bring that up."
+pose 0 guilty
+talk 0 "Make sure you cut this part out when you upload the video later by the way."
+talk - (Amber cuts to a new clip in the vlog)
+gotofadereload cc_3
+`,
+    },
+
+    "cc_3": {
+        bg: "pillowmountain.png",
+        music: [ RIZO_ISLAND_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["right_front", "hflip", "Becky"] ],
+        diag: `
+enter 0
+pose 0 lookdown
+talk 0 "So guise, this is really typical for me. I woke up thinking I was gonna be on track, but I always end up failing."
+pose 0 mentalthings
+talk 0 "This is what I do to myself, I can't help it. I'm glad you guys can see this."
+pose 0 normal
+talk 0 "So anyway I decided to have subway, and I also got some bags of chips. One bag isn't really enough, there isn't much in there."
+pose 0 gasp
+talk 0 "I guess I didn't really need two, but I feel like I can't control myself."
+pose 0 normal
+talk 0 "And you guise know me, I always gotta finish with something sweet."
+sfx assets/sfx/breatheen.ogg
+talk - (Amber sighs very loudly)
+talk 0 "So for the subway sandwich, that was 580 calories. It isn't that bad, really, but then I decided to have some cookies."
+talk 0 "The cookies were 420 calories, plus both bags of chips were 470 calories. This whole meal was 1,470 calories."
+pose 0 lookdown
+talk 0 "I know guise, I know. I'm so disgusted with myself, and ashamed. I know I messed up."
+talk 0 "You guise have to understand that im trying my best, I just can't believe I do this to myself."
+talk 0 "So now I'm past my limit, with a total now of 1,680 calories."
+talk - (Amber cuts to a new clip in the vlog)
+gotofadereload cc_4
+`,
+    },
+
+    "cc_4": {
+        bg: "kitchen.png",
+        music: [ RIZO_ISLAND_MUSIC_DT ],
+        stage: [ ["left_back", "Amberlynn"], ["right_front", "hflip", "Becky"] ],
+        diag: `
+enter 0
+pose 0 normal
+talk 0 "So what I decided to have for dinner is Mexican food."
+callwithargs mgShowPic assets/food/mexicanfood.png
+talk - (Let it be known the monstrosity she is showing would never qualify as Mexican food.)
+talk 0 "So they didn't have calories on their menu. But this is one of my favorite go to mills when I just RILLY don't fill like cooking."
+pose 0 books
+talk 0 "I'm not a chef guise, okay. Cooking is some tough work. This isn't healthy, I know, and I always get chips and salsa with it."
+talk 0 "Don't worry guise, I didn't finish the chips and salsa. I never finish it, they honestly give me way too much."
+pose 0 gasp
+talk 0 "I always get a side of rice as well."
+talk - (Shows easily over 3 servings of rice)
+pose 0 books
+talk 0 "I seariusly did nut realize it was gonna be this much rice, I swear u guise."
+pose 0 normal
+talk 0 "So for dessert I had mint chocolate chip ice cream, which is my absolute fave-rit."
+talk 0 "Some of you guise might think this is weird, but I love having this ice cream, well any ice cream really, with milk poured in."
+talk 0 "So no idea what the total calories are, but it's over 3000. This wasn't a binge day, this is just me being off track."
+talk 0 "On binge days I would have easily eaten double this. So that's the end of this video, and as you can see I totally messed up."
+talk 0 "I didn't ignore it though, I admitted to it and I showed what I deal with."
+talk 0 "I'll keep recording more of these, even when I'm off track. I love you guise, bah."
 `,
     },
 }

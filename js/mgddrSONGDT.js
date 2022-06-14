@@ -1,4 +1,5 @@
 const SDT_KAMEENO = `tempo 190 2
+div 2
 3
 2
 2

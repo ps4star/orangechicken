@@ -986,3 +986,14 @@ async function mgMiniCf() {
         // drawMonoImage(candt, mgMookbongLayg, 40, 40)
     })
 }
+
+let $pitcherImg
+function mgShowPic(pitcher) {
+    $(document.body).append($(`<img src="${pitcher}">`)
+        .append($(`<div class="disc">`))
+    )
+}
+
+function mgHidePic() {
+    document.body.removeChild($pitcherImg[0])
+}
