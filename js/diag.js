@@ -3,6 +3,7 @@ const inputDelayTime = 25
 
 // This doesn't really matter as long as it's sufficiently large
 const NUM_USEFLAGS = 250
+const VER = 1
 const DEFAULT_SAVE = {
     chapter: 1,
     // Chapter 1 always unlocked at start
@@ -13,6 +14,8 @@ const DEFAULT_SAVE = {
     arcades: fillArr(false, NUM_ARCADE_GAMES),
 
     inventory: [],
+
+    version: VER, // game ver.
 
     beckyAffection: 20,
     wifeyAffection: 20,
@@ -51,6 +54,11 @@ if (!window.localStorage[LS_KEY]) {
     } catch(e) {
         writeSave()
     }
+}
+
+if (save.version != VER || typeof save.version === 'undefined') {
+    save = DEFAULT_SAVE
+    writeSave()
 }
 
 function clearStage() {
