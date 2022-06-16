@@ -56,7 +56,7 @@ if (!window.localStorage[LS_KEY]) {
     }
 }
 
-if (save.version != VER) {
+if (save.version != VER || typeof save.version === 'undefined') {
     save = DEFAULT_SAVE
     writeSave()
 }
