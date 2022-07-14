@@ -718,4 +718,7 @@ if (debug) {
     }
 }
 
+save = DEFAULT_SAVE
+writeSave()
+
 loadScene('splash1')
